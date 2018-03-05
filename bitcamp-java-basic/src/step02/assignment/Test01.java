@@ -2,8 +2,6 @@ package step02.assignment;
 
 import java.util.Scanner;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 public class Test01 {
     static Object[] data;
 
