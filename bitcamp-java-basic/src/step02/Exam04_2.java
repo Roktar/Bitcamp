@@ -17,6 +17,7 @@ public class Exam04_2 {
 
         int k = 100;
         k = (int)l;
+        
         System.out.println(b);
     }
 }
