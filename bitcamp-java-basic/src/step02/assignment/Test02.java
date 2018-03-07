@@ -11,7 +11,7 @@ public class Test02 {
         for(int i=0; i < data.length; i++) {
             System.out.print("입력 ? ");
             for(int j=0; j < data[i].length-2; j++)
-                data[i][j] = sc.next(); // 한 라인을 받는 거 같은데 공백, 개행문자 등 기준으로 문자열을 분할. 하지만 String Array 형태로는 반환되지 않으니 분할된 문자열 갯수만큼 넣기.
+                data[i][j] = sc.next();
             data[i][5] = (int)( data[i][4] = getIntValue(data[i][1], data[i][2], data[i][3]) ) / 3.0f;
             sc.nextLine();
         }
