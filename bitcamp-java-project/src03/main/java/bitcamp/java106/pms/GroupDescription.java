@@ -1,16 +1,21 @@
 package bitcamp.java106.pms;
 
 import java.util.Scanner;
+import bitcamp.java106.pms.App;
 
 public class GroupDescription {
     String tName, tDes, tMax, tStart, tEnd;
 
-    public GroupDescription() {
-        this.tName = "";
-        this.tDes = "";
-        this.tMax = "";
-        this.tStart = "";
-        this.tEnd = "";
+    public boolean isContinue(int idx, Scanner sc) {
+        if( idx < App.MAX_VALUE ) {
+            System.out.print("계속 입력하시겠습니까? (Y/N) ");
+
+            String loop= sc.nextLine();
+            //if( loop.equals("N") || loop.equals("n") || !loop.equals("Y") && !loop.equals("y") )
+            if( loop.toLowerCase().equals("n") || !loop.toLowerCase().equals("y"))
+                return false;
+        }
+        return true;
     }
 
     public void setData(int idx, Scanner sc, String[] question) {
