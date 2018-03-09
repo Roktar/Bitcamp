@@ -1,10 +1,6 @@
 package bitcamp.java106.pms;
 
 import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
-import bitcamp.java106.pms.GroupDescription;
-import bitcamp.java106.pms.MemberDescription;
 import bitcamp.java106.pms.Management;
 
 public class App {
@@ -31,10 +27,8 @@ public class App {
                 continue;
             } else if(command.indexOf("/") > -1 && command.split("/").length > 0)
                 sub = command.split("/");
-            else {
-                System.out.println("명령어가 올바르지 않습니다.\n");
+            else
                 continue;
-            }
 
             String[] sub2;
 
@@ -57,7 +51,9 @@ public class App {
                         manage.getData();
                         break;
                     case "view" :
-                        if(sub[1] == null)
+                        System.out.println(sub[0]);
+                        System.out.println(sub[1]);
+                        if(sub[1] == null || sub[1].equals("view"))
                             System.out.println("찾을 팀명 혹은 아이디가 입력되지 않았습니다.");
                         else
                             manage.findData(sub2[1]);
