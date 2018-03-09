@@ -51,8 +51,6 @@ public class App {
                         manage.getData();
                         break;
                     case "view" :
-                        System.out.println(sub[0]);
-                        System.out.println(sub[1]);
                         if(sub[1] == null || sub[1].equals("view"))
                             System.out.println("찾을 팀명 혹은 아이디가 입력되지 않았습니다.");
                         else
