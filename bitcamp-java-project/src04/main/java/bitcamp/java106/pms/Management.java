@@ -9,9 +9,15 @@ import bitcamp.java106.pms.MemberDescription;
 
 public class Management {
     private List<Description> data;
+    // private List<GroupDescription> g_data;
+    // private List<MemberDescription> m_data;
+    // private List<Description[][]> n_data; // 이걸 쓸거면 분류별로 인덱스 별도로 보유해야할 듯.
 
     public Management() {
         data = new ArrayList<Description>();
+        // g_data = new ArrayList<GroupDescription>();
+        // m_data = new ArrayList<MemberDescription>();
+        // n_data = new ArrayList<Description[][]>();
     }
 
     public void addData(Scanner sc, String[] question, boolean type) {
@@ -27,25 +33,41 @@ public class Management {
         System.out.println();
     }
 
-    public void getData() {
-        for(int i=0; i<data.size(); i++)
-            data.get(i).get();
+    public void getData(boolean type) {
+        int cnt = 0;
+
+        for(int i=0; i<data.size(); i++) {
+            if(type) {
+                if(data.get(i) instanceof GroupDescription) {
+                    data.get(i).get();
+                    cnt++;
+                }
+            } else {
+                if(data.get(i) instanceof MemberDescription) {
+                    data.get(i).get();                  
+                    cnt++;
+                }
+            }
+        }
+        if(cnt <= 0)
+            System.out.println("데이터가 없습니다.");
         System.out.println();
     }
 
-    public void findData(String target) {
-                            
-        for(int i=0; i<data.size(); i++) {
-            if(data.get(i).getBase().equals(target)) {
-                data.get(i).get();
-                System.out.println();
-                return;
+    public void findData(String target, boolean type) {
+        if(data.size() <= 0)
+            System.out.println("등록된 정보가 없습니다.");
+        else {                    
+            for(int i=0; i<data.size(); i++) {
+                if(data.get(i).getBase().equals(target)) {
+                    data.get(i).get();
+                    System.out.println();
+                    return;
+                }
             }
+            System.out.println( ( type ? "해당 이름의 팀이 없습니다." : "해당 아이디의 회원이 없습니다." ) + "\n" );
         }
-        System.out.println("해당 이름의 팀이 없습니다.\n");
     }
-
-    // 아래는 우선 보류
 
     // public void addTeam(Scanner sc, String[] question) {
     //     GroupDescription g_sub = new GroupDescription();

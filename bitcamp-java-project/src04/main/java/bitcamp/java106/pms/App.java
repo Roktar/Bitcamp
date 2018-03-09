@@ -11,10 +11,15 @@ public class App {
         
         String command = "";
 
+        String[] sub, sub2;
+        sub = new String[3];
+        sub2 = new String[2];
+        int cnt = 0;
+
         while( !command.equals("quit") ) {
             System.out.print("명령> ");
             command = sc.nextLine();
-            String[] sub;
+            cnt = getCount(command, '/');
 
             if(command.toLowerCase().equals("help")) {
                 System.out.println("팀 등록 명령 : team/add");
@@ -25,21 +30,20 @@ public class App {
                 System.out.println("회원 상세조회 명령 : member/view 아이디");
                 System.out.println("종료 : quit\n");
                 continue;
-            } else if(command.indexOf("/") > -1 && command.split("/").length > 0)
+            } else if( cnt < 2 && command.split("/").length > 1)
                 sub = command.split("/");
-            else
-                continue;
-
-            String[] sub2;
-
-            if(sub[1].indexOf(" ") > -1) // view가 해당
-                sub2 = sub[1].split(" ");
             else {
-                sub2 = new String[2];
-                sub2[0] = sub[1];
-            } // add, list가 해당
+                System.out.println("명령어가 올바르지 않습니다.\n");
+                continue;
+            }
 
-            if(sub[0].equals("team") || sub[0].equals("member")) {
+            cnt = getCount(sub[1], ' ');
+            if( cnt < 2 && sub[1].indexOf(" ") > -1) // view가 해당
+                sub2 = sub[1].split(" ");
+            else
+                sub2[0] = sub[1]; // add, list가 해당
+
+            if(sub[0].toLowerCase().equals("team") || sub[0].toLowerCase().equals("member")) {
                 switch(sub2[0]) {
                     case "add" :
                         if(sub[0].equals("team"))
@@ -48,18 +52,24 @@ public class App {
                             manage.addData(sc, question[1], false );
                         break;
                     case "list" :
-                        manage.getData();
+                        if(sub[0].toLowerCase().equals("team"))
+                            manage.getData(true);
+                        else
+                            manage.getData(false);
                         break;
                     case "view" :
-                        if(sub[1] == null || sub[1].equals("view"))
+                        if(sub[1] == null || sub[1].toLowerCase().equals("view"))
                             System.out.println("찾을 팀명 혹은 아이디가 입력되지 않았습니다.");
                         else
-                            manage.findData(sub2[1]);
+                            if(sub[0].toLowerCase().equals("team"))
+                                manage.findData(sub2[1], true);
+                            else
+                                manage.findData(sub2[1], false);
                         break;
                     default :
                         System.out.println("명령어가 올바르지 않습니다.\n");
                 }
-            } else if(sub[0].equals("quit"))
+            } else if(sub[0].toLowerCase().equals("quit"))
                 break;
             else
                 System.out.println("명령어가 올바르지 않습니다.\n");
@@ -100,5 +110,14 @@ public class App {
             // }
         }
         System.out.println("안녕히가세요!");
+    }
+
+    public static int getCount(String str, char search) {
+        int count = 0;
+        for(int i=0; i<str.length(); i++) {
+            if(str.charAt(i) == search)
+                count++;
+        }
+        return count;
     }
 }
