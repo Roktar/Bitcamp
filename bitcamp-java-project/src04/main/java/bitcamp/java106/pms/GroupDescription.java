@@ -5,6 +5,7 @@ import bitcamp.java106.pms.App;
 
 public class GroupDescription extends Description {
     String tName, tDes, tMax, tStart, tEnd;
+    private int num = 0;
 
     public void add(Scanner sc, String[] question) {
         System.out.print(question[0]);
@@ -19,8 +20,12 @@ public class GroupDescription extends Description {
         this.tEnd = sc.nextLine();
     }
 
-    public void get() {
-        System.out.printf("%s, %s, %s\n", this.tName, this.tMax, this.tStart + " ~ " + this.tEnd); 
+    public int get(int n) {
+        if(num == n) {
+            System.out.printf("%s, %s, %s\n", this.tName, this.tMax, this.tStart + " ~ " + this.tEnd); 
+            return 1;
+        }
+        return 0;
     }
 
     public String getBase() {
