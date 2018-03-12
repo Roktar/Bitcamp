@@ -13,9 +13,11 @@ import bitcamp.java106.pms.domain.MemberDescriptionFactory;
 public class Management {
     private static Management manage;
     private List<Description> data;
+    private DescriptionFactory2 f;
 
     private Management() {
         data = new ArrayList<Description>();
+        f = new DescriptionFactory2();
     }
 
     public static Management getInstance() {
@@ -71,16 +73,28 @@ public class Management {
     public void addData(Scanner sc, int n) {
         Description sub;
 
+        // switch(n) {
+        //     case 0 :
+        //         sub = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+        //         break;
+        //     case 1 :
+        //         sub = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+        //         break;
+        //     default:
+        //         return;
+        // }
+        
         switch(n) {
             case 0 :
-                sub = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+                sub = f.getGroupDescription();
                 break;
-            case 1 :
-                sub = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+            case 1 : 
+                sub = f.getMemberDescription();
                 break;
-            default:
+            default :
                 return;
         }
+
 
         if(sub != null) {
             sub.add(sc);
@@ -95,17 +109,27 @@ public class Management {
     public void setData(Scanner sc, String target, int n) {
         Description d;
 
+        // switch(n) {
+        //     case 0 :
+        //         d = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+        //         break;
+        //     case 1 :
+        //         d = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+        //         break;
+        //     default:
+        //         return;
+        // }
+
         switch(n) {
             case 0 :
-                d = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+                d = f.getGroupDescription();
                 break;
-            case 1 :
-                d = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+            case 1 : 
+                d = f.getMemberDescription();
                 break;
-            default:
+            default :
                 return;
         }
-
 
         for(int i=0; i<data.size(); i++) {
             if(data.get(i).getBase().toLowerCase().equals(target.toLowerCase())) {

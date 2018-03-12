@@ -3,8 +3,23 @@ package bitcamp.java106.pms.domain;
 import bitcamp.java106.pms.domain.AbstractDescriptionFactory;
 
 public class DescriptionFactory2 {
-    public static Description getDescription(AbstractDescriptionFactory d) {
-        return d.createDescription();
+    AbstractDescriptionFactory gFactory, mFactory;
+    
+    // public static Description getDescription(AbstractDescriptionFactory d) {
+    //      return d.createDescription();
+    // }
+
+    public DescriptionFactory2() {
+        gFactory = new GroupDescriptionFactory();
+        mFactory = new MemberDescriptionFactory();
+    }
+
+    public Description getGroupDescription() {
+        return gFactory.createDescription(); 
+    }
+
+    public Description getMemberDescription() {
+        return mFactory.createDescription();
     }
 
     public static int getNumber(String s) {
