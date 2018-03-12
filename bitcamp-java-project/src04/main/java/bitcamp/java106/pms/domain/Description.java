@@ -1,4 +1,4 @@
-package bitcamp.java106.pms;
+package bitcamp.java106.pms.domain;
 
 import java.util.Scanner;
 

@@ -1,12 +1,14 @@
-package bitcamp.java106.pms;
+package bitcamp.java106.pms.domain;
 
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-import bitcamp.java106.pms.Description;
-import bitcamp.java106.pms.DescriptionFactory;
-import bitcamp.java106.pms.GroupDescription;
-import bitcamp.java106.pms.MemberDescription;
+import bitcamp.java106.pms.domain.Description;
+import bitcamp.java106.pms.domain.DescriptionFactory2;
+import bitcamp.java106.pms.domain.GroupDescription;
+import bitcamp.java106.pms.domain.GroupDescriptionFactory;
+import bitcamp.java106.pms.domain.MemberDescription;
+import bitcamp.java106.pms.domain.MemberDescriptionFactory;
 
 public class Management {
     private static Management manage;
@@ -67,7 +69,18 @@ public class Management {
     }
 
     public void addData(Scanner sc, int n) {
-        Description sub = DescriptionFactory.createDescription(n);
+        Description sub;
+
+        switch(n) {
+            case 0 :
+                sub = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+                break;
+            case 1 :
+                sub = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+                break;
+            default:
+                return;
+        }
 
         if(sub != null) {
             sub.add(sc);
@@ -80,7 +93,20 @@ public class Management {
     }
 
     public void setData(Scanner sc, String target, int n) {
-        Description d = DescriptionFactory.createDescription(n);
+        Description d;
+
+        switch(n) {
+            case 0 :
+                d = DescriptionFactory2.getDescription(new GroupDescriptionFactory());
+                break;
+            case 1 :
+                d = DescriptionFactory2.getDescription(new MemberDescriptionFactory());
+                break;
+            default:
+                return;
+        }
+
+
         for(int i=0; i<data.size(); i++) {
             if(data.get(i).getBase().toLowerCase().equals(target.toLowerCase())) {
                 if(data.get(i).getNumber() == n) {
@@ -127,6 +153,6 @@ public class Management {
     }
 
     public int getNumber(String s) {
-        return DescriptionFactory.getNumber(s);
+        return DescriptionFactory2.getNumber(s);
     }
 }

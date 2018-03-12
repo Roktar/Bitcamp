@@ -1,7 +1,7 @@
-package bitcamp.java106.pms;
+package bitcamp.java106.pms.domain;
 
 import java.util.Scanner;
-import bitcamp.java106.pms.Management;
+import bitcamp.java106.pms.domain.Management;
 
 public class App {
     public static void main(String[] args) {
