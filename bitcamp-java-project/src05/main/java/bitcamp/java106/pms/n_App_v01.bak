@@ -5,8 +5,11 @@ import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.domain.Member;
 import java.util.Scanner;
 
-// ver 0.2 - 삭제 기능 추가
-// ver 0.1 - 수정 기능 추가
+// ver 0.5 - member/add, list, view 명령어를 처리하는 코드를 메소드로 분리한다.
+// ver 0.4 - team/add, list, view 명령어를 처리하는 코드를 메소드로 분리한다
+// ver 0.3 - help 명령어를 처리하는 코드를 메소드로 분리한다
+// ver 0.2 - quit 명령어를 처리하는 코드를 메소드로 분리한다
+// ver 0.1 - 명령 입력 프롬프트를 메소드로 분리한다
 public class App {
     static Scanner keyScan = new Scanner(System.in);
 
@@ -70,8 +73,6 @@ public class App {
         
         Team team = null;
         for (int i = 0; i < teamIndex; i++) {
-            if(teams[i] == null)
-                continue;
             if (option.equals(teams[i].name.toLowerCase())) {
                 team = teams[i];
                 break;
@@ -92,8 +93,6 @@ public class App {
     static void onTeamList() {
         System.out.println("[팀 목록]");
         for (int i = 0; i < teamIndex; i++) {
-            if(teams[i] == null)
-            continue;
             System.out.printf("%s, %d, %s ~ %s\n", 
                 teams[i].name, teams[i].maxQty, 
                 teams[i].startDate, teams[i].endDate);
@@ -150,37 +149,7 @@ public class App {
     }
 
     static void onTeamDelete() {
-        System.out.println("[팀 정보 삭제]");
-        if (option == null) {
-            System.out.println("팀명을 입력하시기 바랍니다.");
-            System.out.println();
-            return;
-        }
-        
-        Team team = null;
-        int i=0;
-        for (i = 0; i < teamIndex; i++) {
-            if(teams[i] == null)
-                continue;
-            if (option.equals(teams[i].name.toLowerCase())) {
-                team = teams[i];
-                break;
-            }
-        }
 
-        if (team == null) {
-            System.out.println("해당 이름의 팀이 없습니다.");
-        } else {
-            System.out.print("정말 삭제하시겠습니까? (Y/n) ");
-            String input = keyScan.nextLine().toLowerCase();
-
-            if(input.equals("y")) {
-                teams[i] = null;
-                System.out.println("삭제하였습니다.");
-            } else
-                System.out.println("삭제를 취소했습니다.");
-
-        }
     }
 
     static void onTeamUpdate() {
