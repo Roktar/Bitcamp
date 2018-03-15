@@ -5,8 +5,14 @@ import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.domain.Member;
 import java.util.Scanner;
 
-// ver 0.2 - 삭제 기능 추가
-// ver 0.1 - 수정 기능 추가
+
+
+// ver 0.2 - 사용자에게 yes/no를 묻는 코드를 메소드로 분리한다.
+
+// ver 0.1 - 팀명으로 배열에서 팀 정보를 찾는 코드를 메소드로 분리한다.
+//           => getTeamIndex() 추가
+//           회원이름으로 배열에서 회원 정보를 찾는 코드를 메소드로 분리한다.
+//           => getMemberIndex() 추가
 public class App {
     static Scanner keyScan = new Scanner(System.in);
 
@@ -16,6 +22,37 @@ public class App {
     static int memberIndex = 0;
 
     static String option = null; // 문자열 없음!
+
+    static int getTeamIndex(String name) {
+        for (int i = 0; i < teamIndex; i++) {
+            if(teams[i] == null)
+                continue;
+            if (name.equals(teams[i].name.toLowerCase())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    static int getMemberIndex(String name) {
+        for (int i = 0; i < memberIndex; i++) {
+            if(members[i] == null)
+                continue;
+            if (option.equals(members[i].id.toLowerCase())) 
+                return i;
+        }
+    }
+
+    static boolean confirm(String msg) {
+        System.out.printf("%s (y/N) ", msg);
+
+        String input = keyScan.nextLine().toLowerCase();
+
+        if(input.equals("y")) 
+            return true;
+        
+        return false;
+    }
 
     static String[] prompt() {
         System.out.print("명령> ");
@@ -67,20 +104,13 @@ public class App {
             System.out.println();
             return;
         }
-        
-        Team team = null;
-        for (int i = 0; i < teamIndex; i++) {
-            if(teams[i] == null)
-                continue;
-            if (option.equals(teams[i].name.toLowerCase())) {
-                team = teams[i];
-                break;
-            }
-        }
+    
+        int i = getTeamIndex(option);
 
-        if (team == null) {
+        if (i == -1) {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
+            Team team = teams[i];
             System.out.printf("팀명: %s\n", team.name);
             System.out.printf("설명: %s\n", team.description);
             System.out.printf("최대인원: %d\n", team.maxQty);
@@ -113,7 +143,6 @@ public class App {
         System.out.print("암호? ");
         member.password = keyScan.nextLine();
 
-        // 회원 정보가 담겨있는 객체의 주소를 배열에 보관한다.
         members[memberIndex++] = member;
     }
 
@@ -131,21 +160,15 @@ public class App {
             System.out.println("아이디를 입력하시기 바랍니다.");
             return;
         }
-        
-        Member member = null;
-        for (int i = 0; i < memberIndex; i++) {
-            if (option.equals(members[i].id.toLowerCase())) {
-                member = members[i];
-                break;
-            }
-        }
 
-        if (member == null) {
+        int i = getMemberIndex(option);
+
+        if (i == -1) {
             System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
-            System.out.printf("아이디: %s\n", member.id);
-            System.out.printf("이메일: %s\n", member.email);
-            System.out.printf("암호: %s\n", member.password);
+            System.out.printf("아이디: %s\n", members[i].id);
+            System.out.printf("이메일: %s\n", members[i].email);
+            System.out.printf("암호: %s\n", members[i].password);
         }
     }
 
@@ -156,25 +179,13 @@ public class App {
             System.out.println();
             return;
         }
-        
-        Team team = null;
-        int i=0;
-        for (i = 0; i < teamIndex; i++) {
-            if(teams[i] == null)
-                continue;
-            if (option.equals(teams[i].name.toLowerCase())) {
-                team = teams[i];
-                break;
-            }
-        }
+    
+        int i = getTeamIndex(option);
 
-        if (team == null) {
+        if (i == -1) {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
-            System.out.print("정말 삭제하시겠습니까? (Y/n) ");
-            String input = keyScan.nextLine().toLowerCase();
-
-            if(input.equals("y")) {
+            if(confirm("정말 삭제하시겠습니까?")) {
                 teams[i] = null;
                 System.out.println("삭제하였습니다.");
             } else
@@ -189,59 +200,26 @@ public class App {
             System.out.println("팀명을 입력하시기 바랍니다.");
             return;
         }
-        
-        Team team = null;
-        int i;
-        for (i = 0; i < teamIndex; i++) {
-            if (option.equals(teams[i].name.toLowerCase())) {
-                team = teams[i];
-                break;
-            }
-        }
 
-        if (team == null) {
+        int i = getTeamIndex(option);
+
+        if (i == -1) {
             System.out.println("해당 이름의 팀이 없습니다.");
         } else {
-            // 2가지 방법
-            // 1. 위의 team 객체에 직접 데이터를 수정하는 방법 
-            //  - 단 덮어쓰는 방식이기에 기존값은 완전히 제거됨.
-            //  - 레퍼런스는 값이 아닌 주소를 전달하기에 가능하다.    
-            // 2. 아래의 updateTeam 객체에 데이터를 입력받고 이 객체를 대신 연결하는 방법 
-            //  - 에러 발생 시 혹은 중복체크 등에 유용.
-            //  - 기존 데이터를 건드리지않는다.
-            //  - 대신 댕글링 포인터가 생성된다. -> 메모리 낭비가 될 수 있음.
-            
-            // 방법 1
+            Team team = teams[i];
             System.out.printf("팀명(%s)? ", team.name);
-            team.name = keyScan.nextLine();
+            updateTeam = keyScan.nextLine();
             System.out.printf("설명(%s)? ", team.description);
-            team.description = keyScan.nextLine();
+            updateTeam = keyScan.nextLine();
             System.out.printf("최대인원(%d)? ", team.maxQty);
-            team.maxQty = keyScan.nextInt();
+            updateTeam = keyScan.nextInt();
             keyScan.nextLine();
             System.out.printf("시작일(%s)? ", team.startDate);
-            team.startDate = keyScan.nextLine();
-            System.out.printf("종료일(%s)? ", team.endDate );
-            team.endDate = keyScan.nextLine();
-            System.out.printf("팀 정보를 변경하였습니다.");
-
-
-            // 방법 2
-            // Team updateTeam = new Team();
-            // System.out.printf("팀명(%s)? ", team.name);
-            // updateTeam = keyScan.nextLine();
-            // System.out.printf("설명(%s)? ", team.description);
-            // updateTeam = keyScan.nextLine();
-            // System.out.printf("최대인원(%d)? ", team.maxQty);
-            // updateTeam = keyScan.nextInt();
-            // keyScan.nextLine();
-            // System.out.printf("시작일(%s)? ", team.startDate);
-            // updateTeam = keyScan.nextLine();
-            // System.out.println("종료일(%s)? ", team.endDate );
-            // updateTeam = keyScan.nextLine();
-            // teams[i] = updateTeam;
-            // System.out.println("팀 정보를 변경하였습니다.");
-
+            updateTeam = keyScan.nextLine();
+            System.out.println("종료일(%s)? ", team.endDate );
+            updateTeam = keyScan.nextLine();
+            teams[i] = updateTeam;
+            System.out.println("팀 정보를 변경하였습니다.");
         }
     }
 
@@ -252,25 +230,13 @@ public class App {
             System.out.println();
             return;
         }
-        
-        Member member = null;
-        int i=0;
-        for (i = 0; i < memberIndex; i++) {
-            if(members[i] == null)
-                continue;
-            if (option.equals(members[i].id.toLowerCase())) {
-                member = members[i];
-                break;
-            }
-        }
 
-        if (member == null) {
+        int i = getMemberIndex(option);
+
+        if (i == -1) {
             System.out.println("해당 이름의 회원이 없습니다.");
         } else {
-            System.out.print("정말 삭제하시겠습니까? (Y/n) ");
-            String input = keyScan.nextLine().toLowerCase();
-
-            if(input.equals("y")) {
+            if(confirm("정말 삭제하시겠습니까?")) {
                 members[i] = null;
                 System.out.println("삭제하였습니다.");
             } else
@@ -285,17 +251,9 @@ public class App {
             System.out.println("아이디를 입력하시기 바랍니다.");
             return;
         }
-        int i;
+        int i = getMemberIndex(option);
 
-        Member member = null;
-        for (i = 0; i < memberIndex; i++) {
-            if (option.equals(members[i].id.toLowerCase())) {
-                member = members[i];
-                break;
-            }
-        }
-
-        if (member == null) {
+        if (i == -1) {
             System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
             Member uMember = new Member();
