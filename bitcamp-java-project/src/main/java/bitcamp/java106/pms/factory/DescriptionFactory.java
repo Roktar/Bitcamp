@@ -15,16 +15,4 @@ public class DescriptionFactory {
         }
         return null;
     }
-
-    public static int getNumber(String s) {
-        switch(s) {
-            case "team" :
-                return 0;
-            case "member" :
-                return 1;
-            case "board" :
-                return 2;
-        }
-        return -1;
-    }
 }

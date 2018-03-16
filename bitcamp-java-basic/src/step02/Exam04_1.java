@@ -12,6 +12,6 @@ public class Exam04_1 {
         long l2 = 9223372036854775807L;
 
         short s3 = (short) 3*5; // OK
-        byte b = 100L; // ERROR
+        byte b = 100; // ERROR
     }
 }

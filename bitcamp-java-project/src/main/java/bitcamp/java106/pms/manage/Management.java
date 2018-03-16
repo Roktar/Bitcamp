@@ -8,6 +8,7 @@ import bitcamp.java106.pms.type.GroupDescription;
 import bitcamp.java106.pms.type.MemberDescription;
 import bitcamp.java106.pms.type.BoardDescription;
 import bitcamp.java106.pms.factory.DescriptionFactory;
+import bitcamp.java106.pms.util.DescriptionUtils;
 import bitcamp.java106.pms.util.Tools;
 
 public class Management {
@@ -25,7 +26,7 @@ public class Management {
     }
 
     public void print(Scanner sc, String cat1, String[] cat2) {
-        int n = DescriptionFactory.getNumber(cat1);
+        int n = DescriptionUtils.getNumber(cat1);
 
         switch(cat2[0]) {
             case "add" :
@@ -63,7 +64,7 @@ public class Management {
 
         if(sub != null) {
             sub.add(sc);
-            if(!Tools.isDuplicate(data, sub.getBase(), n))
+            if(!DescriptionUtils.isDuplicate(data, sub.getBase(), n))
                 data.add(sub);
             else
                 System.out.println("이미 등록된 데이터입니다.");
@@ -78,7 +79,7 @@ public class Management {
                     Description d = data.get(i).call_by_value(); 
                     d.update(sc);
 
-                    if(Tools.isDuplicate(data, d.getBase(), n))
+                    if(DescriptionUtils.isDuplicate(data, d.getBase(), n))
                         System.out.println("이미 등록되어있어 수정할 수 없습니다.");
                     else {
                         data.set(i, d);
@@ -88,6 +89,7 @@ public class Management {
                 }
             }
         }
+        System.out.println("데이터가 없습니다.");
     }
 
     public void getData(int n) { // list

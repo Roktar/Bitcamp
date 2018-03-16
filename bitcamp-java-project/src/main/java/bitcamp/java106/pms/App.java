@@ -3,6 +3,7 @@ package bitcamp.java106.pms;
 import java.util.Scanner;
 import bitcamp.java106.pms.out.Console;
 import bitcamp.java106.pms.util.Tools;
+import bitcamp.java106.pms.util.DescriptionUtils;
 import bitcamp.java106.pms.manage.Management;
 
 public class App {
@@ -11,9 +12,8 @@ public class App {
         Management manage = Management.getInstance();
         
         String command = "";
-        String[] sub, sub2, command_prefix;
-        command_prefix = new String[] { "team", "member", "board" };
-
+        String[] sub, sub2;
+;
         sub2 = new String[2];
 
         while( true ) {
@@ -25,7 +25,7 @@ public class App {
             else if(command.equals("help")) {
                 Console.printMenu();
                 continue;
-            } else if( !Tools.is_equals_command(command_prefix, sub[0]) || Tools.getCount(command, '/') > 2 || sub.length < 2 ) {
+            } else if( !Tools.is_equals_command(DescriptionUtils.getCommandPrefix() , sub[0]) || Tools.getCount(command, '/') > 2 || sub.length < 2 ) {
                 System.out.println("명령어가 올바르지 않습니다.\n");
                 continue;
             }

@@ -1,0 +1,6 @@
+
+// eclipse관련 파일 생성 및 제거 명령어가 포함된 플러그인
+apply plugin: 'eclipse'
+
+// 자바관련 작업 명령어가 포함된 플러그인
+apply plugin: 'java'
