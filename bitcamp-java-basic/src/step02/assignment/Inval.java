@@ -27,6 +27,6 @@ class Inval {
         int[] ret = new int[args.length];
         for (int i=0; i<args.length; i++)
             ret[i] = Integer.parseInt( (String)args[i] );
-        return sum(ret);
+        return Sum(ret);
     }
 }

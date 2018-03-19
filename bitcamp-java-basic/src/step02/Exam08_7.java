@@ -2,7 +2,7 @@ package step02;
 
 public class Exam08_7 { 
     public static void main(String[] args) {
-        char c;
+        char ch;
         int i = 0x41;
         ch = (char) i; // 가능
 

@@ -10,7 +10,7 @@ public class Exam10_1 {
 
         final int b;
         b = 100;
-        b = -100;
+        //b = -100;
 
     }
 }

@@ -4,9 +4,9 @@ import java.util.Scanner;
 //Instance
 
 public class Exam04_3 {
-    static MyObject getObject() {
-        MyObject ref; // JVM Stack영역에 만들어지는 변수
-        ref = new MyObject(100, 200); // Heap 영역에 만들어지는 인스턴스의 주소를 변수에 등록
+    static MyObject2 getObject() {
+        MyObject2 ref; // JVM Stack영역에 만들어지는 변수
+        ref = new MyObject2(100, 200); // Heap 영역에 만들어지는 인스턴스의 주소를 변수에 등록
         // 여기서 ref는 가리키기만 할 뿐이다. 즉, ref가 가리키는 주소의 인스턴스.
         System.out.println("in method hashcode : " + ref);
 
@@ -15,7 +15,7 @@ public class Exam04_3 {
 
 
     public static void main(String[] args) {  
-        MyObject arr = new MyObject();
+        MyObject2 arr = new MyObject2();
         System.out.println("in main hashcode : " + arr);
 
         arr = getObject();
@@ -26,14 +26,14 @@ public class Exam04_3 {
     }
 }
 
-class MyObject {
+class MyObject2 {
     int a, b;
 
-    public MyObject() {
+    public MyObject2() {
 
     }
  
-    public MyObject(int a, int b) {
+    public MyObject2(int a, int b) {
         this.a = a;
         this.b = b;
     }

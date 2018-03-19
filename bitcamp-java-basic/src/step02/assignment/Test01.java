@@ -8,7 +8,7 @@ public class Test01 {
         Object[] data = new Object[6];
         String[] question = {"이름? ", "국어? ", "수학? ", "영어? "};
         Scanner sc = new Scanner(System.in);
-        //Inval ival = Inval.getInstance();
+        Inval ival = Inval.getInstance();
 
         // for(int i=0; i<4; i++) {
         //     System.out.print(question[i]);
