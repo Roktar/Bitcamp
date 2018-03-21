@@ -13,7 +13,7 @@ public class App {
         
         String command = "";
         String[] sub, sub2;
-;
+                
         sub2 = new String[2];
 
         while( true ) {

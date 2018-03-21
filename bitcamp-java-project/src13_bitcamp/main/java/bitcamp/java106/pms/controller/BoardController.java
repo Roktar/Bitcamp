@@ -1,15 +1,22 @@
 package bitcamp.java106.pms.controller;
 
+import java.sql.Date;
+import java.util.Scanner;
+
 import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.util.Console;
 
 public class BoardController {
-    public static java.util.Scanner keyScan;
+    java.util.Scanner keyScan;
 
-    static Board[] boards = new Board[1000];
-    static int boardIndex = 0;
+    Board[] boards = new Board[1000];
+    int boardIndex = 0;
+    
+    public BoardController(Scanner keyScan) {
+        this.keyScan = keyScan;
+    }
 
-    public static void service(String menu, String option) {
+    public void service(String menu, String option) {
         if (menu.equals("board/add"))
             onBoardAdd();
         else if (menu.equals("board/list"))
@@ -22,9 +29,9 @@ public class BoardController {
             onBoardUpdate(option);
         else
             System.out.println("명령어가 올바르지 않습니다.");
-    } // 멤버함수들을 이제 숨길 수 있게 됐다. => 캡슐화
+    } 
 
-    static int getBoardIndex(String name) {
+    int getBoardIndex(String name) {
         for (int i = 0; i < boardIndex; i++) {
             if(boards[i] == null)
                 continue;
@@ -34,21 +41,19 @@ public class BoardController {
         return -1;
     }
 
-    static void onBoardAdd() {
+    void onBoardAdd() {
         System.out.println("[게시글 정보 입력]");
         Board board = new Board();
 
         System.out.print("제목? ");
-        board.title = keyScan.nextLine();
+        board.title = this.keyScan.nextLine();
 
         System.out.print("설명? ");
-        board.body = keyScan.nextLine();
+        board.body = this.keyScan.nextLine();
 
         System.out.print("등록일? ");
-        board.date = keyScan.nextLine(); 
+        board.date = Date.valueOf(this.keyScan.nextLine());
         
-        board.idx = boardIndex;
-
         boards[boardIndex++] = board;
     }
     
@@ -73,7 +78,7 @@ public class BoardController {
     //     }
     // }
 
-        static void onBoardView(String option) {
+    void onBoardView(String option) {
         System.out.println("[게시글 정보 조회]");
         if (option == null) {
             System.out.println("게시글명을 입력하시기 바랍니다.");
@@ -81,7 +86,7 @@ public class BoardController {
             return;
         }
     
-        int i = String.parseInt(option);
+        int i = Integer.parseInt(option);
 
         if (i == -1) {
             System.out.println("해당 이름의 게시글이 없습니다.");
@@ -93,7 +98,7 @@ public class BoardController {
         }
     }
 
-    static void onBoardList() {
+    void onBoardList() {
         System.out.println("[게시글 목록]");
         for (int i = 0; i < boardIndex; i++) {
             if(boards[i] == null)
@@ -102,7 +107,7 @@ public class BoardController {
         }
     }
 
-    static void onBoardDelete(String option) {
+    void onBoardDelete(String option) {
         System.out.println("[게시글 정보 삭제]");
         if (option == null) {
             System.out.println("게시글명을 입력하시기 바랍니다.");
@@ -116,7 +121,7 @@ public class BoardController {
             System.out.println("해당 이름의 게시글이 없습니다.");
         } else {
             if(Console.confirm("정말 삭제하시겠습니까?")) {
-                boards[i] = null;
+                this.boards[i] = null;
                 System.out.println("삭제하였습니다.");
             } else
                 System.out.println("삭제를 취소했습니다.");
@@ -124,7 +129,7 @@ public class BoardController {
         }
     }
 
-    static void onBoardUpdate(String option) {
+    void onBoardUpdate(String option) {
         System.out.println("[게시글 정보 변경]");
         if (option == null) {
             System.out.println("게시글명을 입력하시기 바랍니다.");
@@ -136,15 +141,15 @@ public class BoardController {
         if (i == -1) {
             System.out.println("해당 이름의 게시글이 없습니다.");
         } else {
-            Board board = boards[i];
+            Board board = this.boards[i];
             Board updateBoard = new Board();
 
             System.out.printf("제목(%s)? ", board.title);
-            updateBoard.title = keyScan.nextLine();
+            updateBoard.title = this.keyScan.nextLine();
             System.out.printf("내용(%s)? ", board.body);
-            updateBoard.body = keyScan.nextLine();
+            updateBoard.body = this.keyScan.nextLine();
             System.out.printf("등록일(%s)? ", board.date);
-            updateBoard.date = keyScan.nextLine();
+            updateBoard.date = Date.valueOf(this.keyScan.nextLine());
             System.out.println("게시글 정보를 변경하였습니다.");
         }
     }
