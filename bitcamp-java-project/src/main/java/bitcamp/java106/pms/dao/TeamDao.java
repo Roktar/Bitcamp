@@ -5,38 +5,51 @@ import bitcamp.java106.pms.domain.Team;
 public class TeamDao {
     Team[] teams = new Team[1000];
     int teamIndex = 0;
-    int currentIndex = -1;
     
     public void insert(Team team) {
+        // 팀 정보가 담겨있는 객체의 주소를 배열에 보관한다.
         this.teams[this.teamIndex++] = team;
     }
     
     public Team[] list() {
-        Team[] arr = new Team[teamIndex];
-        for (int i = 0; i < teamIndex; i++) 
-            arr[i] = teams[i];
+        Team[] arr = new Team[this.teamIndex];
+        for (int i = 0; i < this.teamIndex; i++) 
+            arr[i] = this.teams[i];
         return arr;
     }
     
     public Team get(String name) {
-        for (int i = 0; i < this.teamIndex; i++) {
-            if (this.teams[i] == null) continue;
-            if (teams[i].name.equals(name.toLowerCase())) {
-                currentIndex = i;
-                System.out.println("반환 : " + teams[i].name);
-                return teams[i];
-            }
-        }
-        return null;
+        int i = this.getTeamIndex(name);
+        if (i == -1)
+            return null;
+        return teams[i];
     }
     
     public void update(Team team) {
-        teams[currentIndex] = team;
-        int currentIndex = -1;
+        int i = this.getTeamIndex(team.name);
+        if (i != -1)
+            teams[i] = team;
     }
     
-    public void delete() {
-        teams[currentIndex] = null;
-        int currentIndex = -1;
+    public void delete(String name) {
+        int i = this.getTeamIndex(name);
+        if (i != -1) 
+            teams[i] = null;
     }
+    
+    private int getTeamIndex(String name) {
+        for (int i = 0; i < this.teamIndex; i++) {
+            if (this.teams[i] == null) continue;
+            if (name.equals(this.teams[i].name.toLowerCase())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
+
+//ver 14 - TeamController로부터 데이터 관리 기능을 분리하여 TeamDao 생성.
+
+
+

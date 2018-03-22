@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
 import bitcamp.java106.pms.controller.MemberController;
-import bitcamp.java106.pms.controller.TMController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.util.Console;
 
@@ -33,7 +32,6 @@ public class App {
         TeamController teamController = new TeamController(keyScan);
         MemberController memberController = new MemberController(keyScan);
         BoardController boardController = new BoardController(keyScan);
-        TMController teamMemberController = new TMController(keyScan, teamController, memberController);
 
         Console.keyScan = keyScan;
         
@@ -52,17 +50,15 @@ public class App {
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
-            } 
-            else if(menu.startsWith("team/member/"))
-                teamMemberController.service(menu, option);
-            else if (menu.startsWith("team/"))
+            } else if (menu.startsWith("team/")) {
                 teamController.service(menu, option);
-            else if (menu.startsWith("member/"))
+            } else if (menu.startsWith("member/")) {
                 memberController.service(menu, option);
-            else if (menu.startsWith("board/"))
+            } else if (menu.startsWith("board/")) {
                 boardController.service(menu, option);
-             else
+            }else {
                 System.out.println("명령어가 올바르지 않습니다.");
+            }
 
             System.out.println(); 
         }
