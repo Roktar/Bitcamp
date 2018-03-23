@@ -13,7 +13,7 @@ public class Team {
     // 사용자 정의 데이터 타입에서의 메서드 정의
     // => 새 데이터 타입의 값을 다룰 연산자를 정의하는 것을 의미
     // ==> 여기서는 데이터를 실제로 다룰 메소드를 정의하는 것이 아닌 데이터간의 연산을 다룰 메소드를 정의한다./
-    // 연산자는 외부에서 사용하기때문에 public.
+    // 연산자는 외부에서 사용하기때문에 public
     public int addMember(Member member) {
         for(int i=0; i<this.members.length; i++) {
             if(this.members[i] == null) {
