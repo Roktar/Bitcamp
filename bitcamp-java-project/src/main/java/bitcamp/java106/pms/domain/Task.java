@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Task {
     private String taskName, workerName, teamName;
     private Date startDate, endDate;
-    private int taskNo;
+    private int taskNo, state;
     
     public String getTeamName() {
         return teamName;
@@ -54,4 +54,12 @@ public class Task {
     public void setTaskNo(int taskNo) {
         this.taskNo = taskNo;
     }
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
 }

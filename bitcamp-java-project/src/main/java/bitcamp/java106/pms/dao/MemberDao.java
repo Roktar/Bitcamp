@@ -25,32 +25,12 @@ public class MemberDao {
         
         return members[i];
     }
-        
-/*    public void update(int idx, Member member) {
-        int i = this.getMemberIndex(member.id);
-        if( i != -1)
-            this.members[i] = member;
-    }*/
     
     public void update(Member member) {
         members[currentIndex] = member;
         currentIndex = -1;
     }
-    
-/*    public void update(Member member) {
-        for(int i=0; i<members.length; i++) {
-            if(members[i].id.equals(member.id.toLowerCase())) {
-                members[currentIndex] = member;
-                break;
-            }
-        }
-    }*/
-    
-/*    public void delete() {
-        members[currentIndex] = null;
-        currentIndex = -1;
-    }*/
-    
+        
     public void delete(String id) {
         int i = this.getMemberIndex(id);
         if( i != -1)

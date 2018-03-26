@@ -19,37 +19,35 @@ public class TaskDao {
             return arr;
         }
         
-        /*public Task get(String name) {
-            int i = this.getTaskIndex(name);
+        public Task get(int taskNo) {
+            int i = this.getTaskIndex(taskNo);
             
             if(i != -1)
                 return tasks[i];
             else
                 return null;
         }
-
-        public void update(Team team) {
-            int i = this.getTaskIndex(team.getName());
+        
+        public void update(Task task) {
+            int i = this.getTaskIndex(task.getTaskNo());
             
             if( i != -1)
-                teams[i] = team;
+                tasks[i] = task;
         }
         
-        public void delete(String name) {
-            int i = this.getTeamIndex(name);
+        public void delete(int taskNo) {
+            int i = this.getTaskIndex(taskNo);
             
             if( i != -1)
-                teams[i] = null;
+                tasks[i] = null;
         }
         
-        private int getTeamIndex(String name) {
-            for(int i=0; i<teams.length; i++) {
-                if(teams[i].getName().equals(name.toLowerCase())) {
+        private int getTaskIndex(int taskNo) {
+            for(int i=0; i<tasks.length; i++) {
+                if(tasks[i].getTaskNo() == taskNo) {
                    return i;
                 }
             }
             return -1;
         }
-    }*/
-
 }
