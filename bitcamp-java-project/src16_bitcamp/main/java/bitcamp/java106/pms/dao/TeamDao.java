@@ -25,8 +25,22 @@ public class TeamDao {
             return teams[i];
         else
             return null;
+        
+/*        for (int i = 0; i < this.teamIndex; i++) {
+            if (this.teams[i] == null) continue;
+            if (teams[i].name.equals(name.toLowerCase())) {
+                currentIndex = i;
+                return teams[i];
+            }
+        }
+        return null;*/
     }
-
+    
+/*    public void update(Team team) {
+        teams[currentIndex] = team;
+        int currentIndex = -1;
+    }*/
+    
     public void update(Team team) {
         int i = this.getTeamIndex(team.getName());
         
@@ -39,6 +53,9 @@ public class TeamDao {
         
         if( i != -1)
             teams[i] = null;
+        
+/*        teams[currentIndex] = null;
+        int currentIndex = -1;*/
     }
     
     private int getTeamIndex(String name) {
