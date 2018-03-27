@@ -33,6 +33,7 @@ public class TaskDao {
             if(tasks[i].getTeam().getName().equals(teamName))
                 cnt++;
         }
+
         return cnt;
     }
     

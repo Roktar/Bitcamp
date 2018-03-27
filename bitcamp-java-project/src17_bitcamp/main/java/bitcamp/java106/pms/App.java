@@ -4,16 +4,13 @@ import java.sql.Date;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
-import bitcamp.java106.pms.controller.ClassController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
-import bitcamp.java106.pms.dao.ClassDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
-import bitcamp.java106.pms.domain.Classroom;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
@@ -42,19 +39,16 @@ public class App {
         TeamDao teamDao = new TeamDao();
         MemberDao memberDao = new MemberDao();
         TaskDao taskDao = new TaskDao();
-        ClassDao classDao = new ClassDao();
         
         prepareMemberData(memberDao);
         prepareTeamData(teamDao, memberDao);
-        prepareClassData(classDao);
 
         TeamController teamController = new TeamController(keyScan, teamDao);
         MemberController memberController = new MemberController(keyScan, memberDao);
+        TaskController taskController = new TaskController(keyScan, teamDao, taskDao);
         BoardController boardController = new BoardController(keyScan);
         TeamMemberController teamMemberController = new TeamMemberController(keyScan, teamDao, memberDao);
-        TaskController taskController = new TaskController(keyScan, teamDao, taskDao);
-        ClassController classController = new ClassController(keyScan, classDao);
-        
+
         Console.keyScan = keyScan;
         
         while (true) {
@@ -82,8 +76,6 @@ public class App {
                 boardController.service(menu, option);
             } else if(menu.startsWith("task/")) {
                 taskController.service(menu, option);
-            } else if(menu.startsWith("classroom/")) {
-                classController.service(menu, option);
             } else {
                 System.out.println("명령어가 올바르지 않습니다.");
             }
@@ -146,22 +138,5 @@ public class App {
         team.addMember(memberDao.get("eee"));
         
         teamDao.insert(team);
-    }
-    
-    static void prepareClassData(ClassDao classDao) {
-        Classroom classroom = new Classroom();
-        
-        classroom.setTitle("자바106기");
-        classroom.setStartDate(Date.valueOf("2018-02-26"));
-        classroom.setEndDate(Date.valueOf("2010-08-20"));
-        classroom.setPlace("강남 401호");
-        classDao.insert(classroom);
-        
-        classroom = new Classroom();
-        classroom.setTitle("자바107기");
-        classroom.setStartDate(Date.valueOf("2018-03-26"));
-        classroom.setEndDate(Date.valueOf("2018-09-20"));
-        classroom.setPlace("강남 501호");
-        classDao.insert(classroom);
     }
 }
