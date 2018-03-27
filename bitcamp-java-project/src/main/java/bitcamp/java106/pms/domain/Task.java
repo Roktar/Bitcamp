@@ -3,6 +3,7 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 public class Task {
+<<<<<<< HEAD
     private String title;
     private Date startDate;
     private Date endDate;
@@ -10,6 +11,19 @@ public class Task {
     private Team team;
     private int state;
     private int no;
+=======
+    private String taskName, workerName, teamName;
+    private Date startDate, endDate;
+    private int taskNo, state;
+    
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+>>>>>>> 59c3a57d4ce791fed9251a7d0bda32d19e0558c5
 
     public static final int READY = 0;
     public static final int WORKING = 1;
@@ -79,4 +93,12 @@ public class Task {
         return "Task [title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", worker=" + worker.toString()
                 + ", team=" + team.toString() + ", state=" + state + "]";
     }
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
 }
