@@ -1,6 +1,6 @@
 package step12.ex1;
 
-public class Exam01 {
+public class Exam01_1 {
     public static void main(String[] args) {
         ArrayList list = new ArrayList(100);
         
