@@ -1,100 +1,86 @@
 package bitcamp.java106.pms.dao;
 
 import bitcamp.java106.pms.domain.Task;
+import bitcamp.java106.pms.util.ArrayList;
 
 public class TaskDao {
-    Task[] tasks = new Task[1000];
-    int taskIndex = 0;
+    //Task[] tasks = new Task[1000];
+    //int taskIndex = 0;
+    
+    ArrayList tasks = new ArrayList();
     
     public void insert(Task task) {
-        task.setNo(taskIndex);
-        this.tasks[this.taskIndex++] = task;
+        tasks.add(task);
+        //this.tasks[this.taskIndex++] = task;
     }
     
-    public Task[] list(String teamName) {
-        Task[] arr = new Task[this.count(teamName)];
-        
-        int count = 0;
-        
-<<<<<<< HEAD
-        for (int i = 0; i < taskIndex; i++) { 
-                if(tasks[i] == null) continue;
-                
-                if(tasks[i].getTeam().getName().equals(teamName))
-                    arr[count++] = tasks[i];
-        }
-        
-        return arr;
-    }
-    
-    public int count(String teamName) {
+    private int count(String teamName) {
         int cnt = 0;
-        
-        for(int i=0; i<taskIndex; i++) {
-            if(tasks[i].getTeam().getName().equals(teamName))
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i) == null) continue;
+            if ( ((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName))
                 cnt++;
-=======
-        public Task get(int taskNo) {
-            int i = this.getTaskIndex(taskNo);
-            
-            if(i != -1)
-                return tasks[i];
-            else
-                return null;
-        }
-        
-        public void update(Task task) {
-            int i = this.getTaskIndex(task.getTaskNo());
-            
-            if( i != -1)
-                tasks[i] = task;
->>>>>>> 59c3a57d4ce791fed9251a7d0bda32d19e0558c5
         }
         return cnt;
     }
     
-    public Task get(String teamName, int taskNo) {
+    public Task[] list(String teamName) {
+        Task[] arr = new Task[tasks.size()];
         
-<<<<<<< HEAD
-        for (int i = 0; i < taskIndex; i++) { 
-            if(tasks[i] == null) continue;
-            
-            if(tasks[i].getTeam().getName().equals(teamName) && tasks[i].getNo() == taskNo)
-                    return tasks[i];
+        for(int i=0, x=0; i<tasks.size(); i++) {
+            if (((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName))
+                arr[x++] = (Task)tasks.get(i);
         }
         
+        return arr;
+/*        Task[] arr = new Task[this.count(teamName)];
+        for (int i = 0, x = 0; i < taskIndex; i++) {
+            if (tasks[i] == null) continue;
+            if (tasks[i].getTeam().getName().toLowerCase().equals(teamName)) {
+                arr[x++] = tasks[i];
+            }
+        }
+        return arr;*/
+    }
+    
+    public Task get(String teamName, int taskNo) {
+        int idx = getTaskIndex(teamName, taskNo);
+        
+        if(idx > -1)
+            return (Task)tasks.get(idx);
         return null;
     }
     
     public void update(Task task) {
-        tasks[task.getNo()] = task;
+        int idx = getTaskIndex(task.getTeam().getName(), task.getNo());
+        
+        if(idx > -1)
+            tasks.set(idx, task);
     }
     
-    public void delete(Task task) {
-        tasks[task.getNo()] = null;
-    }
-=======
-        public void delete(int taskNo) {
-            int i = this.getTaskIndex(taskNo);
-            
-            if( i != -1)
-                tasks[i] = null;
-        }
+    public void delete(int taskNo) {
+        int idx = getTaskIndex(taskNo);
         
-        private int getTaskIndex(int taskNo) {
-            for(int i=0; i<tasks.length; i++) {
-                if(tasks[i].getTaskNo() == taskNo) {
-                   return i;
-                }
-            }
-            return -1;
+        if(idx > -1)
+            tasks.remove(idx);
+    }
+    
+    public int getTaskIndex(String teamName, int taskNo) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName) && 
+                ((Task)tasks.get(i)).getNo() == taskNo)
+                    return i;
         }
->>>>>>> 59c3a57d4ce791fed9251a7d0bda32d19e0558c5
+        return -1;
+    }
+    
+    public int getTaskIndex(int taskNo) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if ( ((Task)tasks.get(i)).getNo() == taskNo )
+                    return i;
+        }
+        return -1;
+    }
 }
 
-// ver 14 - BoardController로부터 데이터 관리 기능을 분리하여 BoardDao 생성.
-
-
-
-
-
+// ver 17 - 클래스 생성

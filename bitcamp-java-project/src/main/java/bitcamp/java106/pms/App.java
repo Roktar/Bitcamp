@@ -4,16 +4,14 @@ import java.sql.Date;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
-import bitcamp.java106.pms.controller.ClassController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
-import bitcamp.java106.pms.dao.ClassDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
-import bitcamp.java106.pms.domain.Classroom;
+import bitcamp.java106.pms.dao.TeamMemberDao;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
@@ -21,7 +19,6 @@ import bitcamp.java106.pms.util.Console;
 public class App {
     static Scanner keyScan = new Scanner(System.in);
     public static String option = null; 
-   
     
     static void onQuit() {
         System.out.println("안녕히 가세요!");
@@ -37,26 +34,25 @@ public class App {
         System.out.println("회원 상세조회 명령 : member/view 아이디");
         System.out.println("종료 : quit");
     }
-    // 컨트롤러들은 DAO를 공유할 수 있다. 그리고 그렇게 만들기위해서는 DAO를 별도로 생성한 후 같은 DAO의 주소를 각각 넘겨준다.
+
     public static void main(String[] args) {
+        
         TeamDao teamDao = new TeamDao();
         MemberDao memberDao = new MemberDao();
         TaskDao taskDao = new TaskDao();
-        ClassDao classDao = new ClassDao();
+        TeamMemberDao teamMemberDao = new TeamMemberDao();
         
         prepareMemberData(memberDao);
-        prepareTeamData(teamDao, memberDao);
-        prepareClassData(classDao);
-
+        prepareTeamData(teamDao, teamMemberDao);
+        
         TeamController teamController = new TeamController(keyScan, teamDao);
+        TeamMemberController teamMemberController = new TeamMemberController(keyScan, teamDao, memberDao, teamMemberDao);
         MemberController memberController = new MemberController(keyScan, memberDao);
         BoardController boardController = new BoardController(keyScan);
-        TeamMemberController teamMemberController = new TeamMemberController(keyScan, teamDao, memberDao);
-        TaskController taskController = new TaskController(keyScan, teamDao, taskDao);
-        ClassController classController = new ClassController(keyScan, classDao);
+        TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
         
         Console.keyScan = keyScan;
-        
+
         while (true) {
             String[] arr = Console.prompt();
 
@@ -72,7 +68,7 @@ public class App {
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
-            } else if(menu.startsWith("team/member/")) {
+            } else if (menu.startsWith("team/member/")) {
                 teamMemberController.service(menu, option);
             } else if (menu.startsWith("team/")) {
                 teamController.service(menu, option);
@@ -80,10 +76,8 @@ public class App {
                 memberController.service(menu, option);
             } else if (menu.startsWith("board/")) {
                 boardController.service(menu, option);
-            } else if(menu.startsWith("task/")) {
+            } else if (menu.startsWith("task/")) {
                 taskController.service(menu, option);
-            } else if(menu.startsWith("classroom/")) {
-                classController.service(menu, option);
             } else {
                 System.out.println("명령어가 올바르지 않습니다.");
             }
@@ -91,77 +85,67 @@ public class App {
             System.out.println(); 
         }
     }
-    static void prepareMemberData(MemberDao mDao) {
-        
+    static void prepareMemberData(MemberDao memberDao) {
         Member member = new Member();
         member.setId("aaa");
         member.setEmail("aaa@test.com");
         member.setPassword("1111");
-        mDao.insert(member);
+        
+        memberDao.insert(member);
         
         member = new Member();
         member.setId("bbb");
         member.setEmail("bbb@test.com");
         member.setPassword("1111");
-        mDao.insert(member);
+        
+        memberDao.insert(member);
         
         member = new Member();
         member.setId("ccc");
         member.setEmail("ccc@test.com");
         member.setPassword("1111");
-        mDao.insert(member);
+        
+        memberDao.insert(member);
         
         member = new Member();
         member.setId("ddd");
         member.setEmail("ddd@test.com");
         member.setPassword("1111");
-        mDao.insert(member);
+        
+        memberDao.insert(member);
         
         member = new Member();
         member.setId("eee");
         member.setEmail("eee@test.com");
         member.setPassword("1111");
-        mDao.insert(member);
         
+        memberDao.insert(member);
     }
     
-    static void prepareTeamData(TeamDao teamDao, MemberDao memberDao) {
+    static void prepareTeamData(TeamDao teamDao, TeamMemberDao teamMemberDao) {
         Team team = new Team();
         team.setName("t1");
         team.setMaxQty(5);
-        team.setStartDate(Date.valueOf("2018-01-01"));
-        team.setEndDate(Date.valueOf("2018-05-30"));
-        team.addMember(memberDao.get("aaa"));
-        team.addMember(memberDao.get("bbb"));
-        
+        team.setStartDate(Date.valueOf("2018-1-1"));
+        team.setEndDate(Date.valueOf("2018-5-30"));
         teamDao.insert(team);
+        teamMemberDao.addMember("t1", "aaa");
+        teamMemberDao.addMember("t1", "bbb");
+        teamMemberDao.addMember("t1", "ccc");
         
         team = new Team();
         team.setName("t2");
         team.setMaxQty(5);
-        team.setStartDate(Date.valueOf("2018-02-01"));
-        team.setEndDate(Date.valueOf("2018-06-30"));
-        team.addMember(memberDao.get("ccc"));
-        team.addMember(memberDao.get("ddd"));        
-        team.addMember(memberDao.get("eee"));
-        
+        team.setStartDate(Date.valueOf("2018-2-1"));
+        team.setEndDate(Date.valueOf("2018-6-30"));
         teamDao.insert(team);
-    }
-    
-    static void prepareClassData(ClassDao classDao) {
-        Classroom classroom = new Classroom();
+        teamMemberDao.addMember("t2", "ccc");
+        teamMemberDao.addMember("t2", "ddd");
+        teamMemberDao.addMember("t2", "eee");
         
-        classroom.setTitle("자바106기");
-        classroom.setStartDate(Date.valueOf("2018-02-26"));
-        classroom.setEndDate(Date.valueOf("2010-08-20"));
-        classroom.setPlace("강남 401호");
-        classDao.insert(classroom);
-        
-        classroom = new Classroom();
-        classroom.setTitle("자바107기");
-        classroom.setStartDate(Date.valueOf("2018-03-26"));
-        classroom.setEndDate(Date.valueOf("2018-09-20"));
-        classroom.setPlace("강남 501호");
-        classDao.insert(classroom);
     }
 }
+
+//ver 17 - Task 관리 기능 추가
+// ver 15 - TeamDao와 MemberDao 객체 생성. 
+//          팀 멤버를 다루는 메뉴 추가.

@@ -1,69 +1,53 @@
 package bitcamp.java106.pms.dao;
 
 import bitcamp.java106.pms.domain.Team;
+import bitcamp.java106.pms.util.ArrayList;
 
 public class TeamDao {
-    Team[] teams = new Team[1000];
+    //Team[] teams = new Team[1000];
+    ArrayList teams = new ArrayList();
     int teamIndex = 0;
-    int currentIndex = -1;
     
     public void insert(Team team) {
-        this.teams[this.teamIndex++] = team;
+        // 팀 정보가 담겨있는 객체의 주소를 배열에 보관한다.
+        teams.add(team);
     }
     
     public Team[] list() {
-        Team[] arr = new Team[teamIndex];
-        for (int i = 0; i < teamIndex; i++) 
-            arr[i] = teams[i];
+        Team[] arr = new Team[teams.size()];
+        
+        for (int i = 0; i < this.teams.size(); i++) 
+            arr[i] = (Team)teams.get(i);
+        
         return arr;
     }
     
     public Team get(String name) {
         int i = this.getTeamIndex(name);
-        
-        if(i != -1)
-            return teams[i];
-        else
+        if (i == -1)
             return null;
-        
-/*        for (int i = 0; i < this.teamIndex; i++) {
-            if (this.teams[i] == null) continue;
-            if (teams[i].name.equals(name.toLowerCase())) {
-                currentIndex = i;
-                return teams[i];
-            }
-        }
-        return null;*/
+        return (Team)teams.get(i);
     }
-    
-/*    public void update(Team team) {
-        teams[currentIndex] = team;
-        int currentIndex = -1;
-    }*/
     
     public void update(Team team) {
         int i = this.getTeamIndex(team.getName());
-        
-        if( i != -1)
-            teams[i] = team;
+        if (i != -1)
+            teams.set(i, team);
     }
     
     public void delete(String name) {
         int i = this.getTeamIndex(name);
-        
-        if( i != -1)
-            teams[i] = null;
-        
-/*        teams[currentIndex] = null;
-        int currentIndex = -1;*/
+        if (i != -1) 
+            teams.remove(i);
     }
     
     private int getTeamIndex(String name) {
-        for(int i=0; i<teams.length; i++) {
-            if(teams[i].getName().equals(name.toLowerCase())) {
-               return i;
+        for (int i = 0; i < this.teams.size(); i++) {
+            if (name.equals( ((Team)this.teams.get(i)).getName().toLowerCase())) {
+                return i;
             }
         }
         return -1;
     }
+
 }

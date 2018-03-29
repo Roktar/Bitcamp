@@ -9,25 +9,11 @@ public class Team {
     private int maxQty;
     private Date startDate;
     private Date endDate;
-    private Member[] members = new Member[10];
-<<<<<<< HEAD
 
-=======
     // 사용자 정의 데이터 타입에서의 메서드 정의
     // => 새 데이터 타입의 값을 다룰 연산자를 정의하는 것을 의미
     // ==> 여기서는 데이터를 실제로 다룰 메소드를 정의하는 것이 아닌 데이터간의 연산을 다룰 메소드를 정의한다./
     // 연산자는 외부에서 사용하기때문에 public.
->>>>>>> 59c3a57d4ce791fed9251a7d0bda32d19e0558c5
-    
-    public int addMember(Member member) {
-        for(int i=0; i<this.members.length; i++) {
-            if(this.members[i] == null) {
-                this.members[i] = member;
-                return 1;
-            }
-        }
-        return 0;
-    }
         
     public String getName() {
         return name;
@@ -69,47 +55,15 @@ public class Team {
         this.endDate = endDate;
     }
     
-    public Member[] getMembers() {
-        return members;
-    }
-
-    public int deleteMember(String memberid) {
-        for(int i=0; i<this.members.length; i++) {
-            if(this.members[i] == null) continue;
-            if(this.members[i].getId().equals(memberid)) {
-                this.members[i] = null;
-                return 1;
-            }
-        }
-        return 0;
-    }
-    
-    public Member getMember(String memberid) {
-        for(int i=0; i<this.members.length; i++) {
-            if(this.members[i] == null) continue;
-            if(this.members[i].getId().equals(memberid)) {
-                return  this.members[i];
-            }
-        }
-        return null;
-    }
-    
-    public boolean isExist(String memberId) {
-        for (int i=0; i<this.members.length; i++) {
-            if(this.members[i] == null) continue;
-            if(this.members[i].getId().equals(memberId))
-               return true;
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return "Team [name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + "]";
     }
 
-    
-    
+    public String[] getMembers() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
 
 // ver 17 - getMember 메소드 추가

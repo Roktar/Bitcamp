@@ -3,36 +3,22 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 public class Task {
-<<<<<<< HEAD
-    private String title;
-    private Date startDate;
-    private Date endDate;
-    private Member worker;
-    private Team team;
-    private int state;
-    private int no;
-=======
-    private String taskName, workerName, teamName;
-    private Date startDate, endDate;
-    private int taskNo, state;
-    
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
->>>>>>> 59c3a57d4ce791fed9251a7d0bda32d19e0558c5
-
     public static final int READY = 0;
     public static final int WORKING = 1;
     public static final int COMPLETE = 9;
+    private static int count = 1;
     
-    public Task() { }
+    private int no;
+    private String title;
+    private Date startDate;
+    private Date endDate;
+    private int state;
+    private Member worker;
+    private Team team;
     
     public Task(Team team) {
         this.team = team;
+        this.no = count++;
     }
     
     public Task(Team team, String title, Date startDate, Date endDate) {
@@ -43,6 +29,30 @@ public class Task {
         this.state = READY;
     }
     
+    public int getNo() {
+        return no;
+    }
+    public void setNo(int no) {
+        this.no = no;
+    }
+    public int getState() {
+        return state;
+    }
+    public void setState(int state) {
+        this.state = state;
+    }
+    public Member getWorker() {
+        return worker;
+    }
+    public void setWorker(Member worker) {
+        this.worker = worker;
+    }
+    public Team getTeam() {
+        return team;
+    }
+    public void setTeam(Team team) {
+        this.team = team;
+    }
     public String getTitle() {
         return title;
     }
@@ -61,44 +71,12 @@ public class Task {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    public Member getWorker() {
-        return worker;
-    }
-    public void setWorker(Member worker) {
-        this.worker = worker;
-    }
-    public Team getTeam() {
-        return team;
-    }
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-    public int getState() {
-        return state;
-    }
-    public void setState(int state) {
-        this.state = state;
-    }
-    
-    public int getNo() {
-        return no;
-    }
-
-    public void setNo(int no) {
-        this.no = no;
-    }
 
     @Override
     public String toString() {
-        return "Task [title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", worker=" + worker.toString()
-                + ", team=" + team.toString() + ", state=" + state + "]";
+        return "Task [title=" + title + ", startDate=" + startDate + ", endDate=" + endDate + ", state=" + state
+                + ", worker=" + worker + ", team=" + team + "]";
     }
-
-	public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
-	}
 }
+
+//ver 17 - 사용자 정의 데이터 타입 생성

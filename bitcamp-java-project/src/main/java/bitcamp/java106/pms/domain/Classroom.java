@@ -3,9 +3,14 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 public class Classroom {
+    private static int count = 1;
     private int no;
     private String title, place;
     private Date startDate, endDate;
+    
+    public Classroom() {
+        this.no = count++;
+    }
     
     public int getNo() {
         return no;
