@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
+import bitcamp.java106.pms.controller.ClassController;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
+import bitcamp.java106.pms.dao.ClassDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
@@ -41,6 +43,7 @@ public class App {
         MemberDao memberDao = new MemberDao();
         TaskDao taskDao = new TaskDao();
         TeamMemberDao teamMemberDao = new TeamMemberDao();
+        ClassDao classDao = new ClassDao();
         
         prepareMemberData(memberDao);
         prepareTeamData(teamDao, teamMemberDao);
@@ -50,6 +53,7 @@ public class App {
         MemberController memberController = new MemberController(keyScan, memberDao);
         BoardController boardController = new BoardController(keyScan);
         TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
+        ClassController classController = new ClassController(keyScan, classDao);
         
         Console.keyScan = keyScan;
 
@@ -78,6 +82,8 @@ public class App {
                 boardController.service(menu, option);
             } else if (menu.startsWith("task/")) {
                 taskController.service(menu, option);
+            }  else if (menu.startsWith("classroom/")) {
+                classController.service(menu, option);
             } else {
                 System.out.println("명령어가 올바르지 않습니다.");
             }

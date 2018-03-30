@@ -1,7 +1,7 @@
 package bitcamp.java106.pms.dao;
 
 import bitcamp.java106.pms.domain.Classroom;
-import bitcamp.java106.pms.util.ArrayList;
+import java.util.ArrayList;
 
 public class ClassDao {
     //Classroom[] classes = new Classroom[1000];
