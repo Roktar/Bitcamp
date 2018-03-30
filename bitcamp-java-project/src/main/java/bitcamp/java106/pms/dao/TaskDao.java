@@ -1,13 +1,15 @@
 package bitcamp.java106.pms.dao;
 
+import java.util.LinkedList;
+
 import bitcamp.java106.pms.domain.Task;
-import bitcamp.java106.pms.util.ArrayList;
 
 public class TaskDao {
     //Task[] tasks = new Task[1000];
     //int taskIndex = 0;
     
-    ArrayList tasks = new ArrayList();
+    //ArrayList tasks = new ArrayList();
+    LinkedList<Task> tasks = new LinkedList<Task>();
     
     public void insert(Task task) {
         tasks.add(task);
@@ -18,7 +20,7 @@ public class TaskDao {
         int cnt = 0;
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i) == null) continue;
-            if ( ((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName))
+            if ( tasks.get(i).getTeam().getName().toLowerCase().equals(teamName))
                 cnt++;
         }
         return cnt;
@@ -28,7 +30,7 @@ public class TaskDao {
         Task[] arr = new Task[tasks.size()];
         
         for(int i=0, x=0; i<tasks.size(); i++) {
-            if (((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName))
+            if (tasks.get(i).getTeam().getName().toLowerCase().equals(teamName))
                 arr[x++] = (Task)tasks.get(i);
         }
         
@@ -67,8 +69,8 @@ public class TaskDao {
     
     public int getTaskIndex(String teamName, int taskNo) {
         for (int i = 0; i < tasks.size(); i++) {
-            if (((Task)tasks.get(i)).getTeam().getName().toLowerCase().equals(teamName) && 
-                ((Task)tasks.get(i)).getNo() == taskNo)
+            if (tasks.get(i).getTeam().getName().toLowerCase().equals(teamName) && 
+                tasks.get(i).getNo() == taskNo)
                     return i;
         }
         return -1;
@@ -76,7 +78,7 @@ public class TaskDao {
     
     public int getTaskIndex(int taskNo) {
         for (int i = 0; i < tasks.size(); i++) {
-            if ( ((Task)tasks.get(i)).getNo() == taskNo )
+            if ( tasks.get(i).getNo() == taskNo )
                     return i;
         }
         return -1;

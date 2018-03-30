@@ -1,11 +1,13 @@
 package bitcamp.java106.pms.dao;
 
+import java.util.LinkedList;
+
 import bitcamp.java106.pms.domain.Member;
-import bitcamp.java106.pms.util.ArrayList;
 
 public class MemberDao {
     //Member[] members = new Member[1000];
-    ArrayList members = new ArrayList();
+    //ArrayList members = new ArrayList();
+    LinkedList<Member> members = new LinkedList<Member>();
     int memberIndex = 0;
     
     public void insert(Member member) {
@@ -18,22 +20,16 @@ public class MemberDao {
         Member[] arr = new Member[members.size()];
         
         for(int i=0; i<members.size(); i++) {
-            arr[i] = (Member)members.get(i);
+            arr[i] = members.get(i);
         }
         return arr;
-        
-        /*Member[] arr = new Member[this.memberIndex];
-        
-        for (int i = 0; i < this.memberIndex; i++)
-            arr[i] = this.members[i];
-        return arr;*/
     }
     
     public Member get(String id) {
         int i = this.getMemberIndex(id);
         
         if (i > -1)
-            return (Member)members.get(i);
+            return members.get(i);
         
         return null;
     }
@@ -56,7 +52,7 @@ public class MemberDao {
     // 다음 메서드는 내부에서만 사용할 것이기 때문에 공개하지 않는다.
     private int getMemberIndex(String id) {
         for(int i=0; i<members.size(); i++) {    
-            if( ((Member)members.get(i)).getId().toLowerCase().equals(id) )
+            if( members.get(i).getId().toLowerCase().equals(id) )
                 return i;
         }
         return -1;

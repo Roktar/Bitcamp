@@ -1,10 +1,11 @@
 package bitcamp.java106.pms.dao;
 
+import java.util.LinkedList;
+
 import bitcamp.java106.pms.domain.Board;
-import bitcamp.java106.pms.util.ArrayList;
 
 public class BoardDao {
-    ArrayList collection = new ArrayList();
+    LinkedList<Board> collection = new LinkedList<Board>();
     
     public void insert(Board board) {
         collection.add(board);
@@ -14,14 +15,14 @@ public class BoardDao {
         Board[] arr = new Board[this.collection.size()];
         
         for (int i = 0; i < collection.size(); i++) 
-            arr[i] = (Board) this.collection.get(i);
+            arr[i] = this.collection.get(i);
         return arr;
     }
     
     public Board get(int no) {
         int idx = getBoardIndex(no);
         if(idx > -1)
-            return (Board)collection.get(idx);
+            return collection.get(idx);
         return null;
     }
     
@@ -41,13 +42,14 @@ public class BoardDao {
     
     private int getBoardIndex(int no) {
         for(int i=0; i< collection.size(); i++) {            
-            if( ((Board)collection.get(i)).getNo() == no)
+            if( collection.get(i).getNo() == no)
                 return i;
         }
         return -1;
     }
 }
 
+// ver 19 - 컬렉션 클래스 및 제네릭 적용
 // ver 14 - BoardController로부터 데이터 관리 기능을 분리하여 BoardDao 생성.
 
 

@@ -1,4 +1,4 @@
-package step12.ex2;
+package step13.ex2;
 
 import java.util.Iterator;
 

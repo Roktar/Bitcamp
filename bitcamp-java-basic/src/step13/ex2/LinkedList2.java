@@ -1,16 +1,16 @@
-package step12.ex2;
+package step13.ex2;
 
 import java.util.Iterator;
 
-public class LinkedList {
+public class LinkedList2<E> { // <> 안에 있는 건 데이터 타입이다.
     protected Bucket head, tail;
     
     protected class Bucket {
-        public Object value;
+        public E value;
         public Bucket prev, next;
     } // 자식클래스에서도 쓸 수 있도록 protected로 설정
     
-    protected class Itr implements Iterator {
+/*    protected class Itr implements Iterator {
 
         @Override
         public boolean hasNext() {
@@ -19,19 +19,19 @@ public class LinkedList {
         }
 
         @Override
-        public Object next() {
+        public E next() {
             // TODO Auto-generated method stub
             return null;
         }
         
-    }
+    }*/
     
-    public LinkedList() {
+    public LinkedList2() {
         head = new Bucket();
         tail = head; // 시작점의 주소를 넘겨받는다.
     }
     
-    public Object add(Object value) {
+    public E add(E value) {
         tail.value = value;
         
         Bucket bucket = new Bucket();
@@ -44,7 +44,7 @@ public class LinkedList {
         return tail.value;
     }
     
-    public Object add(int i, Object value) {        
+    public E add(int i, E value) {        
         Bucket bucket = new Bucket();
         bucket.value = value;
         
@@ -80,12 +80,12 @@ public class LinkedList {
         }
         
         if(cnt == i) 
-            return (int)add(value);
+            return add(value);
                 
         return null;
     }
     
-    public Object get(int i) {
+    public E get(int i) {
         Bucket cursor = head;
         int cnt = 0;
         
@@ -114,7 +114,7 @@ public class LinkedList {
         //return size;
     }
     
-    public Object remove(int i) {
+    public E remove(int i) {
         Bucket cursor = head;
         int cnt = 0;
         
@@ -140,6 +140,6 @@ public class LinkedList {
             cnt++;
         }
         // size--;
-        return -1;
+        return null;
     }
 }

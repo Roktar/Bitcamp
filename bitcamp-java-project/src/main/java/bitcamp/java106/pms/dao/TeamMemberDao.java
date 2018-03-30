@@ -1,81 +1,82 @@
 package bitcamp.java106.pms.dao;
 
-import bitcamp.java106.pms.util.ArrayList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class TeamMemberDao {
-    
-    // ArrayList 2개 사용
-    //private Object[][] teamMembers = new Object[1000][2];
-    ArrayList teams = new ArrayList();
-    ArrayList members = new ArrayList();
-    //private int rowIndex;
-    // 0 : team, 1 : member
+    HashMap<String, ArrayList<String>> collection = new HashMap<String, ArrayList<String>>();
     
     // String 매개변수는 컨트롤러에서 각 dao에 접근해서 뽑아온 데이터로 세팅한다.
-    public int addMember(String teamName, String memberId) {     
+    public int addMember(String teamName, String memberId) {
         
-        if(isExist(teamName, memberId))
+        String tlc = teamName.toLowerCase();
+        String mlc = memberId.toLowerCase();
+        
+        // TeamName으로 memberId가 들어있는 리스트를 가져온다.
+        ArrayList<String> members = collection.get(tlc);
+        if(members == null) {
+            members = new ArrayList<String>();
+            members.add(memberId);
+            collection.put(teamName, members);
+            return 1;
+        }
+        
+        // 중복체크, contains는 해당 클래스 안에 그 값을 가진 객체가 있는 지를 찾는다.
+        if(members.contains(mlc)) 
             return 0;
-            
-        teams.add(teamName);
+ 
         members.add(memberId);
+        
         return 1;
     }
 
-    public int deleteMember(String teamName, String memberid) {
+    public int deleteMember(String teamName, String memberId) {
         
-        int index = this.getIndex(teamName, memberid);
+        String tlc = teamName.toLowerCase();
+        String mlc = memberId.toLowerCase();
         
-        if(index < 0)
+        ArrayList<String> members = collection.get(tlc);
+        
+        if(members == null || !members.contains(mlc))
             return 0;
         
-        teams.remove(index);
-        members.remove(index);
+        members.remove(mlc);
+        
         return 1;
     }
+    
+    public boolean isExist(String teamName, String memberId) {        
         
-    public boolean isExist(String teamName, String memberid) {
-        if(this.getIndex(teamName, memberid) > 0)
-            return true;
-        else
+        String tlc = teamName.toLowerCase();
+        String mlc = memberId.toLowerCase();
+        
+        ArrayList<String> members = collection.get(tlc);
+        
+        if(members == null || !members.contains(mlc))
             return false;
-    }
         
-    private int getIndex(String teamName, String memberid) {
-        String ptn = teamName.toLowerCase();
-        String pmi = memberid.toLowerCase();
+        return true;
         
-        for(int i=0; i < teams.size(); i++) {
-            String tn = ((String)this.teams.get(i)).toLowerCase();
-            String mi = ((String)this.members.get(i)).toLowerCase();
-            
-            if(tn.equals(ptn) && mi.equals(pmi))
-                return i;
-        }
-        return -1;
-    }
+        //return ( collection.get(teamName.toLowerCase()).contains(memberId.toLowerCase()) );
+    } // contains는 ArrayList 클래스단에서 오버라이딩 되잇을거임 아마도
+        
+    public Iterator<String> getMembers(String teamName) {
+        ArrayList<String> members = collection.get(teamName.toLowerCase());
+        
+        if(members == null)
+            return null;
+        
+        return collection.get(teamName.toLowerCase()).iterator();
+    } // 컨트롤러에서 데이터를 건드리지않게 하기 위함.
+    // remove가 있지만 객체를 새로 만들기때문에 기존 리스트와는 접점이 없다고 봐도 되겠다.
     
-    
-    public String[] getMembers(String teamName) {
-        String ptn = teamName.toLowerCase();
-        String[] members = new String[this.getMemberCount(teamName)];
-        
-        for(int i=0, x = 0; i < teams.size(); i++) {
-            String tn = ((String)this.teams.get(i)).toLowerCase();
-            if(tn.equals(ptn) )
-                members[x++] = (String)this.members.get(i);
+    private ArrayList<String> getTeamMembers(String teamName) {
+        ArrayList<String> members = collection.get(teamName.toLowerCase());
+        if(members == null) {
+            members = new ArrayList<String>();
+            collection.put(teamName, members);
         }
         return members;
     }
-    
-    private int getMemberCount(String teamName) {
-        String ptn = teamName.toLowerCase();
-        int cnt = 0;
-        for(int i=0; i < teams.size(); i++) {
-            String tn = ((String)this.teams.get(i)).toLowerCase();
-            if(tn.equals(ptn))
-                cnt++;
-        }
-        return cnt;
-    }
-}
+} 
