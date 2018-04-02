@@ -1,10 +1,12 @@
 package bitcamp.java106.pms;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.controller.BoardController;
 import bitcamp.java106.pms.controller.ClassController;
+import bitcamp.java106.pms.controller.Controller;
 import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
@@ -55,6 +57,16 @@ public class App {
         TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
         ClassController classController = new ClassController(keyScan, classDao);
         
+        HashMap<String, Controller> maps = new HashMap<>();
+        maps.put("team", teamController);
+        maps.put("member", memberController);
+        maps.put("team/member", teamMemberController);
+        maps.put("board", boardController);
+        maps.put("task", taskController);
+        maps.put("classroom", classController);
+        
+        Controller ctr;
+        
         Console.keyScan = keyScan;
 
         while (true) {
@@ -72,7 +84,16 @@ public class App {
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
-            } else if (menu.startsWith("team/member/")) {
+            } else {
+                ctr = maps.get( menu.substring(0, menu.lastIndexOf("/"))  );
+                
+                if(ctr == null)
+                    System.out.println("잘못됨");
+                else
+                    ctr.service(menu, option);
+            }
+            
+            /*else if (menu.startsWith("team/member/")) {
                 teamMemberController.service(menu, option);
             } else if (menu.startsWith("team/")) {
                 teamController.service(menu, option);
@@ -86,7 +107,7 @@ public class App {
                 classController.service(menu, option);
             } else {
                 System.out.println("명령어가 올바르지 않습니다.");
-            }
+            }*/
 
             System.out.println(); 
         }
