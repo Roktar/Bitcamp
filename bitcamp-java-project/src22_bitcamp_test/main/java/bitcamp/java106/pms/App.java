@@ -55,17 +55,18 @@ public class App {
         MemberController memberController = new MemberController(keyScan, memberDao);
         BoardController boardController = new BoardController(keyScan);
         TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
-        ClassController classController = new ClassController(keyScan, classDao);
+        ClassController classController = new ClassController(keyScan);
         
-        HashMap<String, Controller> controllerMap = new HashMap<>(); 
-        Controller ctr = null;
-        controllerMap.put("board", boardController);        
-        controllerMap.put("classroom", classController);
-        controllerMap.put("member", memberController);
-        controllerMap.put("task", taskController);
-        controllerMap.put("team", teamController);
-        controllerMap.put("team/member", teamMemberController);
-        // 대신 여기는 늘어나야하지만.
+        HashMap<String, Controller> maps = new HashMap<>();
+        maps.put("team", teamController);
+        maps.put("member", memberController);
+        maps.put("team/member", teamMemberController);
+        maps.put("board", boardController);
+        maps.put("task", taskController);
+        maps.put("classroom", classController);
+        
+        Controller ctr;
+        
         Console.keyScan = keyScan;
 
         while (true) {
@@ -77,37 +78,20 @@ public class App {
             } else {
                 option = null;
             }
-            
-            //int slashIndex = menu.lastIndexOf("/");
-            String ctrKey = menu.substring(0, menu.lastIndexOf("/"));
-            ctr = controllerMap.get(ctrKey); 
-            // 해시맵을 통해 키값으로 접근한다.
-            // 이 키값은 사용자로부터 직접 입력받는 것이기에 돌아볼 필요가 없다.
+
             if (menu.equals("quit")) {
                 onQuit();
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
-            } else if(ctr != null) { // 이렇게하면 아래처럼 if문을 증식시킬 필요가 사라짐.
-                ctr.service(menu, option);
-                ctr = null;
-            } else
-                System.out.println("명령어가 올바르지 않습니다.");
-            /*else if (menu.startsWith("team/member/")) {
-                teamMemberController.service(menu, option);
-            } else if (menu.startsWith("team/")) {
-                teamController.service(menu, option);
-            } else if (menu.startsWith("member/")) {
-                memberController.service(menu, option);
-            } else if (menu.startsWith("board/")) {
-                boardController.service(menu, option);
-            } else if (menu.startsWith("task/")) {
-                taskController.service(menu, option);
-            }  else if (menu.startsWith("classroom/")) {
-                classController.service(menu, option);
             } else {
-                System.out.println("명령어가 올바르지 않습니다.");
-            }*/
+                ctr = maps.get( menu.substring(0, menu.lastIndexOf("/"))  );
+                
+                if(ctr == null)
+                    System.out.println("잘못됨");
+                else
+                    ctr.service(menu, option);
+            }
             System.out.println(); 
         }
     }

@@ -55,11 +55,11 @@ public class MemberController implements Controller {
     void onMemberList() {
         System.out.println("[회원 목록]");
         Iterator<Member> list = memberDao.list();
-        Member member = null;
+
         while(list.hasNext()) {
-            member = list.next();
+            Member member = list.next();
             System.out.printf("%s, %s, %s\n", 
-                              member.getId(), member.getEmail(), member.getPassword());
+                    member.getId(), member.getEmail(), member.getPassword());
         }
     }
 
@@ -100,7 +100,10 @@ public class MemberController implements Controller {
             updateMember.setEmail(this.keyScan.nextLine());
             System.out.printf("암호? ");
             updateMember.setPassword(this.keyScan.nextLine());
-            memberDao.update(updateMember);
+            
+            int idx = memberDao.indexOf(member.getId());
+            
+            memberDao.update(idx, updateMember);
             System.out.println("변경하였습니다.");
         }
     }
@@ -118,11 +121,7 @@ public class MemberController implements Controller {
             System.out.println("해당 아이디의 회원이 없습니다.");
         } else {
             if (Console.confirm("정말 삭제하시겠습니까?")) {
-                int idx = memberDao.getIndex(member.getId());
-                
-                if(idx < 0)
-                    return;
-                memberDao.delete(idx);
+                memberDao.delete(member.getId());
                 System.out.println("삭제하였습니다.");
             }
         }

@@ -2,7 +2,6 @@
 package bitcamp.java106.pms.controller;
 
 import java.sql.Date;
-import java.util.Iterator;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.dao.MemberDao;
@@ -108,16 +107,14 @@ public class TaskController implements Controller {
     private void onTaskList(final Team team) {
         System.out.println("[팀 작업 목록]");
         
-        Iterator<Task> list = taskDao.list(team.getName());
-        Task task = null;
+        Task[] tasks = taskDao.list(team.getName());
         
-        while(list.hasNext()) {
-            task = list.next();
-                System.out.printf("%d,%s,%s,%s,%s\n", 
-                        task.getNo(), task.getTitle(), 
-                        task.getStartDate(), task.getEndDate(),
-                        (task.getWorker() == null) ? 
-                                "-" : task.getWorker().getId());
+        for (Task task : tasks) {
+            System.out.printf("%d,%s,%s,%s,%s\n", 
+                    task.getNo(), task.getTitle(), 
+                    task.getStartDate(), task.getEndDate(),
+                    (task.getWorker() == null) ? 
+                            "-" : task.getWorker().getId());
         }
         System.out.println();
     }

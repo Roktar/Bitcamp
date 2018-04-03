@@ -1,13 +1,11 @@
 // 팀 관련 기능을 모아 둔 클래스
 package bitcamp.java106.pms.controller;
 
-import java.sql.Date;
-import java.util.Iterator;
-import java.util.Scanner;
-
 import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
+import java.sql.Date;
+import java.util.Scanner;
 
 public class TeamController implements Controller {
     // 이 클래스를 사용하기 전에 App 클래스에서 준비한 Scanner 객체를
@@ -64,14 +62,10 @@ public class TeamController implements Controller {
     void onTeamList() {
         System.out.println("[팀 목록]");
         
-        Iterator<Team> list = teamDao.list();
-        Team team = null;
-        
-        while (list.hasNext()) {
-            team = list.next();
+        for (Team list : teamDao.list()) {
             System.out.printf("%s, %d, %s ~ %s\n", 
-                                team.getName(), team.getMaxQty(), 
-                                team.getStartDate(), team.getEndDate());
+                              list.getName(), list.getMaxQty(), 
+                              list.getStartDate(), list.getEndDate());
         }
     }
 
@@ -120,13 +114,7 @@ public class TeamController implements Controller {
             updateTeam.setStartDate(Date.valueOf(this.keyScan.nextLine()));
             System.out.printf("종료일(%s)? ", team.getEndDate());
             updateTeam.setEndDate(Date.valueOf(this.keyScan.nextLine()));
-            
-            int idx = teamDao.getIndex(team.getName());
-            
-            if(idx < 0)
-                return;
-            
-            teamDao.update(idx, updateTeam);
+            teamDao.update(updateTeam);
             System.out.println("변경하였습니다.");
         }
     }

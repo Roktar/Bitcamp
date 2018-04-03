@@ -1,6 +1,7 @@
 package bitcamp.java106.pms.controller;
 
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.dao.ClassDao;
@@ -55,12 +56,14 @@ public class ClassController implements Controller {
 
     void onClassList() {
         System.out.println("[수업 목록]");
-        Classroom[] list = classDao.list();
-        for (int i = 0; i < list.length; i++) {
-            if (list[i] == null) continue;
-            System.out.printf("%d, %s, %s, %s, %s\n", list[i].getNo(), list[i].getTitle(),
-                                                    list[i].getStartDate(), list[i].getEndDate(),
-                                                    list[i].getPlace() );
+        Iterator<Classroom> list = classDao.list();
+        Classroom classroom = null;
+        
+        while (list.hasNext()) {
+            classroom = list.next();
+            System.out.printf("%d, %s, %s, %s, %s\n", classroom.getNo(), classroom.getTitle(),
+                                                      classroom.getStartDate(), classroom.getEndDate(),
+                                                      classroom.getPlace() );
         }
         System.out.println();
     }
@@ -99,7 +102,11 @@ public class ClassController implements Controller {
             System.out.println("유효하지 않은 게시물 번호입니다.");
         } else {
             if (Console.confirm("정말 삭제하시겠습니까?")) {
-                classDao.delete(classroom);
+                int idx = classDao.getIndex(classroom.getNo());
+                
+                if(idx < 0)
+                    return;
+                classDao.delete(idx);
                 System.out.println("삭제하였습니다.");
             } else
                 System.out.println("취소하였습니다.");
