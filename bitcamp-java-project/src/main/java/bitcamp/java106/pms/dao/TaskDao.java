@@ -26,14 +26,14 @@ public class TaskDao extends AbstractDAO<Task> {
         return -1;
     }
     
-    public int getIndex(String teamName, int taskNo) {
+/*    public int getIndex(String teamName, int taskNo) {
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getTeam().getName().equalsIgnoreCase(teamName) && 
                 data.get(i).getNo() == taskNo)
                     return i;
         }
         return -1;
-    }
+    }*/
 }
 
 // ver 22 - 추상클래스 적용

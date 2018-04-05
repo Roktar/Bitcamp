@@ -1,7 +1,5 @@
 package step12.ex2;
 
-import java.util.Iterator;
-
 public class LinkedList {
     protected Bucket head, tail;
     
@@ -9,22 +7,7 @@ public class LinkedList {
         public Object value;
         public Bucket prev, next;
     } // 자식클래스에서도 쓸 수 있도록 protected로 설정
-    
-    protected class Itr implements Iterator {
-
-        @Override
-        public boolean hasNext() {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public Object next() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        
-    }
+   
     
     public LinkedList() {
         head = new Bucket();
