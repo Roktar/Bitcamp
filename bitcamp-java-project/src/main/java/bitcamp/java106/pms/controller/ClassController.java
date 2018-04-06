@@ -4,12 +4,12 @@ import java.sql.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.dao.ClassDao;
-import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.domain.Classroom;
-import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
+@Component(value="classroom")
 public class ClassController implements Controller {
     Scanner keyScan;
 

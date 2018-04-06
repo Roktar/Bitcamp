@@ -1,21 +1,25 @@
 package bitcamp.java106.pms.controller;
 
+
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.util.Console;
 
 // BoardController는 Controller 규칙을 이행한다. => 규칙에 따라 메소드 생성
+@Component(value="board")
 public class BoardController implements Controller {
     Scanner keyScan;
 
-    BoardDao boardDao = new BoardDao();
+    BoardDao boardDao;
     
-    public BoardController(Scanner scanner) {
+    public BoardController(Scanner scanner, BoardDao boardDao) {
         this.keyScan = scanner;
+        this.boardDao = boardDao;
     }
     
     public void service(String menu, String option) {

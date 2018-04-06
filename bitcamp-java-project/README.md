@@ -1,5 +1,14 @@
 # 자바프로젝트
 
+## src23 - IoC 컨테이너 적용
+- 학습목표
+    - IoC 컨테이너의 동작 원리와 사용법을 익히는 것.
+    - Reflection API 사용법을 익히는 것.
+    - File, URL 사용법을 익히는 것.
+    - Annotation 기술의 응용 방법을 배우는 것.
+- 작업내용
+    - DAO와 컨트롤러를 IoC 컨테이너를 사용하여 DAO와 컨트롤러 객체를 관리
+
 ## src22 - DAO에 Generalization 적용
 - 학습목표
     - Generalization의 방법을 익히는 것.

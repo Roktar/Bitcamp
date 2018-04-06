@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import bitcamp.java106.pms.context.ApplicationContext;
 import bitcamp.java106.pms.controller.BoardController;
 import bitcamp.java106.pms.controller.ClassController;
 import bitcamp.java106.pms.controller.Controller;
@@ -11,6 +12,7 @@ import bitcamp.java106.pms.controller.MemberController;
 import bitcamp.java106.pms.controller.TaskController;
 import bitcamp.java106.pms.controller.TeamController;
 import bitcamp.java106.pms.controller.TeamMemberController;
+import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.dao.ClassDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
@@ -21,6 +23,7 @@ import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
 public class App {
+    static ApplicationContext iocContainer;
     static Scanner keyScan = new Scanner(System.in);
     public static String option = null; 
     
@@ -39,79 +42,48 @@ public class App {
         System.out.println("종료 : quit");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
-        TeamDao teamDao = new TeamDao();
-        MemberDao memberDao = new MemberDao();
-        TaskDao taskDao = new TaskDao();
-        TeamMemberDao teamMemberDao = new TeamMemberDao();
-        ClassDao classDao = new ClassDao();
+        // 기본 객체 준비
+        HashMap<String, Object> defaultBeans = new HashMap<>();
+        defaultBeans.put("java.util.Scanner", keyScan);
         
-        prepareMemberData(memberDao);
-        prepareTeamData(teamDao, teamMemberDao);
+        // 기본객체와 함께 어노테이션이 붙은 클래스의 객체를 준비
+        iocContainer = new ApplicationContext("bitcamp.java106.pms", defaultBeans);
         
-        TeamController teamController = new TeamController(keyScan, teamDao);
-        TeamMemberController teamMemberController = new TeamMemberController(keyScan, teamDao, memberDao, teamMemberDao);
-        MemberController memberController = new MemberController(keyScan, memberDao);
-        BoardController boardController = new BoardController(keyScan);
-        TaskController taskController = new TaskController(keyScan, teamDao, taskDao, teamMemberDao, memberDao);
-        ClassController classController = new ClassController(keyScan, classDao);
+        prepareMemberData();
+        prepareTeamData();
         
-        HashMap<String, Controller> controllerMap = new HashMap<>(); 
-        Controller ctr = null;
-        controllerMap.put("board", boardController);        
-        controllerMap.put("classroom", classController);
-        controllerMap.put("member", memberController);
-        controllerMap.put("task", taskController);
-        controllerMap.put("team", teamController);
-        controllerMap.put("team/member", teamMemberController);
-        // 대신 여기는 늘어나야하지만.
         Console.keyScan = keyScan;
 
         while (true) {
             String[] arr = Console.prompt();
 
             String menu = arr[0];
-            if (arr.length == 2) {
+            if (arr.length == 2) 
                 option = arr[1];
-            } else {
+             else 
                 option = null;
-            }
             
-            //int slashIndex = menu.lastIndexOf("/");
             String ctrKey = menu.substring(0, menu.lastIndexOf("/"));
-            ctr = controllerMap.get(ctrKey); 
-            // 해시맵을 통해 키값으로 접근한다.
-            // 이 키값은 사용자로부터 직접 입력받는 것이기에 돌아볼 필요가 없다.
+            Controller ctr = (Controller) iocContainer.getBean(ctrKey);
+
             if (menu.equals("quit")) {
                 onQuit();
                 break;
             } else if (menu.equals("help")) {
                 onHelp();
-            } else if(ctr != null) { // 이렇게하면 아래처럼 if문을 증식시킬 필요가 사라짐.
+            } else if(ctr != null) { 
                 ctr.service(menu, option);
                 ctr = null;
             } else
                 System.out.println("명령어가 올바르지 않습니다.");
-            /*else if (menu.startsWith("team/member/")) {
-                teamMemberController.service(menu, option);
-            } else if (menu.startsWith("team/")) {
-                teamController.service(menu, option);
-            } else if (menu.startsWith("member/")) {
-                memberController.service(menu, option);
-            } else if (menu.startsWith("board/")) {
-                boardController.service(menu, option);
-            } else if (menu.startsWith("task/")) {
-                taskController.service(menu, option);
-            }  else if (menu.startsWith("classroom/")) {
-                classController.service(menu, option);
-            } else {
-                System.out.println("명령어가 올바르지 않습니다.");
-            }*/
             System.out.println(); 
         }
     }
-    static void prepareMemberData(MemberDao memberDao) {
+    static void prepareMemberData() {
+        MemberDao memberDao = (MemberDao) iocContainer.getBean("bitcamp.java106.pms.dao.MemberDao");
+        
         Member member = new Member();
         member.setId("aaa");
         member.setEmail("aaa@test.com");
@@ -148,7 +120,10 @@ public class App {
         memberDao.insert(member);
     }
     
-    static void prepareTeamData(TeamDao teamDao, TeamMemberDao teamMemberDao) {
+    static void prepareTeamData() {
+        TeamDao teamDao = (TeamDao) iocContainer.getBean("bitcamp.java106.pms.dao.TeamDao");
+        TeamMemberDao teamMemberDao = (TeamMemberDao) iocContainer.getBean("bitcamp.java106.pms.dao.TeamMemberDao");
+        
         Team team = new Team();
         team.setName("t1");
         team.setMaxQty(5);
