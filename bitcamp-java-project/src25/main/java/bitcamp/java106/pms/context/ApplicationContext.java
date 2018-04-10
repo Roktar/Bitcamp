@@ -32,23 +32,23 @@ public class ApplicationContext {
         
         findAndIntsantiateClasses(dir, pkgName);
         // 인스턴스 생성 명령
-        
-/*        for(String s : objPool.keySet())
-            System.out.println("호출명:" + s);*/
     }
     
     private void findAndIntsantiateClasses(File dir, String pkgName) throws Exception {
         File[] files = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
+                
                 if(pathname.isDirectory() ||
-                    (pathname.getName().endsWith(".class") && !pathname.getName().contains("$")))
+                    (pathname.getName().endsWith(".class") && 
+                     !pathname.getName().contains("$")))
                     return true;
                 return false;
             }
         }); 
         
         for(File f : files) {
+            System.out.println("find-Instantiate - value : " + f.getName());
             if(f.isDirectory()) { 
                 findAndIntsantiateClasses(f, pkgName + "." + f.getName());
                 continue;

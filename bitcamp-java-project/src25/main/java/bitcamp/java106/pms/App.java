@@ -1,16 +1,25 @@
 package bitcamp.java106.pms;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.context.ApplicationContext;
+import bitcamp.java106.pms.controller.BoardController;
+import bitcamp.java106.pms.controller.ClassController;
 import bitcamp.java106.pms.controller.Controller;
+import bitcamp.java106.pms.controller.MemberController;
+import bitcamp.java106.pms.controller.TaskController;
+import bitcamp.java106.pms.controller.TeamController;
+import bitcamp.java106.pms.controller.TeamMemberController;
 import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.dao.ClassDao;
 import bitcamp.java106.pms.dao.MemberDao;
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.dao.TeamMemberDao;
+import bitcamp.java106.pms.domain.Member;
+import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.util.Console;
 
 public class App {
@@ -90,7 +99,7 @@ public class App {
                 option = arr[1];
              else 
                 option = null;
-                        
+            
             if (menu.equals("quit")) {
                 onQuit();
                 break;
@@ -98,17 +107,25 @@ public class App {
                 onHelp();
             } else {
                 try {
-                    Controller controller = (Controller) iocContainer.getBean(menu);
-
+                    int slashIndex = menu.lastIndexOf("/");
+                    String controllerKey = (slashIndex < 0) ? 
+                                            menu : menu.substring(0, slashIndex);
+                    
+                    Controller controller = (Controller) iocContainer.getBean(controllerKey);
+                    
                     if (controller != null) {
                         controller.service(menu, option);
                     } else {
                         System.out.println("명령어가 올바르지 않습니다.");
                     }
                 } catch(Exception e) {
-                    System.out.println("작업 중 오류 발생 : " + e.getMessage());
+                    if(keyScan.hasNextLine())
+                        keyScan.nextLine();
+                    System.out.println("작업 중 오류 발생");
+                    
                 }
             }
+
             System.out.println(); 
         }
     }

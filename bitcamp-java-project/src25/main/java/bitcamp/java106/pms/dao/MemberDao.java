@@ -8,29 +8,27 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Classroom;
 import bitcamp.java106.pms.domain.Member;
-import bitcamp.java106.pms.domain.Team;
 
 @Component
-public class TeamDao extends AbstractDAO<Team>{
-    public TeamDao() throws Exception {
+public class MemberDao extends AbstractDAO<Member>{
+    public MemberDao() throws Exception {
         this.load();
     }
     
     public void load() throws Exception {
         // 한줄씩 읽어들이는 게 없기때문에 스캐너를 통해 한줄씩 처리
-        Scanner in = new Scanner(new FileReader("data/team.csv"));
+        Scanner in = new Scanner(new FileReader("data/member.csv"));
         
         while( true ) {
             try {
                 String[] arr = in.nextLine().split(",");
-                Team team = new Team();
-                team.setName(arr[0]);
-                team.setDescription(arr[1]);
-                team.setMaxQty( Integer.parseInt(arr[2]) );
-                team.setStartDate(Date.valueOf(arr[3]));
-                team.setEndDate(Date.valueOf(arr[4]));
-                insert(team);
+                Member member = new Member();
+                member.setId(arr[0]);
+                member.setEmail(arr[1]);
+                member.setPassword(arr[2]);
+                insert(member);
             } catch (Exception e) { 
                 break;
                 // 1) 데이터를 다 읽었을 때
@@ -44,30 +42,28 @@ public class TeamDao extends AbstractDAO<Team>{
     }
     
     public void save() throws Exception {
-        PrintWriter out = new PrintWriter(new FileWriter("data/team.csv"));
+        PrintWriter out = new PrintWriter(new FileWriter("data/member.csv"));
         
-        Iterator<Team> teams = this.list();
+        Iterator<Member> members = this.list();
         
         // List에 보관된 데이터를 board.csv 파일에 저장한다.
         // 기존에 저장된 데이터를 덮어쓴다. 즉 처음부터 다시 저장한다.
-        while (teams.hasNext()) {
-            Team team = teams.next();
-            out.printf("%s,%s,%d,%s~%s\n", team.getName(), team.getDescription(), 
-                                           team.getMaxQty(),
-                                           team.getStartDate(), team.getEndDate());
+        while (members.hasNext()) {
+            Member member = members.next();
+            out.printf("%s,%s,%s\n", member.getId(), member.getEmail(), member.getPassword());
         }
         out.close();
     }
     
-
     public int getIndex(Object key) {
-        String teamName = (String) key;
-        
-        for(int i=0; i<collection.size(); i++) {
-            if(collection.get(i).getName().equalsIgnoreCase(teamName))
+        String id = (String) key;
+        for(int i=0; i<data.size(); i++) {    
+            if( data.get(i).getId().equalsIgnoreCase(id) )
                 return i;
         }
-        
         return -1;
     }
 }
+
+//ver 16 - 인스턴스 변수를 직접 사용하는 대신 겟터, 셋터 사용.
+//ver 14 - MemberController로부터 데이터 관리 기능을 분리하여 MemberDao 생성.

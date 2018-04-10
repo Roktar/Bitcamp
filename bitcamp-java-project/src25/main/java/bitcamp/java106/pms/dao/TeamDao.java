@@ -63,8 +63,8 @@ public class TeamDao extends AbstractDAO<Team>{
     public int getIndex(Object key) {
         String teamName = (String) key;
         
-        for(int i=0; i<collection.size(); i++) {
-            if(collection.get(i).getName().equalsIgnoreCase(teamName))
+        for(int i=0; i<data.size(); i++) {
+            if(data.get(i).getName().equalsIgnoreCase(teamName))
                 return i;
         }
         

@@ -1,4 +1,4 @@
 # 변경내역
-- annotation, context 패키지 생성
-- Component.java, ApplicationContext.java 추가
-- DAO와 컨트롤러에 @Component 어노테이션 추가
+- BoardController.java 삭제
+- context.board 패키지 생성
+- BoardController의 5가지기능 클래스 추가(Add, List, View, Update, Delete)
