@@ -1,14 +1,14 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
 
 import bitcamp.java106.pms.annotation.Component;
 
@@ -20,49 +20,21 @@ public class TeamMemberDao {
         this.load();
     }
     
+    @SuppressWarnings("unchecked") // 타입 검사를 할 수 없어 타입 확인이 어렵기때문에 개발자에게 물어보는 것과 비슷한 듯.
     public void load() throws Exception {
-        // 한줄씩 읽어들이는 게 없기때문에 스캐너를 통해 한줄씩 처리
-        Scanner in = new Scanner(new FileReader("data/teamMember.csv"));
-
-        while( true ) {
+        try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("data/teammember.data")));) {
             try {
-                String[] arr = in.nextLine().split(":");
-                String[] members = arr[1].split(",");
-                System.out.println("키값 : " + arr[0]);
-                ArrayList<String> list = new ArrayList<>();
-                
-                for(String id : members)
-                    list.add(id);
-              
-                collection.put(arr[0], list);
-            } catch (Exception e) { 
-                System.out.println("에러 : " + e.getMessage());
-                break;
-                // 1) 데이터를 다 읽었을 때
-                // 2) 파일 형식에 문제 있을 때
+                collection = ( HashMap<String, ArrayList<String>> ) in.readObject();
+            } catch(Exception e) {
+                collection = new HashMap<>();
             }
         }
-        in.close();
-        // 저장된 데이터를 한 줄씩 읽는다.
-        // 한 줄에 한 개의 게시물 데이터를 갖는다.
-        // 형식 : 번호, 제목, 내용, 등록일
     }
     
     public void save() throws Exception {
-        PrintWriter out = new PrintWriter(new FileWriter("data/teamMember.csv"));
-        
-        Set<String> keys = collection.keySet();
-        
-        for(String key : keys) {
-            List<String> idList = collection.get(key);
-            
-            out.printf("%s:", key);
-            
-            for(String id : idList)
-                out.printf("%s,", id);
-            out.println();
-        }
-        out.close();
+        try( ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("data/teammember.data")));) {
+            out.writeObject(collection);
+        } // 컬렉션클래스를 통째로 저장한다.
     }
     
     // String 매개변수는 컨트롤러에서 각 dao에 접근해서 뽑아온 데이터로 세팅한다.

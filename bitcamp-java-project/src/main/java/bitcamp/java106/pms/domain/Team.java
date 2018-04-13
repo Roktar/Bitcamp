@@ -3,7 +3,8 @@ package bitcamp.java106.pms.domain;
 import java.sql.Date;
 
 // 팀 정보를 저장할 수 있는 메모리의 구조를 설계한 클래스
-public class Team {
+public class Team implements java.io.Serializable {
+    public static final long serialVersionUID = 1L;
     private String name;
     private String description;
     private int maxQty;

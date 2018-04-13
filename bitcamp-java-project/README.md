@@ -1,5 +1,13 @@
 # 자바프로젝트
 
+## src27 - Serializable을 적용하여 객체 데이터를 관리
+- 학습목표
+    - Serializable 객체를 다뤄보기
+    - java I/O 스트림 클래스의 사용법을 익히기
+- 작업내용
+    - domain 패키지 내의 클래스에 Serializable 객체 적용
+    - 
+
 ## src26 - Command Design Pattern 적용
 - 학습목표
     - Command 패턴을 이해하고 적용하는 방법을 이해하기.

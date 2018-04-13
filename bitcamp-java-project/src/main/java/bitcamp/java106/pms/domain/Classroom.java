@@ -2,7 +2,8 @@ package bitcamp.java106.pms.domain;
 
 import java.sql.Date;
 
-public class Classroom {
+public class Classroom implements java.io.Serializable {
+    public static final long serialVersionUID = 1L;
     private static int count = 1;
     private int no;
     private String title, place;

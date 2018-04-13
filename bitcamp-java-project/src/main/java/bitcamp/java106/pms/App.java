@@ -21,11 +21,11 @@ public class App {
     static void onQuit() throws Exception { // 매개변수 주고 처리하는 게 괜찮을듯.
         System.out.println("안녕히 가세요!");
         BoardDao boardDao = (BoardDao) iocContainer.getBean(BoardDao.class);
-        TeamDao teamDao = (TeamDao) iocContainer.getBean(BoardDao.class);
-        MemberDao memberDao = (MemberDao) iocContainer.getBean(BoardDao.class);
-        TaskDao taskDao = (TaskDao) iocContainer.getBean(BoardDao.class);
-        TeamMemberDao teamMemberDao = (TeamMemberDao) iocContainer.getBean(BoardDao.class);
-        ClassDao classDao = (ClassDao) iocContainer.getBean(BoardDao.class);
+        TeamDao teamDao = (TeamDao) iocContainer.getBean(TeamDao.class);
+        MemberDao memberDao = (MemberDao) iocContainer.getBean(MemberDao.class);
+        TaskDao taskDao = (TaskDao) iocContainer.getBean(TaskDao.class);
+        TeamMemberDao teamMemberDao = (TeamMemberDao) iocContainer.getBean(TeamMemberDao.class);
+        ClassDao classDao = (ClassDao) iocContainer.getBean(ClassDao.class);
         
         // 각각의 데이터에 대해 예외처리를 분리
         // - 한 곳에 묶어두면 다른 데이터들은 처리가 안되기에 별도로 분리한다.

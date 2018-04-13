@@ -1,6 +1,7 @@
 package bitcamp.java106.pms.domain;
 
-public class Member {
+public class Member implements java.io.Serializable {
+    public static final long serialVersionUID = 1L;
     private String id;
     private String email;
     private String password;

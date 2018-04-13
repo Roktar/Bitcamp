@@ -1,13 +1,20 @@
 package bitcamp.java106.pms.dao;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.domain.Classroom;
 import bitcamp.java106.pms.domain.Member;
 
@@ -18,47 +25,30 @@ public class MemberDao extends AbstractDAO<Member>{
     }
     
     public void load() throws Exception {
-        // 한줄씩 읽어들이는 게 없기때문에 스캐너를 통해 한줄씩 처리
-        Scanner in = new Scanner(new FileReader("data/member.csv"));
-        
-        while( true ) {
-            try {
-                String[] arr = in.nextLine().split(",");
-                Member member = new Member();
-                member.setId(arr[0]);
-                member.setEmail(arr[1]);
-                member.setPassword(arr[2]);
-                insert(member);
-            } catch (Exception e) { 
-                break;
-                // 1) 데이터를 다 읽었을 때
-                // 2) 파일 형식에 문제 있을 때
+        try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("data/member.data")));) {
+            while( true ) {
+                try {
+                    this.insert((Member) in.readObject());
+                } catch (Exception e) { 
+                    break;
+                }
             }
         }
-        // 저장된 데이터를 한 줄씩 읽는다.
-        // 한 줄에 한 개의 게시물 데이터를 갖는다.
-        // 형식 : 번호, 제목, 내용, 등록일
-        in.close();
     }
     
-    public void save() throws Exception {
-        PrintWriter out = new PrintWriter(new FileWriter("data/member.csv"));
-        
+    public void save() throws Exception {        
         Iterator<Member> members = this.list();
         
-        // List에 보관된 데이터를 board.csv 파일에 저장한다.
-        // 기존에 저장된 데이터를 덮어쓴다. 즉 처음부터 다시 저장한다.
-        while (members.hasNext()) {
-            Member member = members.next();
-            out.printf("%s,%s,%s\n", member.getId(), member.getEmail(), member.getPassword());
-        }
-        out.close();
+        try( ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("data/member.data")));) {
+            while (members.hasNext()) 
+                out.writeObject(members.next());
+        } 
     }
     
     public int getIndex(Object key) {
         String id = (String) key;
-        for(int i=0; i<data.size(); i++) {    
-            if( data.get(i).getId().equalsIgnoreCase(id) )
+        for(int i=0; i<collection.size(); i++) {    
+            if( collection.get(i).getId().equalsIgnoreCase(id) )
                 return i;
         }
         return -1;
