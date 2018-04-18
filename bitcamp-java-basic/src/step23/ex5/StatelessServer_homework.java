@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class StatelessServer {
+public class StatelessServer_homework {
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(8888);
         HashMap<String, Integer> userPool = new HashMap<>();

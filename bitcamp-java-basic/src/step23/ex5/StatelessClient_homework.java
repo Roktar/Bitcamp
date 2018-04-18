@@ -8,7 +8,7 @@ import java.util.Scanner;
 // stateless 방식의 특징
 // => 요청 할 때마다 서버와 연결한다. 응답 받은 후 서버와의 연결을 끊는다. 
 // 
-public class StatelessClient {
+public class StatelessClient_homework {
     public static void main(String[] args) throws Exception {
         
         try (Scanner keyScan = new Scanner(System.in)) {
