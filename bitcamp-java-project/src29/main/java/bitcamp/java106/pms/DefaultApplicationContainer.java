@@ -38,6 +38,6 @@ public class DefaultApplicationContainer implements ApplicationContainer {
         else
             out.println("해당 명령을 처리할 수 없습니다.");
         
-        return memWriter.toString();
+        return memWriter.toString() + memWriter.toString().length();
     }
 }

@@ -23,12 +23,8 @@ public class BoardAddController implements Controller {
         board.setTitle(request.getParameter("title"));
         board.setContent(request.getParameter("content"));
         board.setCreatedDate(new Date(System.currentTimeMillis()));
-        
-/*        for(int i = 0; i < 300000000; i++) {
-            double d = Math.asin(34.8);
-        }*/ // thread 테스트용(입력 지연 발생)
-        
         boardDao.insert(board);
+        
         PrintWriter out = response.getWriter();
         out.println("등록 성공!");
     }
