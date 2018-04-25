@@ -15,5 +15,12 @@ sourceSets {
             srcDir 'src'
         }
     }
+repositories {
+    mavenCentral()
+    }
+    
+dependencies {
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
+    }
 }
 

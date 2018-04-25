@@ -12,29 +12,34 @@ import bitcamp.java106.pms.server.ServerResponse;
 
 @Component("/team/view")
 public class TeamViewController implements Controller {
-
     TeamDao teamDao;
     
     public TeamViewController(TeamDao teamDao) {
         this.teamDao = teamDao;
     }
-
+    
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
         
         String name = request.getParameter("name");
-        
-        Team team = teamDao.get(name);
 
-        if (team == null) {
-            out.println("해당 이름의 팀이 없습니다.");
-        } else {
-            out.printf("팀명: %s\n", team.getName());
-            out.printf("설명: %s\n", team.getDescription());
-            out.printf("최대인원: %d\n", team.getMaxQty());
-            out.printf("기간: %s ~ %s\n", 
-                team.getStartDate(), team.getEndDate());
+        try {
+            Team team = teamDao.selectOne(name);
+            
+            if(team == null)
+                out.println("해당 팀이 없습니다.");
+            else {
+                out.printf("팀명: %s\n", team.getName());
+                out.printf("팀 설명: %s\n", team.getDescription());
+                out.printf("팀 인원수: %d\n", team.getMaxQty());
+                out.printf("시작일: %s\n", team.getStartDate());
+                out.printf("종료일: %s\n", team.getEndDate());
+            }
+            
+        } catch(Exception e) {
+            out.println("상세조회 실패");
+            e.printStackTrace(out);
         }
     }
 }

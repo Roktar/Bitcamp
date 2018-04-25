@@ -6,58 +6,123 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+import java.util.TimeZone;
 
 import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
+import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
-public class TeamDao extends AbstractDao<Team> {
+public class TeamDao {
     
-    public TeamDao() throws Exception {
-        load();
+    DataSource dataSource;
+    
+    public TeamDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
     
-    public void load() throws Exception {
-        try (
-                ObjectInputStream in = new ObjectInputStream(
-                               new BufferedInputStream(
-                               new FileInputStream("data/team.data")));
+    public int delete(String name) throws Exception {
+        try(
+             java.sql.Connection con = dataSource.getConnection();     
+             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_team where name = ?");
             ) {
-        
-            while (true) {
-                try {
-                    this.insert((Team) in.readObject());
-                } catch (Exception e) { // 데이터를 모두 읽었거나 파일 형식에 문제가 있다면,
-                    //e.printStackTrace();
-                    break; // 반복문을 나간다.
-                }
-            }
-        }
-    }
-    
-    public void save() throws Exception {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(
-                                new BufferedOutputStream(
-                                new FileOutputStream("data/team.data")));
-            ) {
-            Iterator<Team> teams = this.list();
             
-            while (teams.hasNext()) {
-                out.writeObject(teams.next());
-            }
-        } 
+            stmt.setString(1, name);
+            
+            return stmt.executeUpdate();
+        }
     }
-        
-    public int indexOf(Object key) {
-        String name = (String) key;
-        for (int i = 0; i < collection.size(); i++) {
-            if (name.equalsIgnoreCase(collection.get(i).getName())) {
-                return i;
+    
+    public List<Team> selectList() throws Exception {
+        List<Team> arr = new ArrayList<>();
+
+        try( 
+            java.sql.Connection con = dataSource.getConnection();     
+             PreparedStatement stmt = con.prepareStatement("select * from pms_team");
+             ResultSet rs = stmt.executeQuery();
+           ) {
+            while(rs.next()) {
+                Team team = new Team();
+                team.setName(rs.getString("name"));
+                team.setDescription(rs.getString("name"));
+                team.setStartDate(rs.getDate("sdt"));
+                team.setEndDate(rs.getDate("edt"));
+                team.setMaxQty(rs.getInt("max_qty"));
+                arr.add(team);
             }
         }
-        return -1;
+        return arr;
+    }
+    
+    public int insert(Team team) throws Exception {
+        
+        Scanner sc = new Scanner(System.in);
+        try( 
+            java.sql.Connection con = dataSource.getConnection();     
+           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_team VALUES(?, ?, ?, ?, ?)");
+           ) {
+            pstmt.setString(1, team.getName());
+            pstmt.setString(2, team.getDescription());
+            pstmt.setInt(3, team.getMaxQty());
+            pstmt.setDate(4, team.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            pstmt.setDate(5, team.getEndDate(), Calendar.getInstance(Locale.KOREAN));
+            // or serverTimezone=Asia/Seoul을 줘도 된다.
+            // 추후 접속지역에 따라 Locale 정보를 다르게 줘야하는 방법.
+            // or 문자열로 날짜를 집어넣을 것.
+    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return pstmt.executeUpdate();
+        }
+    }
+    
+    public int update(Team team) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("Update pms_Team SET dscrt=?, max_qty=?, sdt=?, edt=? where name = ?"); 
+            ) {        
+            stmt.setString(1, team.getDescription());
+            stmt.setInt(2, team.getMaxQty());
+            stmt.setDate(3, team.getStartDate());
+            stmt.setDate(4, team.getEndDate());
+            stmt.setString(5, team.getName());
+                    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return stmt.executeUpdate();
+        }
+    }
+    
+    public Team selectOne(String name) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("select * from pms_team where name=?");) {
+            
+                stmt.setString(1, name);
+                
+                try (ResultSet rs = stmt.executeQuery();) {
+                    if (!rs.next()) 
+                        return null;
+                
+                    Team team = new Team();
+                    team.setName(name);
+                    team.setDescription(rs.getString("dscrt"));
+                    team.setMaxQty(rs.getInt("max_qty"));
+                    team.setStartDate(rs.getDate("sdt"));
+                    team.setEndDate(rs.getDate("edt"));
+                    
+                    return team;
+            }
+        }
     }
 }
 

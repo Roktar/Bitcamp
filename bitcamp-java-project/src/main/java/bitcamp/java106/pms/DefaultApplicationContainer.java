@@ -2,9 +2,11 @@ package bitcamp.java106.pms;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 import bitcamp.java106.pms.context.ApplicationContext;
 import bitcamp.java106.pms.controller.Controller;
+import bitcamp.java106.pms.jdbc.DefaultDataSource;
 import bitcamp.java106.pms.server.ServerRequest;
 import bitcamp.java106.pms.server.ServerResponse;
 
@@ -13,7 +15,12 @@ public class DefaultApplicationContainer implements ApplicationContainer {
     ApplicationContext iocContainer;
     
     public DefaultApplicationContainer() throws Exception {
-        iocContainer = new ApplicationContext("bitcamp.java106.pms");
+        // IoC 컨테이너에서 자동으로 생성되지않는 객체를 미리 준비함.
+        HashMap<String, Object> objMap = new HashMap<>();
+        objMap.put("dataSource", new DefaultDataSource("jdbc.properties"));
+
+        // 이전에 미리 준비했던 객체를 컨테이너에 포함시킴.
+        iocContainer = new ApplicationContext("bitcamp.java106.pms", objMap);
     }
     
     @Override

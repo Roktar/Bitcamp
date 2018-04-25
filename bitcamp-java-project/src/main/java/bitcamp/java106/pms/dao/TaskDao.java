@@ -1,96 +1,142 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Task;
+import bitcamp.java106.pms.domain.Team;
+import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
-public class TaskDao extends AbstractDao<Task> {
+public class TaskDao {
     
-    public TaskDao() throws Exception {
-        load();
+    DataSource dataSource;
+    
+    public TaskDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
     
-    public void load() throws Exception {
+    public int delete(int no) throws Exception {
         try (
-                ObjectInputStream in = new ObjectInputStream(
-                               new BufferedInputStream(
-                               new FileInputStream("data/task.data")));
-            ) {
-        
-            while (true) {
-                try {
-                    // 작업 데이터를 읽을 때 작업 번호가 가장 큰 것으로 
-                    // 카운트 값을 설정한다.
-                    Task task = (Task) in.readObject();
-                    if (task.getNo() >= Task.count)
-                        Task.count = task.getNo() + 1; 
-                        // 다음에 새로 추가할 작업의 번호는 현재 읽은 작업 번호 보다 
-                        // 1 큰 값이 되게 한다.
-                    this.insert(task);
-                } catch (Exception e) { // 데이터를 모두 읽었거나 파일 형식에 문제가 있다면,
-                    //e.printStackTrace();
-                    break; // 반복문을 나간다.
-                }
-            }
-        }
-    }
-    
-    public void save() throws Exception {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(
-                                new BufferedOutputStream(
-                                new FileOutputStream("data/task.data")));
-            ) {
-            Iterator<Task> tasks = this.list();
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "delete from pms_task where tano=?");) {
             
-            while (tasks.hasNext()) {
-                out.writeObject(tasks.next());
-            }
-        } 
-    }
-        
-    // 기존의 list() 메서드로는 작업을 처리할 수 없기 때문에 
-    // 팀명으로 작업을 목록을 리턴해주는 메서드를 추가한다. 
-    // => 오버로딩
-    public Iterator<Task> list(String teamName) {
-        ArrayList<Task> tasks = new ArrayList<>();
-        for (Task task : collection) {
-            if (task.getTeam().getName().equalsIgnoreCase(teamName)) {
-                tasks.add(task);
-            }
+            stmt.setInt(1, no);
+            return stmt.executeUpdate();
+        } catch (Exception e) {
+            //System.out.println("오류!");
+            // 로그 파일에 기록을 남긴다.
+            throw e;
         }
-        return tasks.iterator();
     }
     
-    public int indexOf(Object key) {
-        int taskNo = (Integer) key;
-        for (int i = 0; i < collection.size(); i++) {
-            Task task = collection.get(i);
-            if (task.getNo() == taskNo) {
-                return i;
+    public List<Task> selectList(String teamName) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "select tano,titl,sdt,edt,stat,mid from pms_task where tnm=?");) {
+            
+            stmt.setString(1, teamName);    
+            try (ResultSet rs = stmt.executeQuery()) {
+                ArrayList<Task> arr = new ArrayList<>();
+                while (rs.next()) {
+                    Task task = new Task();
+                    task.setNo(rs.getInt("tano"));
+                    task.setTitle(rs.getString("titl"));
+                    task.setStartDate(rs.getDate("sdt"));
+                    task.setEndDate(rs.getDate("edt"));
+                    task.setState(rs.getInt("stat"));
+                    task.setWorker(new Member().setId(rs.getString("mid")));
+                    arr.add(task);
+                }
+                return arr;
             }
         }
-        return -1;
+    }
+
+    public int insert(Task task) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "insert into pms_task(titl,sdt,edt,mid,tnm) values(?,?,?,?,?)");) {
+            
+            stmt.setString(1, task.getTitle());
+            stmt.setDate(2, task.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setString(4, task.getWorker().getId());
+            stmt.setString(5, task.getTeam().getName());
+            return stmt.executeUpdate();
+        }
+    }
+
+    public int update(Task task) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "update pms_task set titl=?,sdt=?,edt=?,mid=?,tnm=? where tano=?");) {
+            
+            stmt.setString(1, task.getTitle());
+            stmt.setDate(2, task.getStartDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREAN));
+            stmt.setString(4, task.getWorker().getId());
+            stmt.setString(5, task.getTeam().getName());
+            stmt.setInt(6, task.getNo());
+            return stmt.executeUpdate();
+        }
+    }
+
+    public Task selectOne(int no) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "select titl,sdt,edt,stat,mid,tnm from pms_task where tano=?");) {
+            
+            stmt.setInt(1, no);
+            
+            try (ResultSet rs = stmt.executeQuery();) {
+                if (!rs.next()) 
+                    return null;
+                
+                Task task = new Task();
+                task.setNo(no);
+                task.setTitle(rs.getString("titl"));
+                task.setStartDate(rs.getDate("sdt"));
+                task.setEndDate(rs.getDate("edt"));
+                task.setState(rs.getInt("stat"));
+                task.setWorker(new Member().setId(rs.getString("mid")));
+                task.setTeam(new Team().setName(rs.getString("tnm")));
+                return task;
+            }
+        }  
+    }
+
+    public int updateState(int no, int state) throws Exception {
+        
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement(
+                "update pms_task set stat where tano=?");) {
+            
+            stmt.setInt(1, state);
+            stmt.setInt(2, no);
+            return stmt.executeUpdate();
+        }
     }
 }
 
+//ver 31 - JDBC API 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 22 - 추상 클래스 AbstractDao를 상속 받는다.
 //ver 19 - 우리 만든 ArrayList 대신 java.util.LinkedList를 사용하여 목록을 다룬다. 
 //ver 18 - ArrayList 클래스를 적용하여 객체(의 주소) 목록을 관리한다.
 // ver 17 - 클래스 생성
-
-
-
-
-

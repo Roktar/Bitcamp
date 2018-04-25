@@ -1,5 +1,23 @@
 # 자바프로젝트
 
+## src32 - DB Connection Pool 적용
+- 학습목표
+    - Pooling(객체를 일정량 생성해둔 후 닫지않고 재사용) 기법 이해
+    - flyweight 디자인 패턴 이해
+    - proxy 디자인 패턴 이해
+    - DB Connection Pool 개념을 이해
+- 작업내용
+    - DB Connection에 대해 Pooling 기법을 적용하여 Connection Pool 생성
+    - Connection 객체의 close메소드를 재정의하기 위해 Proxy 패턴 적용
+    
+## src31 - DAO에 JDBC 적용
+- 학습목표
+    - JDBC API 사용을 익히기.
+    - gradle을 이용하여 의존 라이브러리를 관리하는 법을 익히기.
+- 작업내용
+    - gradle을 이용하여 JDBC driver를 자동으로 다운로드하고 설정.
+    - DAO 클래스에 JDBC API를 적용.
+
 ## src30 - 멀티 스레드 적용
 - 학습목표
     - 멀티스레드를 적용하여 다중 클라이언트 요청을 처리
@@ -577,6 +595,6 @@ lim, lim@test.com, 1111
 - 작업 내용
     - 인사하는 자바 애플리케이션 작성
 
-## src 00 -프로젝트 폴더 준비
+## src00 -프로젝트 폴더 준비
 - 학습 목표
     - 프로젝트 폴더 준비

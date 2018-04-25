@@ -18,19 +18,22 @@ public class TeamDeleteController implements Controller {
     public TeamDeleteController(TeamDao teamDao) {
         this.teamDao = teamDao;
     }
-
+    
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
         String name = request.getParameter("name");
-        
-        Team team = teamDao.get(name);
 
-        if (team == null) {
-            out.println("해당 이름의 팀이 없습니다.");
-        } else {
-            teamDao.delete(name);
-            out.println("삭제하였습니다.");
+        try {
+            int count = teamDao.delete(name);
+            
+            if(count == 0)
+                out.println("해당 회원이 없습니다.");
+            else
+                out.println("삭제하였습니다.");
+        } catch(Exception e) {
+            out.println("삭제 실패");
+            e.printStackTrace(out);
         }
     }
     

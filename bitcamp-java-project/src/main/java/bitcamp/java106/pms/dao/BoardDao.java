@@ -1,74 +1,106 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Iterator;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
-public class BoardDao extends AbstractDao<Board> {
+public class BoardDao {
     
-    public BoardDao() throws Exception {
-        load();
+    DataSource dataSource;
+    
+    public BoardDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
     
-    public void load() throws Exception {
-        try (
-                ObjectInputStream in = new ObjectInputStream(
-                               new BufferedInputStream(
-                               new FileInputStream("data/board.data")));
+    public int delete(int no) throws Exception {
+        try(
+             java.sql.Connection con = dataSource.getConnection();    
+             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_board where bno = ?");
             ) {
-        
-            while (true) {
-                try {
-                    // 게시물 데이터를 읽을 때 작업 번호가 가장 큰 것으로 
-                    // 카운트 값을 설정한다.
-                    Board board = (Board) in.readObject();
-                    if (board.getNo() >= Board.count)
-                        Board.count = board.getNo() + 1; 
-                        // 다음에 새로 추가할 게시물의 번호는 현재 읽은 게시물 번호 보다 
-                        // 1 큰 값이 되게 한다.
-                    this.insert(board);
-                } catch (Exception e) { // 데이터를 모두 읽었거나 파일 형식에 문제가 있다면,
-                    //e.printStackTrace();
-                    break; // 반복문을 나간다.
-                }
-            }
-        }
-    }
-    
-    public void save() throws Exception {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(
-                                new BufferedOutputStream(
-                                new FileOutputStream("data/board.data")));
-            ) {
-            Iterator<Board> boards = this.list();
             
-            while (boards.hasNext()) {
-                out.writeObject(boards.next());
-            }
-        } 
+            stmt.setInt(1, no);
+            
+            return stmt.executeUpdate();
+        }
     }
     
-    public int indexOf(Object key) {
-        int no = (Integer) key; // Integer ==> int : auto-unboxing
-        for (int i = 0; i < collection.size(); i++) {
-            Board originBoard = collection.get(i);
-            if (originBoard.getNo() == no) {
-                return i;
+    public List<Board> selectList() throws Exception {
+        List<Board> arr = new ArrayList<>();
+        try( 
+                java.sql.Connection con = dataSource.getConnection();    
+             PreparedStatement stmt = con.prepareStatement("select bno, titl, cdt from pms_board");
+             ResultSet rs = stmt.executeQuery();
+           ) {
+            while(rs.next()) {
+                Board board = new Board();
+                board.setNo(rs.getInt("bno"));
+                board.setTitle(rs.getString("titl"));
+                board.setCreatedDate( rs.getDate("cdt"));
+                arr.add(board);
             }
         }
-        return -1;
+        return arr;
+    }
+    
+    public int insert(Board board) throws Exception {
+        
+        Scanner sc = new Scanner(System.in);
+        try( 
+           java.sql.Connection con = dataSource.getConnection();    
+           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_board(titl, cont, cdt) VALUES(?, ?, now())");
+           ) {
+            pstmt.setString(1, board.getTitle());
+            pstmt.setString(2, board.getContent());
+    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return pstmt.executeUpdate();
+        }
+    }
+    
+    public int update(Board board) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();    
+            PreparedStatement stmt = con.prepareStatement("Update pms_board SET titl=?, cont=?, cdt=now() where bno = ?"); 
+            ) {        
+            stmt.setString(1, board.getTitle());
+            stmt.setString(2, board.getContent());
+            stmt.setInt(3, board.getNo());
+                    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return stmt.executeUpdate();
+        }
+    }
+    
+    public Board selectOne(int no) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();    
+            PreparedStatement stmt = con.prepareStatement("select bno,titl,cont,cdt from pms_board where bno=?");) {
+            
+                stmt.setInt(1, no);
+                
+                try (ResultSet rs = stmt.executeQuery();) {
+                    if (!rs.next()) 
+                        return null;
+                
+                    Board board = new Board();
+                    board.setNo(rs.getInt("bno"));
+                    board.setTitle(rs.getString("titl"));
+                    board.setContent(rs.getString("cont"));
+                    board.setCreatedDate(rs.getDate("cdt"));
+                    return board;
+            }
+        }
     }
 }
 
+//ver 31 - JDBC 적용
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.
 //ver 22 - 추상 클래스 AbstractDao를 상속 받는다.

@@ -6,61 +6,108 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 import bitcamp.java106.pms.annotation.Component;
+import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.domain.Member;
+import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
-public class MemberDao extends AbstractDao<Member> {
-    public MemberDao() throws Exception {
-        load();
+public class MemberDao {
+    
+    DataSource dataSource;
+    
+    public MemberDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
     
-    public void load() throws Exception {
-        try (
-                ObjectInputStream in = new ObjectInputStream(
-                               new BufferedInputStream(
-                               new FileInputStream("data/member.data")));
+    public int delete(String id) throws Exception {
+        try(
+             java.sql.Connection con = dataSource.getConnection();         
+             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_member where mid = ?");
             ) {
-        
-            while (true) {
-                try {
-                    this.insert((Member) in.readObject());
-                } catch (Exception e) { // 데이터를 모두 읽었거나 파일 형식에 문제가 있다면,
-                    //e.printStackTrace();
-                    break; // 반복문을 나간다.
-                }
-            }
-        }
-    }
-    
-    public void save() throws Exception {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(
-                                new BufferedOutputStream(
-                                new FileOutputStream("data/member.data")));
-            ) {
-            Iterator<Member> members = this.list();
             
-            while (members.hasNext()) {
-                out.writeObject(members.next());
-            }
-        } 
+            stmt.setString(1, id);
+            
+            return stmt.executeUpdate();
+        }
     }
-        
-    public int indexOf(Object key) {
-        String id = (String) key;
-        for (int i = 0; i < collection.size(); i++) {
-            Member originMember = collection.get(i);
-            if (originMember.getId().toLowerCase().equals(id.toLowerCase())) {
-                return i;
+    
+    public List<Member> selectList() throws Exception {
+        List<Member> arr = new ArrayList<>();
+
+        try( 
+             java.sql.Connection con = dataSource.getConnection();     
+             PreparedStatement stmt = con.prepareStatement("select mid, email from pms_member");
+             ResultSet rs = stmt.executeQuery();
+           ) {
+            while(rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getString("mid"));
+                member.setEmail(rs.getString("email"));
+                arr.add(member);
             }
         }
-        return -1;
+        return arr;
     }
     
+    public int insert(Member member) throws Exception {
+        
+        Scanner sc = new Scanner(System.in);
+        
+        try( 
+           java.sql.Connection con = dataSource.getConnection();     
+           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_member VALUES(?, ?, SHA2(?,224))");
+           ) {
+            pstmt.setString(1, member.getId());
+            pstmt.setString(2, member.getEmail());
+            pstmt.setString(3, member.getPassword());
     
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return pstmt.executeUpdate();
+        }
+    }
+    
+    public int update(Member member) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("Update pms_member SET email=?, pwd=SHA2(?,224) where mid = ?"); 
+            ) {        
+            stmt.setString(1, member.getEmail());
+            stmt.setString(2, member.getPassword());
+            stmt.setString(3, member.getId());
+                    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return stmt.executeUpdate();
+        }
+    }
+    
+    public Member selectOne(String id) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("select mid, email from pms_member where mid=?");) {
+            
+                stmt.setString(1, id);
+                
+                try (ResultSet rs = stmt.executeQuery();) {
+                    if (!rs.next()) 
+                        return null;
+                
+                    Member member = new Member();
+                    member.setId(rs.getString("mid"));
+                    member.setEmail(rs.getString("email"));
+                    return member;
+            }
+        }
+    }
 }
 
 //ver 24 - File I/O 적용

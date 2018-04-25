@@ -1,2 +1,3 @@
 # 변경 내역
-- AppServer.java 변경
+- jdbc 패키지 생성
+- ConnectionProxy.java 생성

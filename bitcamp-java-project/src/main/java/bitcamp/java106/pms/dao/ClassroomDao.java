@@ -6,65 +6,117 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Classroom;
+import bitcamp.java106.pms.domain.Member;
+import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
-public class ClassroomDao extends AbstractDao<Classroom> {
+public class ClassroomDao {
+    DataSource dataSource;
     
-    public ClassroomDao() throws Exception {
-        load();
+    public ClassroomDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
     
-    public void load() throws Exception {
-        try (
-                ObjectInputStream in = new ObjectInputStream(
-                               new BufferedInputStream(
-                               new FileInputStream("data/classroom.data")));
+    public int delete(int no) throws Exception {
+
+        try(
+             java.sql.Connection con = dataSource.getConnection();       
+             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_classroom where crno = ?");
             ) {
-        
-            while (true) {
-                try {
-                    // 수업 데이터를 읽을 때 수업 번호가 가장 큰 것으로 
-                    // 카운트 값을 설정한다.
-                    Classroom classroom = (Classroom) in.readObject();
-                    if (classroom.getNo() >= Classroom.count)
-                        Classroom.count = classroom.getNo() + 1; 
-                        // 다음에 새로 추가할 수업의 번호는 현재 읽은 수업의 번호 보다 
-                        // 1 큰 값이 되게 한다.
-                    this.insert(classroom);
-                } catch (Exception e) { // 데이터를 모두 읽었거나 파일 형식에 문제가 있다면,
-                    //e.printStackTrace();
-                    break; // 반복문을 나간다.
-                }
-            }
-        }
-    }
-    
-    public void save() throws Exception {
-        try (
-                ObjectOutputStream out = new ObjectOutputStream(
-                                new BufferedOutputStream(
-                                new FileOutputStream("data/classroom.data")));
-            ) {
-            Iterator<Classroom> classrooms = this.list();
             
-            while (classrooms.hasNext()) {
-                out.writeObject(classrooms.next());
-            }
-        } 
+            stmt.setInt(1, no);
+            
+            return stmt.executeUpdate();
+        }
     }
     
-    public int indexOf(Object key) {
-        int classroomNo = (Integer) key;
-        for (int i = 0; i < collection.size(); i++) {
-            if (collection.get(i).getNo() == classroomNo) {
-                return i;
+    public List<Classroom> selectList() throws Exception {
+        List<Classroom> arr = new ArrayList<>();
+
+        try( 
+             java.sql.Connection con = dataSource.getConnection();     
+             PreparedStatement stmt = con.prepareStatement("select * from pms_classroom");
+             ResultSet rs = stmt.executeQuery();
+           ) {
+            while(rs.next()) {
+                Classroom classroom = new Classroom();
+                classroom.setNo(rs.getInt("crno"));
+                classroom.setTitle(rs.getString("titl"));
+                classroom.setStartDate(rs.getDate("sdt"));
+                classroom.setEndDate(rs.getDate("edt"));
+                classroom.setRoom(rs.getString("room"));
+                arr.add(classroom);
             }
         }
-        return -1;
+        return arr;
+    }
+    
+    public int insert(Classroom classroom) throws Exception {
+        
+        Scanner sc = new Scanner(System.in);
+
+        try( 
+           java.sql.Connection con = dataSource.getConnection();     
+           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_classroom VALUES(?, ?, ?, ?)");
+           ) {
+            pstmt.setString(1, classroom.getTitle());
+            pstmt.setDate(2, classroom.getStartDate());
+            pstmt.setDate(3, classroom.getEndDate());
+            pstmt.setString(4, classroom.getRoom());
+    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return pstmt.executeUpdate();
+        }
+    }
+    
+    public int update(Classroom classroom) throws Exception {
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("Update pms_classroom SET titl=?, sdt=?, edt=?, room=? where no = ?"); 
+            ) {        
+            stmt.setString(1, classroom.getTitle());
+            stmt.setDate(2, classroom.getStartDate());
+            stmt.setDate(3, classroom.getEndDate());
+            stmt.setString(4, classroom.getRoom());
+            stmt.setInt(5, classroom.getNo());
+                    
+            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
+            return stmt.executeUpdate();
+        }
+    }
+    
+    public Classroom selectOne(int no) throws Exception {
+       
+        try (
+            java.sql.Connection con = dataSource.getConnection();     
+            PreparedStatement stmt = con.prepareStatement("select * from pms_classroom where crno=?");) {
+            
+                stmt.setInt(1, no);
+                
+                try (ResultSet rs = stmt.executeQuery();) {
+                    if (!rs.next()) 
+                        return null;
+                
+                    Classroom classroom = new Classroom();
+                    classroom.setNo(rs.getInt("crno"));
+                    classroom.setTitle(rs.getString("titl"));
+                    classroom.setStartDate(rs.getDate("sdt"));
+                    classroom.setEndDate(rs.getDate("edt"));
+                    classroom.setTitle(rs.getString("room"));
+                    return classroom;
+            }
+        }
     }
 }
 
