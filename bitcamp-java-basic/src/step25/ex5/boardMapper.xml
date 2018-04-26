@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- SQL 문장을 찾을 때 사용할 그룹명을 설정. -->
+  <!-- 보통 그룹명은 SQl Mapper 파일이ㅣ 있는 패키지를 지정한다. -->
+  <!-- 또는 SQL을 사용할 인터페이스나 클래스를 그룹명으로 지정 -->
+  <!-- namespace는 기존에 있는 클래스와 연결해주는 역할을 한다. -->
+  <!-- 굳이 실제로 있는 클래스명을 적을 필요 없이 임의로 namespace를 주면 된다. -->
+  <!-- 나중에 메인에서 사용할 때, namespace.<SQL:id> 를 통해 실행할 수 있다. -->
+<mapper namespace="BoardMapper"> <!-- namespace의 이름을 바꿔준다. -->
+    
+  <!-- SQL문 : 태그 안에 작성 : <>안에 있는 것을 말함. -->
+  <!-- 하단의 select처럼 나머지 SQL문도 만들어준다. -->
+  <!-- 태그이름은 사실 뭘로 하든 상관없지만 유지보수의 일관성을 위해 SQL문에서 사용하는 명령어를 태그명으로 주는 것이 좋다. -->
+  
+  <!-- 하단의 id값은 SQL문을 찾을 때의 식별자값이다. -->
+  <!-- 하단의 resultType는 결과를 저장할 클래스를 지정하는 것이다. 반드시 fully-qualified name을 사용(결국 실제로 사용할 클래스의 클래스패스를 적어주면 되는 듯.)-->
+  <!-- 값을 자바 객체에 넣을 때의 규칙 -->
+  <!-- 1. 컬럼명 -> set(컬럼명) => bno를 가져올 때 호출되는 함수는 setBno()가 되어야하는데 우리는 자바에서 no를 쓰고있다. -->
+  <!-- 그래서 자바와 db 컬럼명은 서로 다르기때문에 찾지못한 것이었다. -->
+  <!-- 따라서 컬럼명에 자바에서 쓰는 변수명으로 alias를 붙여 사용하면 정상작동한다. -->
+  <select id="selectBoard" resultType="step25.ex5.Board">
+    select bno as no, titl as title, cont as content, rdt as registeredDate from ex_board
+    <!-- 실제로 다음과 같은 코드로 작동이 된다.
+    
+        ArrayList<Board> list = new ArrayList<>();
+        
+        while(rs.next()) {
+            Board board = new Board();
+            board.setBno(rs.getInt("bno"));
+            board.setTitl(rs.getString("titl"));
+            board.setCont(rs.getString("cont"));
+            board.setRdt(rs.getData("rdt"));
+            list.add(board);
+        }
+    
+        하지만 우리는 자바에서 다음과 같이 사용한다.
+        bno => no
+        titl => title
+        cont => content
+        rdt => registeredDate
+        그렇기때문에 맞는 setter가 없기때문에 호출가능한 setter가 없어서 데이터를 못넣은 것이다.
+     -->
+  </select>
+</mapper>

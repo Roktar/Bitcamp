@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="BoardMapper">
+
+    <!-- Alias를 쓰면 클래스패스.클래스명이 아닌 alias 명으로 사용이 가능하다. -->
+  <select id="selectBoard" resultType="board">
+  <!-- alias는 대소문자를 구분하지않는다. -->
+    select bno as no, titl as title, cont as content, rdt as registeredDate from ex_board
+    <!-- 실제로 다음과 같은 코드로 작동이 된다.
+    
+        ArrayList<Board> list = new ArrayList<>();
+        
+        while(rs.next()) {
+            Board board = new Board();
+            board.setBno(rs.getInt("bno"));
+            board.setTitl(rs.getString("titl"));
+            board.setCont(rs.getString("cont"));
+            board.setRdt(rs.getData("rdt"));
+            list.add(board);
+        }
+    
+        하지만 우리는 자바에서 다음과 같이 사용한다.
+        bno => no
+        titl => title
+        cont => content
+        rdt => registeredDate
+        그렇기때문에 맞는 setter가 없기때문에 호출가능한 setter가 없어서 데이터를 못넣은 것이다.
+     -->
+  </select>
+</mapper>
