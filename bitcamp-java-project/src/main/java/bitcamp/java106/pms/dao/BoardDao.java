@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Board;
 import bitcamp.java106.pms.jdbc.DataSource;
@@ -13,89 +16,48 @@ import bitcamp.java106.pms.jdbc.DataSource;
 @Component
 public class BoardDao {
     
+    // SqlSessionFactory를 받아온다.
     DataSource dataSource;
+    SqlSessionFactory factory;
     
-    public BoardDao(DataSource dataSource) {
+    public BoardDao(DataSource dataSource, SqlSessionFactory factory) {
         this.dataSource = dataSource;
+        this.factory = factory;
     }
     
     public int delete(int no) throws Exception {
-        try(
-             java.sql.Connection con = dataSource.getConnection();    
-             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_board where bno = ?");
-            ) {
-            
-            stmt.setInt(1, no);
-            
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.BoardDao.delete", no);
+            session.commit();
+            return count;
         }
     }
     
     public List<Board> selectList() throws Exception {
-        List<Board> arr = new ArrayList<>();
-        try( 
-                java.sql.Connection con = dataSource.getConnection();    
-             PreparedStatement stmt = con.prepareStatement("select bno, titl, cdt from pms_board");
-             ResultSet rs = stmt.executeQuery();
-           ) {
-            while(rs.next()) {
-                Board board = new Board();
-                board.setNo(rs.getInt("bno"));
-                board.setTitle(rs.getString("titl"));
-                board.setCreatedDate( rs.getDate("cdt"));
-                arr.add(board);
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectList("bitcamp.java106.pms.dao.BoardDao.selectList");
         }
-        return arr;
     }
     
     public int insert(Board board) throws Exception {
-        
-        Scanner sc = new Scanner(System.in);
-        try( 
-           java.sql.Connection con = dataSource.getConnection();    
-           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_board(titl, cont, cdt) VALUES(?, ?, now())");
-           ) {
-            pstmt.setString(1, board.getTitle());
-            pstmt.setString(2, board.getContent());
-    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return pstmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.insert("bitcamp.java106.pms.dao.BoardDao.insert", board);
+            session.commit();
+            return count;
         }
     }
     
     public int update(Board board) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();    
-            PreparedStatement stmt = con.prepareStatement("Update pms_board SET titl=?, cont=?, cdt=now() where bno = ?"); 
-            ) {        
-            stmt.setString(1, board.getTitle());
-            stmt.setString(2, board.getContent());
-            stmt.setInt(3, board.getNo());
-                    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count = session.update("bitcamp.java106.pms.dao.BoardDao.update", board);
+            session.commit();
+            return count;
         }
     }
     
     public Board selectOne(int no) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();    
-            PreparedStatement stmt = con.prepareStatement("select bno,titl,cont,cdt from pms_board where bno=?");) {
-            
-                stmt.setInt(1, no);
-                
-                try (ResultSet rs = stmt.executeQuery();) {
-                    if (!rs.next()) 
-                        return null;
-                
-                    Board board = new Board();
-                    board.setNo(rs.getInt("bno"));
-                    board.setTitle(rs.getString("titl"));
-                    board.setContent(rs.getString("cont"));
-                    board.setCreatedDate(rs.getDate("cdt"));
-                    return board;
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectOne("bitcamp.java106.pms.dao.BoardDao.selectOne", no);
         }
     }
 }

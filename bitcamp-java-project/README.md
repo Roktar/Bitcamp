@@ -1,5 +1,15 @@
 # 자바프로젝트
 
+## src33 - MyBatis 적용
+- 학습목표
+    - JDBC 대신 Mybatis를 사용했을 때의 이점을 이해
+    - Mybatis를 설정하고 코드에 적용
+- 작업내용
+    - Mybatis 프레임워크 관련 의존 라이브러리를 로드
+    - SqlSessionFactory 준비
+    - DAO에 SqlSessionFactory를 의존객체로 주입
+    - DAO는 JDBC 코드 대신 SqlSession을 사용하여 데이터를 처리하도록 변경
+
 ## src32 - DB Connection Pool 적용
 - 학습목표
     - Pooling(객체를 일정량 생성해둔 후 닫지않고 재사용) 기법 이해

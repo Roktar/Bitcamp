@@ -2,15 +2,12 @@
 package bitcamp.java106.pms.controller.teammember;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.controller.Controller;
 import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.dao.TeamMemberDao;
-import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.server.ServerRequest;
 import bitcamp.java106.pms.server.ServerResponse;
@@ -46,7 +43,7 @@ public class TeamMemberListController implements Controller {
         out.print("회원들: ");
         
         try {
-            ArrayList<String> list = teamMemberDao.list(teamName);
+            List<String> list = teamMemberDao.list(teamName);
             if (list != null) {
                 for (String member : list) {
                     out.printf("%s, ", member);

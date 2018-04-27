@@ -18,6 +18,9 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.TimeZone;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
@@ -27,104 +30,50 @@ import bitcamp.java106.pms.jdbc.DataSource;
 public class TeamDao {
     
     DataSource dataSource;
+    SqlSessionFactory factory;
     
-    public TeamDao(DataSource dataSource) {
+    public TeamDao(DataSource dataSource, SqlSessionFactory factory) {
         this.dataSource = dataSource;
+        this.factory = factory;
     }
     
-    public int delete(String name) throws Exception {
-        try(
-             java.sql.Connection con = dataSource.getConnection();     
-             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_team where name = ?");
-            ) {
-            
-            stmt.setString(1, name);
-            
-            return stmt.executeUpdate();
+    public int delete(String id) throws Exception {
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.TeamDao.delete", id);
+            session.commit();
+            return count;
         }
     }
     
     public List<Team> selectList() throws Exception {
-        List<Team> arr = new ArrayList<>();
-
-        try( 
-            java.sql.Connection con = dataSource.getConnection();     
-             PreparedStatement stmt = con.prepareStatement("select * from pms_team");
-             ResultSet rs = stmt.executeQuery();
-           ) {
-            while(rs.next()) {
-                Team team = new Team();
-                team.setName(rs.getString("name"));
-                team.setDescription(rs.getString("name"));
-                team.setStartDate(rs.getDate("sdt"));
-                team.setEndDate(rs.getDate("edt"));
-                team.setMaxQty(rs.getInt("max_qty"));
-                arr.add(team);
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectList("bitcamp.java106.pms.dao.TeamDao.selectList");
         }
-        return arr;
     }
     
     public int insert(Team team) throws Exception {
-        
-        Scanner sc = new Scanner(System.in);
-        try( 
-            java.sql.Connection con = dataSource.getConnection();     
-           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_team VALUES(?, ?, ?, ?, ?)");
-           ) {
-            pstmt.setString(1, team.getName());
-            pstmt.setString(2, team.getDescription());
-            pstmt.setInt(3, team.getMaxQty());
-            pstmt.setDate(4, team.getStartDate(), Calendar.getInstance(Locale.KOREAN));
-            pstmt.setDate(5, team.getEndDate(), Calendar.getInstance(Locale.KOREAN));
-            // or serverTimezone=Asia/Seoul을 줘도 된다.
-            // 추후 접속지역에 따라 Locale 정보를 다르게 줘야하는 방법.
-            // or 문자열로 날짜를 집어넣을 것.
-    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return pstmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.insert("bitcamp.java106.pms.dao.TeamDao.insert", team);
+            session.commit();
+            return count;
         }
     }
     
     public int update(Team team) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement("Update pms_Team SET dscrt=?, max_qty=?, sdt=?, edt=? where name = ?"); 
-            ) {        
-            stmt.setString(1, team.getDescription());
-            stmt.setInt(2, team.getMaxQty());
-            stmt.setDate(3, team.getStartDate());
-            stmt.setDate(4, team.getEndDate());
-            stmt.setString(5, team.getName());
-                    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.update("bitcamp.java106.pms.dao.TeamDao.update", team);
+            session.commit();
+            return count;
         }
     }
     
-    public Team selectOne(String name) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement("select * from pms_team where name=?");) {
-            
-                stmt.setString(1, name);
-                
-                try (ResultSet rs = stmt.executeQuery();) {
-                    if (!rs.next()) 
-                        return null;
-                
-                    Team team = new Team();
-                    team.setName(name);
-                    team.setDescription(rs.getString("dscrt"));
-                    team.setMaxQty(rs.getInt("max_qty"));
-                    team.setStartDate(rs.getDate("sdt"));
-                    team.setEndDate(rs.getDate("edt"));
-                    
-                    return team;
-            }
+    public Team selectOne(String id) throws Exception {
+        try (SqlSession session = factory.openSession();) {
+            return session.selectOne("bitcamp.java106.pms.dao.TeamDao.selectOne", id);
         }
     }
 }
+
 
 //ver 24 - File I/O 적용
 //ver 23 - @Component 애노테이션을 붙인다.

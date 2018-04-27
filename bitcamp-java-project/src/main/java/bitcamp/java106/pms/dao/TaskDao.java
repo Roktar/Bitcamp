@@ -1,134 +1,75 @@
 package bitcamp.java106.pms.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import bitcamp.java106.pms.annotation.Component;
-import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Task;
-import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
 public class TaskDao {
     
     DataSource dataSource;
+    SqlSessionFactory factory;
     
-    public TaskDao(DataSource dataSource) {
+    public TaskDao(DataSource dataSource, SqlSessionFactory factory) {
         this.dataSource = dataSource;
+        this.factory = factory;
     }
     
+    
     public int delete(int no) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "delete from pms_task where tano=?");) {
-            
-            stmt.setInt(1, no);
-            return stmt.executeUpdate();
-        } catch (Exception e) {
-            //System.out.println("오류!");
-            // 로그 파일에 기록을 남긴다.
-            throw e;
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.TaskDao.delete", no);
+            session.commit();
+            return count;
         }
     }
     
+    
     public List<Task> selectList(String teamName) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "select tano,titl,sdt,edt,stat,mid from pms_task where tnm=?");) {
-            
-            stmt.setString(1, teamName);    
-            try (ResultSet rs = stmt.executeQuery()) {
-                ArrayList<Task> arr = new ArrayList<>();
-                while (rs.next()) {
-                    Task task = new Task();
-                    task.setNo(rs.getInt("tano"));
-                    task.setTitle(rs.getString("titl"));
-                    task.setStartDate(rs.getDate("sdt"));
-                    task.setEndDate(rs.getDate("edt"));
-                    task.setState(rs.getInt("stat"));
-                    task.setWorker(new Member().setId(rs.getString("mid")));
-                    arr.add(task);
-                }
-                return arr;
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectList("bitcamp.java106.pms.dao.TaskDao.selectList", teamName);
         }
     }
 
     public int insert(Task task) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "insert into pms_task(titl,sdt,edt,mid,tnm) values(?,?,?,?,?)");) {
-            
-            stmt.setString(1, task.getTitle());
-            stmt.setDate(2, task.getStartDate(), Calendar.getInstance(Locale.KOREAN));
-            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREAN));
-            stmt.setString(4, task.getWorker().getId());
-            stmt.setString(5, task.getTeam().getName());
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.TaskDao.insert", task);
+            session.commit();
+            return count;
         }
     }
 
     public int update(Task task) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "update pms_task set titl=?,sdt=?,edt=?,mid=?,tnm=? where tano=?");) {
-            
-            stmt.setString(1, task.getTitle());
-            stmt.setDate(2, task.getStartDate(), Calendar.getInstance(Locale.KOREAN));
-            stmt.setDate(3, task.getEndDate(), Calendar.getInstance(Locale.KOREAN));
-            stmt.setString(4, task.getWorker().getId());
-            stmt.setString(5, task.getTeam().getName());
-            stmt.setInt(6, task.getNo());
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.TaskDao.update", task);
+            session.commit();
+            return count;
         }
     }
 
-    public Task selectOne(int no) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "select titl,sdt,edt,stat,mid,tnm from pms_task where tano=?");) {
-            
-            stmt.setInt(1, no);
-            
-            try (ResultSet rs = stmt.executeQuery();) {
-                if (!rs.next()) 
-                    return null;
-                
-                Task task = new Task();
-                task.setNo(no);
-                task.setTitle(rs.getString("titl"));
-                task.setStartDate(rs.getDate("sdt"));
-                task.setEndDate(rs.getDate("edt"));
-                task.setState(rs.getInt("stat"));
-                task.setWorker(new Member().setId(rs.getString("mid")));
-                task.setTeam(new Team().setName(rs.getString("tnm")));
-                return task;
-            }
-        }  
+    public int selectOne(int no) throws Exception {
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.TaskDao.selectOne", no);
+            session.commit();
+            return count;
+        }
     }
 
     public int updateState(int no, int state) throws Exception {
-        
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement(
-                "update pms_task set stat where tano=?");) {
+        try (SqlSession session = factory.openSession();) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("no", no);
+            map.put("state", state);
             
-            stmt.setInt(1, state);
-            stmt.setInt(2, no);
-            return stmt.executeUpdate();
+            int count =  session.delete("bitcamp.java106.pms.dao.TaskDao.update_state", map);
+            session.commit();
+            return count;
         }
     }
 }

@@ -59,7 +59,6 @@ public class Task implements Serializable {
         this.worker = worker;
         
         return this;
-
     }
     
     public Team getTeam() {

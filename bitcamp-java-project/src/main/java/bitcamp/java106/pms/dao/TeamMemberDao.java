@@ -5,82 +5,69 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import bitcamp.java106.pms.annotation.Component;
-import bitcamp.java106.pms.domain.Member;
-import bitcamp.java106.pms.domain.Team;
 import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
 public class TeamMemberDao {
      
     DataSource dataSource;
+    SqlSessionFactory factory;
     
-    public TeamMemberDao(DataSource dataSource) {
+    public TeamMemberDao(DataSource dataSource, SqlSessionFactory factory) {
         this.dataSource = dataSource;
+        this.factory = factory;
     }
     
     public int insert(String teamName, String memberId) throws Exception { //insert
-
-        try(
-            java.sql.Connection con = dataSource.getConnection();     
-             PreparedStatement stmt = con.prepareStatement("INSERT INTO pms_team_member VALUES(?, ?)");
-            ) {
+        
+        try (SqlSession session = factory.openSession();) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("teamName", teamName);
+            map.put("memberId", memberId);
             
-            stmt.setString(1, teamName);
-            stmt.setString(2, memberId);
-            
-            return stmt.executeUpdate();
+            int count =  session.insert("bitcamp.java106.pms.dao.TeamMemberDao.insert", map);
+            session.commit();
+            return count;
         }
     }
     
-    public int delete(String teamName, String memberId) throws Exception { //delete
-        try(
-            java.sql.Connection con = dataSource.getConnection();      
-             PreparedStatement stmt = con.prepareStatement("DELETE FROM pms_team_member where tnm = ? and mid = ?");
-            ) {
+    public int delete(String teamName, String memberId) throws Exception {
+        try (SqlSession sqlSession = factory.openSession()) {
+            HashMap<String,Object> paramMap = new HashMap<>();
+            paramMap.put("teamName", teamName);
+            paramMap.put("memberId", memberId);
             
-            stmt.setString(1, teamName);
-            stmt.setString(2, memberId);
-            
-            return stmt.executeUpdate();
-        }
+            int count = sqlSession.delete(
+                    "bitcamp.java106.pms.dao.TeamMemberDao.delete", paramMap);
+            sqlSession.commit();
+            return count;
+        } 
     }
     
-    public ArrayList<String> list(String teamName) throws Exception {
-        try(
-            java.sql.Connection con = dataSource.getConnection();         
-             PreparedStatement stmt = con.prepareStatement("SELECT mid FROM pms_team_member where tnm = ?");
-            ) {
-            
-            stmt.setString(1, teamName);
-            
-            ResultSet rs = stmt.executeQuery();
-            ArrayList<String> arr = new ArrayList<>();
-            if(rs.next()) {
-                arr.add(rs.getString("mid"));
-            }
-            return arr;
+    public List<String> list(String teamName) throws Exception {
+        
+        try (SqlSession session = factory.openSession();) {            
+            return session.selectList("bitcamp.java106.pms.dao.TeamMemberDao.selectList", teamName);
         }
     }
     
     public boolean isExist(String teamName, String memberId) throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        
-        try(
-             java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java106db?serverTimezone=UTC&useSSL=false", "java106", "1111");    
-             PreparedStatement stmt = con.prepareStatement("SELECT * FROM pms_team_member where tnm = ? and mid = ?");
-            ) {
+        try (SqlSession sqlSession = factory.openSession()) {
+            HashMap<String,Object> paramMap = new HashMap<>();
+            paramMap.put("teamName", teamName);
+            paramMap.put("memberId", memberId);
             
-            stmt.setString(1, teamName);
-            stmt.setString(2, memberId);
-            
-            try (ResultSet rs = stmt.executeQuery();) {
-                if(rs.next())
-                    return true;
-                else
-                    return false;
-            }
+            int count = sqlSession.selectOne("bitcamp.java106.pms.dao.TeamMemberDao.isExist", paramMap);
+            if (count > 0)
+                return true;
+            else 
+                return false;
         }
     }
 }

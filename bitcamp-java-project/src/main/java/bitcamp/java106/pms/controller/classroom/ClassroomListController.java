@@ -22,7 +22,7 @@ public class ClassroomListController implements Controller {
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
-        Iterator<Classroom> iterator = classroomDao.list();
+        Iterator<Classroom> iterator = classroomDao.selectList();
         while (iterator.hasNext()) {
             Classroom classroom = iterator.next();
             out.printf("%d, %s, %s ~ %s, %s\n",

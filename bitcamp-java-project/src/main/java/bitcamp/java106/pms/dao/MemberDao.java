@@ -1,22 +1,12 @@
 package bitcamp.java106.pms.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import bitcamp.java106.pms.annotation.Component;
-import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.domain.Classroom;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.jdbc.DataSource;
 
@@ -24,88 +14,46 @@ import bitcamp.java106.pms.jdbc.DataSource;
 public class MemberDao {
     
     DataSource dataSource;
+    SqlSessionFactory factory;
     
-    public MemberDao(DataSource dataSource) {
+    public MemberDao(DataSource dataSource, SqlSessionFactory factory) {
         this.dataSource = dataSource;
+        this.factory = factory;
     }
     
     public int delete(String id) throws Exception {
-        try(
-             java.sql.Connection con = dataSource.getConnection();         
-             PreparedStatement stmt = con.prepareStatement("Delete FROM pms_member where mid = ?");
-            ) {
-            
-            stmt.setString(1, id);
-            
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.delete("bitcamp.java106.pms.dao.MemberDao.delete", id);
+            session.commit();
+            return count;
         }
     }
     
     public List<Member> selectList() throws Exception {
-        List<Member> arr = new ArrayList<>();
-
-        try( 
-             java.sql.Connection con = dataSource.getConnection();     
-             PreparedStatement stmt = con.prepareStatement("select mid, email from pms_member");
-             ResultSet rs = stmt.executeQuery();
-           ) {
-            while(rs.next()) {
-                Member member = new Member();
-                member.setId(rs.getString("mid"));
-                member.setEmail(rs.getString("email"));
-                arr.add(member);
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectList("bitcamp.java106.pms.dao.MemberDao.selectList");
         }
-        return arr;
     }
     
     public int insert(Member member) throws Exception {
-        
-        Scanner sc = new Scanner(System.in);
-        
-        try( 
-           java.sql.Connection con = dataSource.getConnection();     
-           PreparedStatement pstmt = con.prepareStatement("INSERT INTO pms_member VALUES(?, ?, SHA2(?,224))");
-           ) {
-            pstmt.setString(1, member.getId());
-            pstmt.setString(2, member.getEmail());
-            pstmt.setString(3, member.getPassword());
-    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return pstmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.insert("bitcamp.java106.pms.dao.MemberDao.insert", member);
+            session.commit();
+            return count;
         }
     }
     
     public int update(Member member) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement("Update pms_member SET email=?, pwd=SHA2(?,224) where mid = ?"); 
-            ) {        
-            stmt.setString(1, member.getEmail());
-            stmt.setString(2, member.getPassword());
-            stmt.setString(3, member.getId());
-                    
-            // Statement 객체를 사용하여 DBMS에 SQL문을 전송한다.
-            return stmt.executeUpdate();
+        try (SqlSession session = factory.openSession();) {
+            int count =  session.update("bitcamp.java106.pms.dao.MemberDao.update", member);
+            session.commit();
+            return count;
         }
     }
     
     public Member selectOne(String id) throws Exception {
-        try (
-            java.sql.Connection con = dataSource.getConnection();     
-            PreparedStatement stmt = con.prepareStatement("select mid, email from pms_member where mid=?");) {
-            
-                stmt.setString(1, id);
-                
-                try (ResultSet rs = stmt.executeQuery();) {
-                    if (!rs.next()) 
-                        return null;
-                
-                    Member member = new Member();
-                    member.setId(rs.getString("mid"));
-                    member.setEmail(rs.getString("email"));
-                    return member;
-            }
+        try (SqlSession session = factory.openSession();) {
+            return session.selectOne("bitcamp.java106.pms.dao.MemberDao.selectOne", id);
         }
     }
 }
