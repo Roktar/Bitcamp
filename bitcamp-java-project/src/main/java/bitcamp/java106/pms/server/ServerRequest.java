@@ -1,6 +1,7 @@
 // 역할: 서버 요청 정보를 다룬다. 
 package bitcamp.java106.pms.server;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class ServerRequest {
@@ -8,7 +9,7 @@ public class ServerRequest {
     protected String path;
     protected HashMap<String,String> paramMap = new HashMap<>();
     
-    public ServerRequest(String requestLine) {
+    public ServerRequest(String requestLine) throws Exception {
         // requestLine의 예) /board/add?title=aaa&content=bbb
         
         String[] arr = requestLine.split("\\?");
@@ -26,7 +27,14 @@ public class ServerRequest {
         
         for (String entry : entryArr) {
             String[] keyValue = entry.split("=");
-            this.paramMap.put(keyValue[0], keyValue[1]);
+            try {
+                this.paramMap.put(keyValue[0], URLDecoder.decode(keyValue[1], "UTF-8"));
+                //this.paramMap.put(keyValue[0], keyValue[1]);
+                // keyValue는 UTF-8코드를 ASCII 문자화 시킨 것으로
+                // UTF-8로 다시 만든 다음 UTF-16으로 만들어 자바 String 객체를 반환
+            } catch(Exception e) {
+                System.out.println("URL DECODING ERROR");
+            }
         }
     }
     

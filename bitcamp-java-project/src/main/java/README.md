@@ -1,3 +1,5 @@
 # 변경 내역
-- jdbc 패키지 생성
-- ConnectionProxy.java 생성
+- annotation 패키지 제거
+- context 패키지 제거
+- AppConfig.java 생성
+- DAO 및 컨트롤러에서 사용한 Component 어노테이션을 스프링 라이브러리의 Component로 교체

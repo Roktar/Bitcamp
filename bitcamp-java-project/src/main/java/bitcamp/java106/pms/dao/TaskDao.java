@@ -5,19 +5,17 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.stereotype.Component;
 
-import bitcamp.java106.pms.annotation.Component;
 import bitcamp.java106.pms.domain.Task;
 import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
 public class TaskDao {
     
-    DataSource dataSource;
     SqlSessionFactory factory;
     
-    public TaskDao(DataSource dataSource, SqlSessionFactory factory) {
-        this.dataSource = dataSource;
+    public TaskDao(SqlSessionFactory factory) {
         this.factory = factory;
     }
     

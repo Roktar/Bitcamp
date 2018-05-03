@@ -3,7 +3,8 @@ package bitcamp.java106.pms.controller.board;
 import java.io.PrintWriter;
 import java.sql.Date;
 
-import bitcamp.java106.pms.annotation.Component;
+import org.springframework.stereotype.Component;
+
 import bitcamp.java106.pms.controller.Controller;
 import bitcamp.java106.pms.dao.BoardDao;
 import bitcamp.java106.pms.domain.Board;
@@ -28,6 +29,8 @@ public class BoardAddController implements Controller {
         try {
             boardDao.insert(board);
             out.println("등록 성공!");
+            System.out.println(request.getParameter("title"));
+            System.out.println(request.getParameter("content"));
         } catch(Exception e) { 
             out.println("- 등록실패 ");
             e.printStackTrace(out);
