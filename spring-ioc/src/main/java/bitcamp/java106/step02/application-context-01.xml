@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 
+        IoC 컨테이너가 생성해야할 객체에 대한 정보 설정
+        => IoC 컨테이너는 다음 태그를 보고 설정된 정보에 따라 객체를 생성함.
+     -->
+
+    <!-- 
+    
+    id : 생성된 객체를 컨테이너에 보관할 때, 꺼내기 위한 key값.
+         Map.put("c1", new Car()); 와 같은 역할이다.
+         같은 이름의 bean을 여러개 지정할 수 없음을 유념.(변수명은 중복불가)
+    class : 생성할 클래스의 정보다. 패키지명 + 클래스이름으로 지정
+            여기서는 Car클래스를 사용하였으므로 Car 객체를 만들겠다고 선언했다.
+     -->
+    <bean id="c1" class="bitcamp.java106.step02.Car">
+    </bean>
+    <bean id="c2" class="bitcamp.java106.step02.Car"/>
+
+    <!-- 위의 정보를 갖는 c1 객체를 생성한다. -->
+    <!-- 스프링 홈페이지 core부분에서 긁어온다. -->
+</beans>

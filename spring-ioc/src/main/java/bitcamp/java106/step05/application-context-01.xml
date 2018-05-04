@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 배열형식 인자 -->
+    <bean id="c1" class="bitcamp.java106.step05.Car">
+        <property name="tires">
+            <array>
+                <bean class="bitcamp.java106.step05.Tire" p:maker="금호타이어" p:width="180" />
+                <bean class="bitcamp.java106.step05.Tire" p:maker="금호타이어" p:width="180" />
+                <bean class="bitcamp.java106.step05.Tire" p:maker="한국타이어" p:width="180" />
+                <bean class="bitcamp.java106.step05.Tire" p:maker="한국타이어" p:width="180" />
+                <bean class="bitcamp.java106.step05.Tire" p:maker="비트타이어" p:width="100" />
+            </array>
+        </property>
+        <property name="model"> 
+            <value type="java.lang.String">티코</value>
+         </property>
+        <property name="maker"> 
+            <value type="java.lang.String">비트자동차</value>
+         </property>
+         <property name="cc"> 
+            <value type="int">890</value>
+         </property>
+    </bean>
+    
+</beans>

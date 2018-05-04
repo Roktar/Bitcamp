@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <!--  빈 생성 정책
+            scope 속성에 빈의 생성 정책을 지정할 수 있음.,
+    -->
+    <bean id="c1" class="bitcamp.java106.step02.Car"/>
+    <bean id="c2" class="bitcamp.java106.step02.Car" scope="singleton"/>
+    <bean id="c3" class="bitcamp.java106.step02.Car" scope="prototype"/>
+    
+</beans>

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-// SPRING IOC 처리
+// SPRING IOC 처리 - filesystem으로부터 읽어오는 컨텍스트
 public class Exam02 {
     public static void main(String[] args) {
         ApplicationContext iocContainer = null;

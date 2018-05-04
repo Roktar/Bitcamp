@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Setter 호출 -->
+    <bean id="c1" class="bitcamp.java106.step04.Car">
+        <property name="model"> 
+            <value type="java.lang.String">티코</value>
+         </property>
+        <property name="maker"> 
+            <value type="java.lang.String">비트자동차</value>
+         </property>
+         <property name="cc"> 
+            <value type="int">890</value>
+         </property>
+    </bean>
+    
+    <bean id="c2" class="bitcamp.java106.step04.Car">
+        <property name="model"> 
+            <value type="java.lang.String">티코</value>
+         </property>
+        <property name="maker"> 
+            <value type="java.lang.String">비트자동차</value>
+         </property>
+         <property name="cc"> 
+            <value type="int">890</value>
+         </property>
+    </bean>
+    
+    <bean id="c4" class="bitcamp.java106.step04.Car" p:model="티코" p:maker="비트자동차"  p:cc="890" />
+</beans>

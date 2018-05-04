@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 매개변수가 있는 생성자를 호출하기 -->
+    <bean id="c1" class="bitcamp.java106.step03.Car">
+        <constructor-arg type="java.lang.String" value="티코"/>
+    </bean>
+    
+    <bean id="c2" class="bitcamp.java106.step03.Car">
+        <constructor-arg index="0" type="java.lang.String" value="티코"/>
+        <constructor-arg index="1" type="int" value="890"/>
+    </bean>
+    
+    <bean id="c3" class="bitcamp.java106.step03.Car">
+        <constructor-arg index="0" value="티코"/>
+        <constructor-arg index="1" value="890"/>
+    </bean>
+    
+    <!-- String, String 생성자가 없기때문에 아래는 에러남. -->
+    <bean id="c4" class="bitcamp.java106.step03.Car">
+        <constructor-arg index="0" value="티코"/>
+        <constructor-arg index="1" value="aaa"/>
+    </bean>
+</beans>

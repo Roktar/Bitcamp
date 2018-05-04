@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 빈의 이름을 지정하지않았을 때 -->
+    <bean class="bitcamp.java106.step02.Car"/>
+        <bean class="bitcamp.java106.step02.Car"/>
+            <bean class="bitcamp.java106.step02.Car"/>
+                <bean class="bitcamp.java106.step02.Car"/>
+                    <bean class="bitcamp.java106.step02.Car"/>
+                        <bean class="bitcamp.java106.step02.Car"/>
+                            <bean class="bitcamp.java106.step02.Car"/>
+                            
+                            
+    <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+        <bean class="bitcamp.java106.step02.Engine"/>
+</beans>

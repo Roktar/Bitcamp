@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Bean의 이름을 지정하는 방법 -->
+
+    <bean id="c1" class="bitcamp.java106.step02.Car">
+    </bean>
+    <bean id="c2" name="c3" class="bitcamp.java106.step02.Car"/>
+    <bean name="c4" class="bitcamp.java106.step02.Car"/>
+    <bean id="c5" name="c6 c7 c8" class="bitcamp.java106.step02.Car"/>
+    <bean id="c60" name="c61,c62,c63" class="bitcamp.java106.step02.Car"/>    
+    <bean id="c70" name="c71;c72;c73" class="bitcamp.java106.step02.Car"/>
+    
+    <!-- 위의 정보를 갖는 c1 객체를 생성한다. -->
+    <!-- 스프링 홈페이지 core부분에서 긁어온다. -->
+</beans>
