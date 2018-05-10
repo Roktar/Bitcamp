@@ -25,9 +25,9 @@ public class TaskDeleteController implements Controller {
     @Override
     public void service(ServerRequest request, ServerResponse response) {
         PrintWriter out = response.getWriter();
-        int no = Integer.parseInt(request.getParameter("no"));
         
-        try {            
+        try {
+            int no = Integer.parseInt(request.getParameter("no"));
             int count = taskDao.delete(no);
             if (count == 0) {
                 out.println("해당 작업이 존재하지 않습니다.");

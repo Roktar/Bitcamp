@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 팩토리메소드를 통해 객체 생성 -->
+    <bean id="c1" class="bitcamp.java106.step07.Car" >
+        <property name="model" value="티코"/>
+        <property name="maker" value="비트자동차" />
+        <property name="cc" value="890"/> <!-- 자동으로 String.parseInt 함수가 호출되어 들어간다. -->
+        <property name="createdDate" ref="d1"/>
+        <property name="auto" value="true"/>
+    </bean>
+    
+    <bean id="c2" class="bitcamp.java106.step07.Car" p:model="티코" p:maker="비트자동차" p:cc="890" p:createdDate-ref="d2" />
+    
+    <bean id="d1" class="java.sql.Date" factory-method="valueOf">
+        <constructor-arg value="2018-05-08"/>
+    </bean>
+    <bean id="d2" class="java.sql.Date" factory-method="valueOf">
+        <constructor-arg value="2018-05-08"/>
+    </bean>
+</beans>

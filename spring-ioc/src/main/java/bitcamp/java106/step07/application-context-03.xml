@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 팩토리메소드를 통해 객체 생성 -->
+    <bean id="c1" class="bitcamp.java106.step07.Car" >
+        <property name="model" value="티코"/>
+        <property name="maker" value="비트자동차" />
+        <property name="cc" value="890"/> <!-- 자동으로 String.parseInt 함수가 호출되어 들어간다. -->
+        <property name="createdDate" value="2018-05-08"/>
+            <!-- 하단에 에디터를 등록했기때문에 그냥 문자열을 지정해도 된다. -->
+        <property name="auto" value="true"/>
+    </bean>
+    
+    <!-- String => Date로 변환시키는 프로퍼티에디터 등록 -->
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+	    <property name="customEditors">
+	        <map>
+	            <entry key="java.sql.Date" value="bitcamp.java106.step07.CustomDateEditor"/>
+	        </map>
+	    </property>
+    </bean>
+ 
+</beans>

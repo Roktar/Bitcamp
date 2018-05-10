@@ -29,8 +29,6 @@ public class BoardAddController implements Controller {
         try {
             boardDao.insert(board);
             out.println("등록 성공!");
-            System.out.println(request.getParameter("title"));
-            System.out.println(request.getParameter("content"));
         } catch(Exception e) { 
             out.println("- 등록실패 ");
             e.printStackTrace(out);

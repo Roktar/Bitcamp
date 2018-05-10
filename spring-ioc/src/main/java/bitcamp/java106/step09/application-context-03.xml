@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:ctx="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd" >
+    
+    <ctx:component-scan base-package="bitcamp.java106.step09" >
+        <ctx:include-filter type="annotation" expression="bitcamp.java106.step09.b.B2"/>
+        <ctx:exclude-filter type="regex" expression="bitcamp.java106.step09.b.B"/>
+        <ctx:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </ctx:component-scan>
+</beans>

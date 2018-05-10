@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:ctx="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <ctx:annotation-config />
+   
+    <!-- 팩토리메소드를 통해 객체 생성 -->
+    <bean id="c1" class="bitcamp.java106.step08.Car6" >
+        <property name="model" value="티코"/>
+        <property name="maker" value="비트자동차" />
+        <property name="cc" value="890"/>
+        <!-- <property name="createdDate" value="2018-05-08" /> -->
+        <property name="auto" value="true"/>
+   </bean>
+   
+   
+   <bean id="e1" class="bitcamp.java106.step08.Engine" p:maker="비트자동차" p:valve="16" p:cylinder="4" />
+   <bean id="e2" class="bitcamp.java106.step08.Engine" p:maker="비트자동차2" p:valve="22" p:cylinder="8" />
+</beans>

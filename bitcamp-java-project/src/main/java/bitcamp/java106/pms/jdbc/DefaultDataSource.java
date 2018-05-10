@@ -6,8 +6,6 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import bitcamp.java106.pms.annotation.Component;
-
 public class DefaultDataSource implements DataSource {
     String driver;
     String jdbcUrl;
