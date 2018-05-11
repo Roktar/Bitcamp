@@ -42,10 +42,10 @@ public abstract class HttpServlet extends GenericServlet {
     }    
     
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        System.out.println("doPost");
+        System.out.println("HTTP Server의 Post");
     }    
     
     protected void doHead(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        System.out.println("doHead");
+        System.out.println("HTTP Server의 Head");
     }
 }

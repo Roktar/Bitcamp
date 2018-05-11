@@ -17,6 +17,6 @@ public class Exam06 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/plain;charset=UTF-8");
-        res.getWriter().println("Exam05의 get");
+        res.getWriter().println("Exam06의 get");
     }
 }
