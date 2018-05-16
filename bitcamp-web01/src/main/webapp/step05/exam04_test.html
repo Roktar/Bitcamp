@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h1> 파일 업로드 </h1>
+파일 업로드는 반드시 post 요청을 해야한다.<br>
+데이터 전송 시, 인코딩형식을 일반 form이 아닌 <b>Multipart 형식</b>으로 지정해야한다.<br>
+멀티파트로 처리해야 파일 전송이 가능하다. <br>
+일반 파일 다이얼로그는 파일의 이름만 보낸다.
+
+<form action="exam04" method="post" enctype="multipart/form-data">
+이름 <input type="text" name="name" /> <br>
+나이 <input type="text" name="age" /> <br>
+<input type="file" name="photo" /> <br>
+<button> 전송 </button>
+</form> <br>
+</body>
+</html>

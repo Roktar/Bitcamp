@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h1> GET </h1>
+<p>
+a태그의 링크를 클릭하면 get 요청하게 된다. <br>
+<a href="http://localhost:8888/bitcamp-web01/step04/exam01?name=aaa&age=20" > GET 1 </a> <br>
+<a href="/bitcamp-web01/step04/exam01?name=aaa&age=20" > GET 2 </a> <br>
+- URL에서 '/'는 웹서버 루트를 의미함. <br>
+<a href="exam01?name=aaa&age=20" > GET 3 </a> <br>
+- 실무에서는 URL을 지정할 때, 주로 상대 경로를 지정한다. => 현재 경로를 기준으로 요청경로를 지정 <br>
+- 즉, '/'를 맨 앞에 사용하지않는다.
+- 기준이 되는 것은 현재 HTML 파일이 있는 폴더명이 기준이 되는 듯 하다.
+</p> <br>
+
+- method 미지정 <br>
+<form action="exam01" >
+이름 <input type="text" name="name" />
+나이 <input type="text" name="age" />
+<button> 전송 </button>
+</form> <br>
+
+- method를 get으로 지정 <br>
+<form action="exam01" method="get">
+이름 <input type="text" name="name" />
+나이 <input type="text" name="age" />
+<button> 전송 </button>
+</form> <br>
+
+<h1> POST </h1>
+form 태그의 method 속성의 값을 post로 지정한다.<br>
+- method를 post으로 지정 <br>
+<form action="exam01" method="post">
+이름 <input type="text" name="name" />
+나이 <input type="text" name="age" />
+<button> 전송 </button>
+</form> <br>
+content-Length는 post 전송시에만 추가되는 것으로, 읽을 바이트의 수를 나타낸다.<br>
+
+
+</body>
+</html>

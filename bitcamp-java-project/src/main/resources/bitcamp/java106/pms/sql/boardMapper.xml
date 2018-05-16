@@ -12,7 +12,7 @@
         <id column="bno" property="no"/>
         <result column="titl" property="title"/>
         <result column="cont" property="content"/>
-        <result column="rdt" property="registeredDate"/>
+        <result column="rdt" property="createdDate"/>
     </resultMap>
 
   <!-- SQL문 id를 설정할 때 SQL문을 사용하는 함수 이름과 같게하면 유지보수할 때 알아보기 쉽다. -->
@@ -28,7 +28,7 @@
   <!-- parameterType이 primitive 타입이거나 wrapper클래스, String클래스인 경우? -->
   <!-- 기본적으로 제공되는 숏네임을 사용할 수 있다. -->
   <select id="selectOne" resultMap="boardMap" parameterType="int">
-      select bno, titl, rdt from pms2_board where bno = #{no}
+      select bno, titl, cont, rdt from pms2_board where bno = #{no}
   </select>
   
   <update id="update" parameterType="Board">
