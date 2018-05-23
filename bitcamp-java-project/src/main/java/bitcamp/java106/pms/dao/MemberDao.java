@@ -1,13 +1,15 @@
 package bitcamp.java106.pms.dao;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.print.DocFlavor.STRING;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Component;
 
 import bitcamp.java106.pms.domain.Member;
-import bitcamp.java106.pms.jdbc.DataSource;
 
 @Component
 public class MemberDao {
@@ -51,6 +53,16 @@ public class MemberDao {
     public Member selectOne(String id) throws Exception {
         try (SqlSession session = factory.openSession();) {
             return session.selectOne("bitcamp.java106.pms.dao.MemberDao.selectOne", id);
+        }
+    }
+    
+    public Member selectOneWithPassword(String id, String pw) throws Exception {
+        try (SqlSession session = factory.openSession();) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("id", id);
+            map.put("password", pw);
+            System.out.println(id +", " + pw);
+            return session.selectOne("bitcamp.java106.pms.dao.MemberDao.selectOneWithPassword", map);
         }
     }
 }

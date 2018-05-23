@@ -21,7 +21,7 @@ CREATE TABLE pms2_board (
     bno  INT          NOT NULL COMMENT '번호', -- 번호
     titl varchar(255) NOT NULL COMMENT '제목', -- 제목
     cont TEXT         NULL     COMMENT '내용', -- 내용
-    rdt  DATETIME     NOT NULL COMMENT '등록일' -- 등록일
+    cdt  DATETIME     NOT NULL COMMENT '등록일' -- 등록일
 )
 COMMENT '게시판';
 
@@ -94,7 +94,7 @@ CREATE TABLE pms2_task (
     sdt  DATETIME     NOT NULL COMMENT '시작일', -- 시작일
     edt  DATETIME     NOT NULL COMMENT '종료일', -- 종료일
     stat INT(11)      NULL     COMMENT '상태', -- 상태
-    mid  VARCHAR(20)  NOT NULL COMMENT '작업자', -- 작업자
+    mid  VARCHAR(20)  NULL COMMENT '작업자', -- 작업자
     tnm  VARCHAR(100) NOT NULL COMMENT '팀' -- 팀
 )
 COMMENT '작업';

@@ -20,13 +20,17 @@
   </select>
   
   <insert id="insert" parameterType="Member">
-    insert into pms2_member(mid, email, pwd) values(#{id}, #{email}, SHA2(#{password},224));
+    insert into pms2_member(mid, email, pwd) values(#{id}, #{email}, SHA2(#{password},224))
   </insert>
   
   <!-- parameterType이 primitive 타입이거나 wrapper클래스, String클래스인 경우? -->
   <!-- 기본적으로 제공되는 숏네임을 사용할 수 있다. -->
   <select id="selectOne" resultMap="MemberMap" parameterType="String">
       select * from pms2_member where mid = #{id}
+  </select>
+  
+  <select id="selectOneWithPassword" resultMap="MemberMap" parameterType="Map">
+      select * from pms2_member where mid = #{id} and pwd = SHA2(#{password},224)
   </select>
   
   <update id="update" parameterType="Member">
@@ -36,5 +40,4 @@
   <delete id="delete" parameterType="String">
     delete from pms2_member where mid = #{id}
   </delete>
-  
 </mapper>
