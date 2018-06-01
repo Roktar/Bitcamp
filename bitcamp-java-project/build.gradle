@@ -30,15 +30,27 @@ repositories {
 }
 
 dependencies {
-    // jdbc connector
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
     // MyBatis Library
     compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
-    // Spring Library
-    compile group: 'org.springframework', name: 'spring-context', version: '5.0.5.RELEASE'
+    // MyBatis Spring Library
+    compile group: 'org.mybatis', name: 'mybatis-spring', version: '1.3.2'
+    
+    // Spring MVC Library
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.6.RELEASE'
+    // Spring Library - included Spring MVC Library
+    //compile group: 'org.springframework', name: 'spring-context', version: '5.0.6.RELEASE'
+    // Spring JDBC Libraru
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.6.RELEASE'
+    
     // Servlet Library
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    
+    // DBConnectionPool Library
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    
+    // Maria DB Library
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.5'
 }
 
 

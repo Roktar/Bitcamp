@@ -1,10 +1,13 @@
 package bitcamp.java106.pms.web;
 
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
@@ -13,7 +16,8 @@ import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Task;
 import bitcamp.java106.pms.domain.Team;
 
-@Component("/task")
+@Component
+@RequestMapping("/task")
 public class TaskController {
     
     TeamDao teamDao;
@@ -42,9 +46,12 @@ public class TaskController {
             throw new Exception(task.getTeam().getName() + " 팀은 존재하지 않습니다.");
         }
         
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("teamName", task.getTeam().getName());
+        params.put("memberId", task.getWorker().getId());
+        
         if (task.getWorker().getId().length() > 0 &&
-            !teamMemberDao.isExist(
-                task.getTeam().getName(), task.getWorker().getId())) {
+            !teamMemberDao.isExist(params)) {
             throw new Exception(task.getWorker().getId() + "는 이 팀의 회원이 아닙니다.");
         }
         
@@ -135,3 +142,22 @@ public class TaskController {
         return "/task/view.jsp";
     }
 }
+
+//ver 49 - 요청 핸들러의 파라미터 값 자동으로 주입받기
+//ver 48 - CRUD 기능을 한 클래스에 합치기
+//ver 47 - 애노테이션을 적용하여 요청 핸들러 다루기
+//ver 46 - 페이지 컨트롤러를 POJO를 변경
+//ver 45 - 프론트 컨트롤러 적용
+//ver 42 - JSP 적용
+//ver 40 - CharacterEncodingFilter 필터 적용.
+//         request.setCharacterEncoding("UTF-8") 제거
+//ver 39 - forward 적용
+//ver 38 - redirect 적용
+//ver 37 - 컨트롤러를 서블릿으로 변경
+//ver 31 - JDBC API가 적용된 DAO 사용
+//ver 28 - 네트워크 버전으로 변경
+//ver 26 - TaskController에서 add() 메서드를 추출하여 클래스로 정의.
+//ver 23 - @Component 애노테이션을 붙인다.
+//ver 22 - TaskDao 변경 사항에 맞춰 이 클래스를 변경한다.
+//ver 18 - ArrayList가 적용된 TaskDao를 사용한다.
+//ver 17 - 클래스 생성

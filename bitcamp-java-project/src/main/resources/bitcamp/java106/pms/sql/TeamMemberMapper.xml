@@ -20,7 +20,8 @@
   <select id="selectListWithEmail" 
           resultMap="memberMap" parameterType="string">
     select tm.mid, m.email 
-    from pms2_team_member tm inner join pms2_member m on tm.mid=m.mid
+    from pms2_team_member tm 
+        inner join pms2_member m on tm.mid=m.mid
     where tm.tnm=#{value}
     <!--  limit #{startIndex}, #{pageSize} -->
   </select>
@@ -30,7 +31,7 @@
     values(#{teamName},#{memberId})
   </insert>
   
-  <select id="isExist" parameterType="map" resultType="int">
+  <select id="isExist" parameterType="map" resultType="boolean">
     select count(*) 
     from pms2_team_member 
     where tnm=#{teamName} and mid=#{memberId}
