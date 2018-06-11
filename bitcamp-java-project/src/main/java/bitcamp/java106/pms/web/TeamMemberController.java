@@ -6,29 +6,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import bitcamp.java106.pms.dao.MemberDao;
-import bitcamp.java106.pms.dao.TeamDao;
-import bitcamp.java106.pms.dao.TeamMemberDao;
 import bitcamp.java106.pms.domain.Member;
 import bitcamp.java106.pms.domain.Team;
+import bitcamp.java106.pms.service.MemberService;
+import bitcamp.java106.pms.service.TeamService;
 
 @Component
 @RequestMapping("/team/member")
 public class TeamMemberController {
     
-    TeamDao teamDao;
-    MemberDao memberDao;
-    TeamMemberDao teamMemberDao;
+    TeamService teamService;
+    MemberService memberService;
+
     
-    public TeamMemberController(TeamDao teamDao, 
-            MemberDao memberDao,
-            TeamMemberDao teamMemberDao) {
-        this.teamDao = teamDao;
-        this.memberDao = memberDao;
-        this.teamMemberDao = teamMemberDao;
+    public TeamMemberController(TeamService teamService, MemberService memberService) {
+        this.teamService = teamService;
+        this.memberService = memberService;
     }
     
     @RequestMapping("/add")
@@ -37,27 +34,21 @@ public class TeamMemberController {
             @RequestParam("memberId") String memberId,
             Map<String,Object> map) throws Exception {
         
-        Team team = teamDao.selectOne(teamName);
-        if (team == null) {
+        if (teamService.get(teamName) == null)
             throw new Exception(teamName + " 팀은 존재하지 않습니다.");
-        }
-        Member member = memberDao.selectOne(memberId);
-        if (member == null) {
+        
+        if (memberService.get(memberId) == null) {
             map.put("message", "해당 회원이 없습니다!");
-            return "/team/member/fail.jsp";
+            return "team/member/fail";
         }
         
-        HashMap<String,Object> params = new HashMap<>();
-        params.put("teamName", teamName);
-        params.put("memberId", memberId);
-        
-        if (teamMemberDao.isExist(params)) {
+        if (teamService.isMember(teamName, memberId)) {
             map.put("message", "이미 등록된 회원입니다.");
-            return "/team/member/fail.jsp";
+            return "fail";
         }
-        teamMemberDao.insert(params);
-        return "redirect:../view.do?name=" + 
-                URLEncoder.encode(teamName, "UTF-8");
+        
+        teamService.addMember(teamName, memberId);
+        return "redirect:../" + URLEncoder.encode(teamName, "UTF-8");
     }
     
     @RequestMapping("/delete")
@@ -70,25 +61,21 @@ public class TeamMemberController {
         params.put("teamName", teamName);
         params.put("memberId", memberId);
         
-        int count = teamMemberDao.delete(params);
+        int count = teamService.deleteMember(teamName, memberId);
         if (count == 0) {
             map.put("message", "해당 회원이 없습니다!");
-            return "/team/member/fail.jsp";
+            return "team/member/fail";
         }
-        return "redirect:../view.do?name=" + 
-                URLEncoder.encode(teamName, "UTF-8");
-        // 개발자가 요청이나 응답헤더를 직접 작성하여 값을 주고 받으로 한다면,
-        // URL 인코딩과 URL 디코딩을 손수 해 줘야 한다.
+        
+        return "redirect:../" + URLEncoder.encode(teamName, "UTF-8");
     }
     
     @RequestMapping("/list")
-    public String list(
-            @RequestParam("name") String teamName,
-            Map<String,Object> map) throws Exception {
-       
-        List<Member> members = teamMemberDao.selectListWithEmail(teamName);
+    public void list(@MatrixVariable(defaultValue="1") int pageNo, @MatrixVariable(defaultValue="3") int pageSize,
+                     @RequestParam("name") String teamName, Map<String,Object> map) throws Exception {
+        List<Member> members = teamService.getMembers(teamName);
         map.put("members", members);
-        return "/team/member/list.jsp";
+        //return "/team/member/list.jsp";
     }
 }
 

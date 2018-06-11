@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <context:component-scan base-package="bitcamp.mvc.web"/>
+    
+    <!-- 클라이언트가 전송한 멀티파트 형식으로 전송한 데이터를 처리할 객체를 등록 -->
+    
+<!--     <bean id="multipartResolver"
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	
+	    one of the properties available; the maximum file size in bytes
+	    <property name="maxUploadSize" value="100000"/>
+	</bean> -->
+	<!--  위의 클래스는 아파치의 fileUpload API를 쓰기때문에 아파치 api가 필요하다. -->
+</beans>
+
+
+
+
+
+

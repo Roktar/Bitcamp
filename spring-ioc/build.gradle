@@ -21,6 +21,9 @@ dependencies {
     // 데이터 소스(DB CONNECTION POOL) 라이브러리
     compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
     
+    // AOP
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.1'
+    
     compile 'com.google.guava:guava:23.0'
     testCompile 'junit:junit:4.12'
 }

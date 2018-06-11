@@ -1,72 +1,76 @@
 package bitcamp.java106.pms.web;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import bitcamp.java106.pms.dao.ClassroomDao;
 import bitcamp.java106.pms.domain.Classroom;
+import bitcamp.java106.pms.service.ClassroomService;
 
 @Component
 @RequestMapping("/classroom")
 public class ClassroomController {
     
-    ClassroomDao classroomDao;
+    ClassroomService classroomService;
     
-    public ClassroomController(ClassroomDao classroomDao) {
-        this.classroomDao = classroomDao;
+    public ClassroomController(ClassroomService classroomService) {
+        this.classroomService = classroomService;
     }
     
-    @RequestMapping("/add")
+    @RequestMapping("/form") 
+    public void form() {
+        
+    }
+    
+    @RequestMapping("add")
     public String add(Classroom classroom) throws Exception {
         
-        classroomDao.insert(classroom);
-        return "redirect:list.do";
+        classroomService.add(classroom);
+        return "redirect:list";
     }
     
-    @RequestMapping("/delete")
+    @RequestMapping("delete")
     public String delete(@RequestParam("no") int no) throws Exception {
      
-        int count = classroomDao.delete(no);
+        int count = classroomService.delete(no);
         if (count == 0) {
             throw new Exception("<p>해당 강의가 없습니다.</p>");
         }
-        return "redirect:list.do";
+        return "redirect:list";
     }
     
-    @RequestMapping("/list")
-    public String list(Map<String,Object> map) throws Exception {
-     
-        List<Classroom> list = classroomDao.selectList();
-        map.put("list", list);
-        return "/classroom/list.jsp";
+    @RequestMapping("list{page}")
+    public void list(@MatrixVariable(defaultValue="1") int pageNo, @MatrixVariable(defaultValue="3") int pageSize, Map<String,Object> map) throws Exception {
+        
+        map.put("list", classroomService.list(pageNo, pageSize));
     }
     
-    @RequestMapping("/update")
+    @RequestMapping("update")
     public String update(Classroom classroom) throws Exception {
      
-        int count = classroomDao.update(classroom);
-        if (count == 0) {
+        int count = classroomService.update(classroom);
+        if (count == 0) 
             throw new Exception("해당 강의가 존재하지 않습니다.");
-        }
-        return "redirect:list.do";
+        
+        return "redirect:list";
     }
     
-    @RequestMapping("/view")
+    @RequestMapping("{no}")
     public String view(
-            @RequestParam("no") int no, 
+            @PathVariable("no") int no, 
             Map<String,Object> map) throws Exception {
      
-        Classroom classroom = classroomDao.selectOne(no);
+        Classroom classroom = classroomService.get(no);
 
-        if (classroom == null) {
+        if (classroom == null) 
             throw new Exception("유효하지 않은 강의입니다.");
-        }
+        
         map.put("classroom", classroom);
-        return "/classroom/view.jsp";
+        return "/classroom/view";
     }
 }
 

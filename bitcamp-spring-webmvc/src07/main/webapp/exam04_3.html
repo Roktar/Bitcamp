@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>main</title>
+</head>
+<body>
+<h1>임의의 헤더를 붙여서 서버에 요청하기</h1>
+<button id="btn1" onclick="click1()">text/plain 요청하기</button><br>
+<button id="btn2" onclick="click2()">text/html 요청하기</button><br>
+<button id="btn3" onclick="click3()">application/pdf 요청하기</button><br>
+
+<script>
+
+let btn1 = document.getElementById("btn1");
+let btn2 = document.getElementById("btn2");
+let btn3 = document.getElementById("btn3");
+
+function click1() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'mvc/exam04_3/get', false);
+    xhr.setRequestHeader('Accept', 'text/plain');
+    xhr.send();    
+}
+function click2() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'mvc/exam04_3/get', false);
+    xhr.setRequestHeader('Accept', 'text/html');
+    xhr.send();    }
+function click3() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'mvc/exam04_3/get', false);
+    xhr.setRequestHeader('Accept', 'application/pdf');
+    xhr.send();    }
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

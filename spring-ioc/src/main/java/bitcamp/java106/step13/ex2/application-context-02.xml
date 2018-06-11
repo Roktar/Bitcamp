@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:ctx="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd                        
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd" >
+    
+    <ctx:annotation-config />
+    <ctx:component-scan base-package="bitcamp.java106.step13.ex2" />
+    
+    <!-- 필터 객체 생성 -->
+    <bean id="myAdvice" class="bitcamp.java106.step13.ex2.MyAdvice" />
+    
+    <!-- Aspect 정보를 설정하는 공간 -->
+    <aop:config>
+        <!-- 어느 Pointcut에 어떤 advice를 끼워넣을 지 설정하는 폴더. -->
+        <aop:aspect id="aspect1" ref="myAdvice">
+
+            <!-- 하단과 같이 pointcut-ref에 aop:pointcut의 expression 내용을 그대로 붙여넣어서 사용할 수 있다. -->
+            <aop:before pointcut-ref="execution(* bitcamp.java106.step13.ex2.*.m2(..)" method="advice1" /> <!-- 메소드 호출 전에 넣겠다는 의미. -->
+        </aop:aspect>
+    </aop:config>
+    
+ </beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:ctx="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd                        
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd" >
+    
+    <ctx:annotation-config />
+    <ctx:component-scan base-package="bitcamp.java106.step13.ex2" />
+    
+    <!-- 필터 객체 생성 -->
+    <bean id="myAdvice" class="bitcamp.java106.step13.ex2.MyAdvice" />
+    
+    <!-- Aspect 정보를 설정하는 공간 -->
+    <aop:config>
+        <!-- 어느 Pointcut에 어떤 advice를 끼워넣을 지 설정하는 폴더. -->
+        <aop:aspect id="aspect1" ref="myAdvice">
+            <!-- id에서 맨 앞의 *은 반환타입을 의미하는데 *인 경우 타입을 따지지않겠다는 의미 -->
+            <!-- ex2. 뒤의 *.*는 맨앞부터 클래스명, 메소드명을 의미한다. *인 경우 어떤 클래스, 어떤 메소드든 
+                 따지지않겠다는 의미 -->
+<!--        <aop:pointcut id="pointcut1" expression="execution(* bitcamp.java106.step13.ex2.Y.*(..))"/> -->
+            <aop:pointcut id="pointcut1" expression="execution(* bitcamp.java106.step13.ex2.*.m2(..))"/>
+            <!-- 메소드 호출 전/후 중 어느 때에 필터를 넣을 것인지 지정 -->
+            <aop:before pointcut-ref="pointcut1" method="advice1" /> <!-- 메소드 호출 전에 넣겠다는 의미. -->
+            <!-- <aop:after pointcut-ref="pointcut1" method="advice1" /> --> <!-- 메소드 호출 후에 넣겠다는 의미. -->
+        </aop:aspect>
+    </aop:config>
+    
+ </beans>

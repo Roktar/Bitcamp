@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>main</title>
+</head>
+<body>
+<h1>임의의 헤더를 붙여서 서버에 요청하기</h1>
+<button id="btn1" onclick="click1()">form 데이터 전송</button><br>
+<button id="btn2" onclick="click2()">csv 데이터 전송</button><br>
+<button id="btn3" onclick="click3()">json 데이터 전송</button><br>
+
+<script>
+
+let btn1 = document.getElementById("btn1");
+let btn2 = document.getElementById("btn2");
+let btn3 = document.getElementById("btn3");
+
+function click1() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'mvc/exam04_4/post', false);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send("name=aaa&age=20&tel=1111-2222");    
+}
+function click2() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'mvc/exam04_4/post', false);
+    xhr.setRequestHeader("Content-Type", "text/csv");
+    xhr.send("aaa,20,1111-2222");    
+}
+function click3() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'mvc/exam04_4/post', false);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(' { "name":"aaa", "age":20, "tel":"1111-2222" }');    
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
