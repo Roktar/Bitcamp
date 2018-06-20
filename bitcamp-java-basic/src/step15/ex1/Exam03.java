@@ -6,4 +6,10 @@ public class Exam03 extends A4{
         
         
     }
+
+    @Override
+    public void m3() {
+        // TODO Auto-generated method stub
+        
+    }
 }

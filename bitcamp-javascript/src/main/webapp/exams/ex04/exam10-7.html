@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 - 객체 생성과 초기화 7  </h1>
+
+
+<script>
+'use strict';
+
+function Score(name, kor, eng, math) {   
+    this.name = name;
+    this.kor = kor;
+    this.eng = eng;
+    this.math = math;
+    this.sum = function() { this.kor + this.eng + this.math };
+    this.aver = function() { this.sum / 3 } ;
+    console.log(this);
+}
+
+arr[0] = new Score("호길동", 100, 100, 100);
+arr[1] = new Score("임꺽정", 90, 90, 90);
+arr[2] = new Score("유관순", 100, 100, 100);
+
+
+</script>
+
+
+
+</body>
+</html>

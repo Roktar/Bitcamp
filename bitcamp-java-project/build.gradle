@@ -51,6 +51,9 @@ dependencies {
     
     // Maria DB Library
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.5'
+    
+    // AOP
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.1'
 }
 
 

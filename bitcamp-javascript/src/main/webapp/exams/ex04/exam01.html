@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 객체 정의 </h1>
+
+
+<script>
+'use strict';
+
+// 빈 객체
+var obj = Object.create(null);
+console.log(obj);
+
+// 빈 객체를 만든 후 기본 메소드 호출로 필수 프로퍼티 등을 추가
+var obj2 = Object.create(Object.prototype);
+console.log(obj2);
+
+// 객체를 만드는 간략한 표기법
+var obj3 = new Object();
+console.log(obj3);
+
+// 위 코드보다 더 간결한 방법
+var obj4 = {};
+console.log(obj4);
+
+</script>
+
+자바스크립트는 기본 객체를 만든 다음 프로퍼티(변수, 함수)를 추가하는 것이다. <br>
+기본 객체를 바탕으로 만든다고해서 Prototyping 방식의 객체 생성 이라고 부른다. <br>
+Object.create(null) 메소드를 쓰면 아무것도 들어있지않은 빈 객체를 만든다. <br>
+하지만 개발자들은 이런 빈 객체를 사용하지않는다.
+
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:ctx="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd                            
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd                          
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop.xsd                        
+                        ">
+	
+	<!-- 컴포넌트 붙은 클래스의 객체 생성 -->
+	<ctx:component-scan base-package="step25.ex10.*" />
+    
+	<!-- jdbc.properties 파일을 읽기 위해 파일 주소를 제공 -->
+	<ctx:property-placeholder
+		location="classpath:step25/ex10/jdbc.properties" />
+
+	<!-- DB ConnectionPool 객체 생성 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<!-- SqlSessionFactory 객체 생성 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+			value="classpath*:step25/ex10/*Mapper.xml" />
+		<property name="typeAliases"
+			value="step25.ex10.Board"></property>
+	</bean>
+
+	<!-- DAO 생성 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="step25.ex10" />
+	</bean>
+	
+	<!-- 트랜잭션 매니저 등록 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+	
+    <!-- 어노테이션 @Transactional을 처리할 객체 등록 -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+</beans>

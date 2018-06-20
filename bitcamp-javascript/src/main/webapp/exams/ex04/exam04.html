@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체에 소속된 함수가 같은 객체에 소속된 변수나 함수 사용하기 </h1>
+
+
+<script>
+'use strict';
+
+var obj = new Object();
+
+obj.name = "홍길동";
+obj.kor = 100;
+obj.eng = 90;
+obj.math = 80;
+obj.toString = function() {
+	console.log(this.kor + "," + this.eng + "," + this.math);
+}
+
+obj.toString();
+
+obj.sum = function() {
+   return this.kor + this.eng + this.math;
+}
+
+obj.aver = function() {
+	return this.sum() / 3;
+}
+
+</script>
+
+같은 객체에 소속된 멤버를 사용하려면 this를 사용한다. <br>
+자바에서는 this 생략이 가능했으나 JS는 생략 불가능.
+
+</body>
+</html>

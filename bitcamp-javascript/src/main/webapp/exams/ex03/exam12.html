@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 화살표 함수 (Arrow Function) </h1>
+
+<script>
+'use strict'
+
+var f1 = function() {
+	return "안녕";
+} // 일반 형식 구조
+
+var f2 = () => "안녕2";
+
+var f3 = (a, b) => a+b;
+
+var f4 = (a, b) => {
+	var result = a+b;
+	result; // 단일 문장의 경우 return도 생략가능하지만 두 줄 이상인 경우 return문없이 반환은 불가능하다.
+}
+
+console.log(f1());
+console.log(f2());
+
+</script>
+
+익명함수를 정의할 때 arrow function 문법을 사용할 수 있다. <br>
+일반 함수나 화살표함수나 둘 다 함수일 뿐.<br>
+
+<script>
+function play(fn, ...a) {
+	
+	if(a.length > 0) {
+		console.log(a);
+		let start = Math.max.apply(a);
+		let end = Math.min.apply(a);
+	    console.log("함수의 리턴값:", fn(start, end));
+	} else
+		   console.log("함수의 리턴값:", fn(100, 200));
+}
+
+play( function(a, b) { return a+b; } );
+play( (a, b) => a+b );
+play( (a,b) => {
+	var sum =0;
+	for(var i=a; i<=b; i++)
+		sum += i;
+	return sum;
+}, 10, 20, 30, 40, 50);
+
+
+</script>
+
+</body>
+</html>

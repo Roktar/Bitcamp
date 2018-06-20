@@ -18,4 +18,10 @@ public class Exam02 implements Servlet {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public String getServletConfig() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

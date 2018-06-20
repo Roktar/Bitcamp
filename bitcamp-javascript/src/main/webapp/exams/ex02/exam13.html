@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex02</title>
+</head>
+<body>
+
+<h1> 지역변수와 블록 </h1>
+
+
+<script>
+
+'use strict';
+
+var v1 = "홍길동";
+
+function f1() {
+	var v1 = "임꺽정"; 
+	{
+		var v1 = "유관순"; // 위에 선언된 변수를 가리킨다.
+		var v2 = 50; // 
+	} // 이 블록은 무시된다.
+
+	console.log("f1():" + v1 + ", " + v2);
+}
+
+f1();
+
+</script>
+지역변수는 함수 안에 선언된 변수를 의미한다. <br>
+함수 외의 지역에 선언된 변수는 전역변수가 되며, window 객체를 통해 접근할 수 있다.
+
+
+</body>
+</html>

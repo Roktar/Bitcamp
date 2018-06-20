@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> {} 을 이용하여 객체에 함수를 추가하는 다른 방법2 </h1>
+
+
+<script>
+'use strict';
+
+var obj = {name:"홍길동", kor:100, eng:90, math:80, sum: ()=> this.kor + this.eng + this.math , aver : () => this.sum() / 3 };
+
+console.log(obj.sum());
+
+var obj2 = { test1:()=>console.log(this), test2:function() { console.log(this) }};
+
+</script>
+
+{}은 기본 객체를 생성하는 단축 문법(== new Object())<br>
+단, {} 안에 화살표함수를 사용하여 함수를 등록할 때, this가 가리키는 것은 window 객체다.<br>
+화살표함수는 기본적으로 글로벌 함수이기때문이다.
+</body>
+</html>

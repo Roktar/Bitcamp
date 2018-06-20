@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 - 객체 생성과 초기화 5(객체 생성을 {}로 )  </h1>
+
+
+<script>
+
+function createObject(name, kor, eng, math) {
+	var obj = {
+			"name": name,
+			"kor": kor,
+			'eng': eng,
+			'math': math,
+			sum() {
+				return this.kor + this.eng + this.math
+			},
+			average() {
+				return this.sum() / 3
+			}
+	}
+	
+	return obj;
+	// 평균, 총점을 미리 계산해두지않고 필요할 때마다 계산하여 값을 반환
+}
+
+'use strict';
+
+var arr = {};
+
+arr[0] = createObject("호길동", 100, 100, 100);
+arr[1] = createObject("임꺽정", 90, 90, 90);
+arr[2] = createObject("유관순", 100, 100, 100);
+
+console.log(arr);
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 프로퍼티 추가 </h1>
+
+
+<script>
+'use strict';
+
+var obj = new Object();
+console.log(obj.toString());
+console.log(obj.valueOf());
+console.log(obj.hasOwnProperty("toString"));
+console.log(obj.hasOwnProperty("hashCode"));
+// hasOwnProperty는 상속받은 메소드들은 체크하지않는다.
+
+obj.title="asd";
+obj["content"] = "내용";
+obj['viewCount'] = 120;
+
+obj.plus = (a, b) => console.log("합계:", a+b);
+
+console.log(obj.hasOwnProperty("title"));
+obj.plus(1, 2);
+obj["plus"](1, 2);
+
+</script>
+
+생성자를 이용하여 기본 객체를 준비한 후에 필요한 프로퍼티(변수, 함수)를 추가한다.
+
+</body>
+</html>

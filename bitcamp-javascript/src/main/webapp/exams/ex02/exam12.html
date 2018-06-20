@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex02</title>
+</head>
+<body>
+
+<h1> 지역변수 </h1>
+
+
+<script>
+
+function f1() {
+	// 함수에서만 사용되는 로컬 변수들
+	var v1 = "임꺽정";
+	var v2 = 100; 
+	
+	console.log("f1():" + v1 + ", " + v2);
+}
+
+f1();
+console.log("=> : ", v1);
+console.log("=> : ", v2);
+
+</script>
+지역변수는 함수 안에 선언된 변수를 의미한다. <br>
+함수 외의 지역에 선언된 변수는 전역변수가 되며, window 객체를 통해 접근할 수 있다.
+
+
+</body>
+</html>

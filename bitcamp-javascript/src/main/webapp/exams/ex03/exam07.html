@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 함수 호이스팅 - 함수 위치에 따른 호이스팅 </h1>
+
+
+<script>
+f1();
+f2(); // 호이스팅되지 않는다
+
+function f1() {
+	console.log("Hi");
+}
+</script>
+
+<script>
+function f2() {
+	console.log("Hello");
+}
+</script>
+
+다른 스크립트 태그에 있는 함수는 호이스팅되지 않는다.
+
+</body>
+</html>

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import bitcamp.java106.pms.dao.TaskDao;
 import bitcamp.java106.pms.dao.TeamDao;
 import bitcamp.java106.pms.dao.TeamMemberDao;
 import bitcamp.java106.pms.domain.Member;
@@ -16,14 +18,22 @@ import bitcamp.java106.pms.service.TeamService;
 public class TeamServiceImpl implements TeamService {
     TeamDao teamDao;
     TeamMemberDao teamMemberDao;
-    
-    public TeamServiceImpl(TeamDao teamDao, TeamMemberDao teamMemberDao) {
+    TaskDao taskDao;
+    public TeamServiceImpl(TeamDao teamDao, TeamMemberDao teamMemberDao, TaskDao taskDao) {
         this.teamDao = teamDao;
         this.teamMemberDao = teamMemberDao;
+        this.taskDao = taskDao;
     }
 
+    @Transactional
     @Override
     public int delete(String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("teamName", name);
+        
+        teamMemberDao.delete(params);
+        taskDao.deleteByTeam(name);
+        
         return teamDao.delete(name);
     }
 
