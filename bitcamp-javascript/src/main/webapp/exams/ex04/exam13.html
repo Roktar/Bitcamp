@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 - 함수 객체에 직접 추가하는 함수와 prototype에 추가하는 함수 </h1>
+
+
+<script>
+'use strict';
+
+function Score(name, kor, eng, math, phy) {    
+	// name, kor, eng. math는 Score의 변수다.
+	
+    this.setName = function(n) { name = n }
+    this.getName = function() { return name }
+    this.setKor = function(n) { kor = n }
+    this.getKor = function() { return kor }
+    this.setEng = function(n) { eng = n }
+    this.getEng = function() { return eng }
+    this.setMath = function(n) { math = n }
+    this.getMath = function() { return math }
+    this.setPhy = function(n) { phy = n }
+    this.getPhy = function() { return phy }
+	
+    this.sum = function() {
+    	// 외부 변수를 클로저가 자신의 메모리에 복사해둔다.
+    	return kor + eng + math
+    }
+    
+    this.aver = function() {
+    	return this.sum() /3
+    }
+    // 함수 안에서 만드는 모든 클로저는 같은 메모리를 사용한다. - 클로저끼리는 메모리를 공유
+}
+
+var s1 = new Score("홍길동", 100, 100, 100, 50);
+s1.setName("임꺽정");
+console.log(s1.getName())
+console.log(s1.sum())
+console.log(s1.aver())
+console.log(s1.getPhy())
+console.dir(s1);
+</script>
+
+
+ds
+
+
+</body>
+</html>

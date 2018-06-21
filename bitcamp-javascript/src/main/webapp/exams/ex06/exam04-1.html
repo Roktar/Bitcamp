@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+<style>
+body, div {
+    border:1px solid red;
+    padding:30px;
+}
+
+button {
+    height:40px;
+    margin:25px;
+}
+
+</style>
+</head>
+<body>
+
+<h1> 이벤트 단계 </h1>
+
+<div id="d1">
+    <div id="d2">
+        <button id="btn1" data-no="100">버튼1</button>
+        <button id="btn2" data-no="100">버튼2</button>
+    </div>
+</div>
+<script>
+'use strict';
+document.getElementsByTagName("body").addEventListener('click', function(e) {
+    console.log(this);
+});
+
+document.getElementById("d1").addEventListener('click', function(e) {
+    console.log(this);
+});
+
+document.getElementById("d2").addEventListener('click', function(e) {
+    console.log(this);
+});
+
+document.getElementById("btn1").addEventListener('click', function(e) {
+	   console.log(this);
+	   //console.log(this.getAttribute("data-no"));
+});
+
+</script>
+
+
+
+</body>
+</html>

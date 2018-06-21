@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> DOM API - CSS selector 문법으로 태그 찾기 </h1>
+
+<h1 id="header1" class="g1">제목1</h1>
+<h2 id="header2" class="g1">제목1.1</h2>
+<h2 id="header3" class="g1 g3">제목1.2</h2>
+<h1 id="header4" class="g2">제목2</h1>
+<h2 id="header5" class="g2 g3">제목2.1</h2>
+<h2 id="header6" class="g2 g3">제목2.2</h2>
+
+<script>
+'use strict';
+
+// 1) id로 찾기
+var list = document.querySelectorAll("#header3");
+console.log("1) ----------------------------------");
+for(var i in list)
+    console.log(list[i]);
+
+//2) 태그로 찾기
+var list = document.querySelectorAll("h2");
+console.log("2) ----------------------------------");
+for(var i in list)
+    console.log(list[i]);
+    
+//3) 클래스명으로 찾기
+var list = document.querySelectorAll(".g2");
+console.log("3) ----------------------------------");
+for(var i in list)
+    console.log(list[i]);
+    
+//4) CSS 셀렉터로 찾기
+var list = document.querySelectorAll(".g2.g3");
+console.log("4) ----------------------------------");
+for(var i in list)
+    console.log(list[i]);
+
+for(var e of list)
+    console.log(e);
+
+</script>
+
+</body>
+</html>

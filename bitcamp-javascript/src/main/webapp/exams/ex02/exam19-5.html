@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex02</title>
+</head>
+<body>
+
+<h1> 배열 - for(~ of ~) </h1>
+
+<script>
+'use strict';
+
+/* var obj = {
+    name:"길동",
+    age:20,
+    tel:"1111-1111",
+    working:true
+};
+ */
+/* 
+for(let i of obj)
+	console.log(i);
+ */ // 에러부분
+ 
+ let obj = new Map();
+ obj.set("name", "홍길동");
+ obj.set("age", 20);
+ 
+ for(let i of obj)
+	 console.log(i[0], "=", i[1]);
+ 
+ console.log("---------------------------");
+ 
+ for(let [key,value] of obj)
+	 console.log(key,'=',value);
+ 
+ 
+</script>
+
+for ~ of문은 객체에 사용할 수 없다. <br>
+Symbol.iterator를 구현한 경우에만 사용할 수 있다. <br>
+일반 객체는 구현하지않았기때문에 사용할 수 없다. <br>
+map, set, TypedArray, NodeList, 유사아규먼트? 등에서 사용할 수 있다.
+
+
+</body>
+</html>

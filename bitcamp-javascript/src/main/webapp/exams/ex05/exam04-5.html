@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> DOM API - 태그 추가 응용 </h1>
+
+<section>
+    <img src="../i01.jpg" width="15%" height="6%">
+    <img src="../i02.jpg" width="15%" height="6%">
+    <img src="../i03.jpg" width="15%" height="15%">
+    <img src="../i04.jpg" width="15%" height="15%">
+    <img src="../i05.jpg" width="15%" height="15%">
+</section>
+
+
+<script>
+'use strict';
+let parent = document.querySelector("section");
+
+this.setInterval( ()=> {
+    let img = document.querySelector("section > img:first-child");
+	parent.appendChild(img);
+}, 2000);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> DOM API - CSS selector 문법으로 태그 찾기 </h1>
+
+<h1 id="header1" class="g1">제목1</h1>
+<h2 id="header2" class="g1">제목1.1</h2>
+<h2 id="header3" class="g1 g3">제목1.2</h2>
+<h1 id="header4" class="g2">제목2</h1>
+<h2 id="header5" class="g2 g3">제목2.1</h2>
+<h2 id="header6" class="g2 g3">제목2.2</h2>
+
+<script>
+'use strict';
+
+//1) id로 찾기
+let e1 = document.querySelector("#header3");
+console.log(e1);
+
+//2) 태그명으로 찾기
+e1 = document.querySelector("h2");
+console.log(e1);
+
+//3) 클래스명으로 찾기
+e1 = document.querySelector(".g3");
+console.log(e1);
+
+//4) 복잡한 조건을 사용하여 찾기
+e1 = document.querySelector(".g2.g3");
+console.log(e1);
+
+//5) 조건에 해당하는 태그를 찾지 못한 경우의 반환값은 null이다.
+e1 = document.querySelector(".g1.g2.g3");
+console.log(e1);
+</script>
+
+</body>
+</html>

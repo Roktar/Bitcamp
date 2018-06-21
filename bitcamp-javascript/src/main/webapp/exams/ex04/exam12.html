@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 - 함수 객체에 직접 추가하는 함수와 prototype에 추가하는 함수 </h1>
+
+
+<script>
+'use strict';
+
+function Score(name, kor, eng, math) {   
+    this.name = name;
+    this.kor = kor;
+    this.eng = eng;
+    this.math = math;
+}
+
+var s = new Score("홍길동", 100, 100, 100);
+
+// 자바의 인스턴스 함수 형식에 해당하는 방법
+Score.prototype.sum = function() { return this.kor + this.eng + this.math; }
+Score.prototype.aver = function() { return this.sum() / 3; }
+console.log(s.sum()); // 문제없이 실행된다.
+
+// 자바의 스태틱 함수 형식에 해당하는 방법
+Score.count = 0;
+Score.f = function() {
+	console.log("HELLO");
+}
+
+//s.f(); // prototype에 저장된 함수가 아니기때문에 생성한 객체를 통해 실행불가능.
+Score.count = 100;
+Score.f();
+// 위처럼 특정 객체를 만드는 생성자함수를 사용하여 직접 호출해야한다.
+
+</script>
+
+
+
+
+
+</body>
+</html>

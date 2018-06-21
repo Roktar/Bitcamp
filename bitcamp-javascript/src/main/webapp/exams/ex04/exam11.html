@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex04</title>
+</head>
+<body>
+
+<h1> 객체 - 객체간 공유  </h1>
+
+
+<script>
+'use strict';
+
+function Score(name, kor, eng, math) {   
+    this.name = name;
+    this.kor = kor;
+    this.eng = eng;
+    this.math = math;
+}
+
+Score.prototype.sum = function() { return this.kor + this.eng + this.math; }
+Score.prototype.aver = function() { return this.sum() / 3; }
+
+let s1 = new Score("홍길동", 100, 100, 100);
+console.log(s1);
+console.log(s1.sum());
+
+</script>
+
+prototype 저장소를 사용하여 객체간 공통기능을 공유할 수 있다. <br>
+
+</body>
+</html>

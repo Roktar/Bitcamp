@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 이벤트 </h1>
+
+<button id="btn1" onclick="var str='Hello1'; window.alert(str);">버튼1</button><br>
+ 
+<script>
+'use strict';
+
+var btn1 = document.querySelector("#btn1");
+
+
+var btn1 = document.querySelector("#btn1");
+btn1.addEventListener('click', function() {
+   var str='Hello3'; 
+   window.alert(str);
+});
+
+btn1.onclick = function() {
+	var str='Hello2'; 
+	window.alert(str);
+}
+</script>
+
+한 태그에 클릭 이벤트 3개를 붙였을 때의 실행순서<br>
+태그 안에 선언한 onclick은 실행되지 않는다. <br>
+<script>안에서 onclick 속성 => 이벤트리스너 순으로 실행된다.
+
+</body>
+</html>

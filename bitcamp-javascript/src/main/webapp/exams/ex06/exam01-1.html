@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 이벤트 </h1>
+
+<button id="btn1" onclick="var str='Hello1'; window.alert(str);">버튼1</button>
+<button id="btn2">버튼2</button>
+<button id="btn3">버튼3</button>
+ 
+
+<script>
+'use strict';
+
+var btn2 = document.getElementById("btn2");
+var btn2_2 = document.querySelector("#btn2");
+
+btn2.onclick = function() {
+	var str='Hello2'; 
+	window.alert(str);
+}
+
+var btn3 = document.querySelector("#btn3");
+btn3.addEventListener('click', function() {
+   var str='Hello3'; 
+   window.alert(str);
+});
+
+
+</script>
+
+</body>
+</html>

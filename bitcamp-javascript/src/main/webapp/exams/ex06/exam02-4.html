@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 이벤트 정보 </h1>
+
+<button id="btn1">버튼1</button><br>
+ 
+<script>
+'use strict';
+
+document.getElementById("btn1").addEventListener('click', function(e) {
+	   console.log(e.altKey, e.ctrlKey, e.button);
+});
+
+</script>
+
+onclick 속성에 자바스크립트 코드를 길게 적어야한다면 따로 스크립트 태그로 빼서 활용하는 게 좋다.<br>
+onclick의 event 매개변수는 해당 이벤트가 실행되면 그 이벤트의 정보를 가지고있는 객체다.
+
+</body>
+</html>

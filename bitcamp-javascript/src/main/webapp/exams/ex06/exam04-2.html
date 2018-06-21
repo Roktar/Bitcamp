@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+<style>
+body, div {
+    border:1px solid red;
+    padding:30px;
+}
+
+button {
+    height:40px;
+    margin:25px;
+}
+
+</style>
+</head>
+<body>
+
+<h1> 이벤트 단계 - bubble 대신 capture와 Target 단계에서 호출되는 리스너 정의 </h1>
+
+<div id="d1">
+    <div id="d2">
+        <button id="btn1" data-no="100">버튼1</button>
+        <button id="btn2" data-no="100">버튼2</button>
+    </div>
+</div>
+<script>
+'use strict';
+document.body.addEventListener('click', function(e) {
+    console.log("body");
+}, true);
+
+document.getElementById("d1").addEventListener('click', function(e) {
+    console.log("d1");
+} , true);
+
+document.getElementById("d2").addEventListener('click', function(e) {
+    console.log("d2");
+}, true);
+
+document.getElementById("btn1").addEventListener('click', function(e) {
+    console.log("bt1");
+    //console.log(this.getAttribute("data-no"));
+}, true);
+document.getElementById("btn2").addEventListener('click', function(e) {
+    console.log("bt2");
+    //console.log(this.getAttribute("data-no"));
+});
+
+</script>
+
+
+
+</body>
+</html>

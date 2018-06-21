@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 함수에 프로퍼티 추가 </h1>
+
+
+<script>
+'use strict'
+
+function f1() {
+	console.log("f1()");
+}
+// 함수에 프로퍼티를 추가할 수 있다. 이것은 함수도 객체라는 것을 의미한다.
+// 함수는 일반 객체 기능에 함수가 포함된 것이다.
+f1.v1="홍길동";
+f1.v2 = 100;
+f1.v3 = true;
+
+f1(); // f1 함수 객체에 저장된 함수 코드를 실행하라는 의미.
+
+console.log(f1.v1);
+console.log(f1.v2);
+console.log(f1.v3);
+
+
+</script>
+
+클로저는 외부 함수의 변수를 자신의 메모리에 복제해두고 외부함수가 종료되어 사라져도 사용할 수 있도록 처리한다.
+
+</body>
+</html>
