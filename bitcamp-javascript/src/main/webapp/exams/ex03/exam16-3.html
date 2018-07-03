@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 자바스크립트 글로벌함수 - eval() </h1>
+
+<textarea id="ta" cols="80" rows="10"></textarea>
+<button id="btn1">execute</button> <br>
+
+<script>
+'use strict'
+
+var ta = document.querySelector("#ta");
+
+document.getElementById("btn1").onclick = () => {
+    
+	var str = ta.value;
+	
+	eval(str);
+	
+	console.log(window.name);
+	ta.value="";
+	ta.focus();
+}
+
+eval()
+
+</script>
+
+eval()은 텍스트로 된 자바스크립트를 실행하는 함수다.<br>
+입력폼 함수의 값을 꺼낼 때는 innerHTML이 아닌 value로 꺼내야한다.
+
+</body>
+</html>

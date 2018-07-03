@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex07</title>
+</head>
+<body>
+
+<h1> AJAX -XMLHttpRequest </h1>
+
+<button id="btn1">버튼1</button> <br>
+<a href="http://google.com">구-글</a>
+<textarea id="ta" cols="80" rows="10"></textarea>
+
+<script>
+'use strict';
+
+var ta = document.querySelector("#ta");
+document.querySelector("#btn1").onclick = () => {
+    var xhr = new XMLHttpRequest();
+    
+    
+    xhr.onreadystatechange = () => {
+    	console.log(xhr.readyState);
+    	
+    	if(xhr.readyState == 4)
+    	    ta.value = xhr.responseText;
+    }
+    
+    xhr.open("get", "../../jsp/test3.jsp", true);
+    xhr.send();
+    console.log("send()다음라인");
+ };
+</script>
+
+onreadystatechange<br>
+- 비동기로 ajax 요청을 하게 되면 작업상태가 바뀔때마다 onreadystatechange로 등록한 메소드를 호출<br>
+- 작업의 상태<br>
+    - 0 XMLHttpRequest 준비 <br>
+    - 1 open 호출 (서버 연결) <br>
+    - 2 send 호출 (서버에 요청보낸 후 응답상태와 헤더값을 받은 상태) <br>
+    - 3 서버에서 콘텐트를 받고있는 중. 서버에서 받은 데이터 전부는 아니더라도 일부는 가지고있을 수 있다. <br>
+    - 4 서버에서 모든 콘텐트를 받은 상태. 응답 완료<br>
+- readyState의 값을 찾아서 보면 된다.
+    
+    
+    
+</body>
+</html>

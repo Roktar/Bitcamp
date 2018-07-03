@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex07</title>
+</head>
+<body>
+
+<h1> AJAX -XMLHttpRequest </h1>
+
+<button id="btn1">버튼1</button> <br>
+<a href="http://google.com">구-글</a>
+<textarea id="ta" cols="80" rows="10"></textarea>
+
+<script>
+'use strict';
+
+var ta = document.querySelector("#ta");
+document.querySelector("#btn1").onclick = () => {
+    var xhr = new XMLHttpRequest();
+    
+    // 서버에서 응답이 왔을 때에 호출될 메소드를 등록
+    // 서버 연결 전에 등록해야한다.
+    
+    xhr.onreadystatechange = () => {
+    	console.log("서버에서 응답을 받았는가?");
+    }
+    
+    // 비동기는 3번째 파라미터값이 true다.
+    xhr.open("get", "../../jsp/test3.jsp", true);
+    xhr.send();
+    console.log("send()다음라인");
+    // 별도의 스레드에 요청을 처리하게하고 바로 다음 코드를 실행한다.
+    // 처리가 아직안됬는데도 불구하고 먼저 출력함으로 원하는 결과를 얻지못함.
+    ta.value = xhr.responseText;
+ };
+</script>
+
+해결방안 <br>
+- 서버에서 응답 완료했을 때 결과를 꺼내기<br>
+- 확인 방법은 onreadystatechange에서 확인할 수 있다.
+
+</body>
+</html>

@@ -8,6 +8,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import bitcamp.java106.pms.domain.Member;
 
+// 인터셉터로 xml 파일에 등록되어있는 클래스
+
 public class AuthCheckInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

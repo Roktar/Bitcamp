@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex03</title>
+</head>
+<body>
+
+<h1> 자바스크립트 글로벌함수 - JSON.stringify() </h1>
+
+<textarea id="ta" cols="80" rows="10"></textarea>
+<button id="btn1">execute</button> <br>
+
+<script>
+'use strict'
+
+var ta = document.querySelector("#ta");
+
+document.getElementById("btn1").onclick = () => {
+    
+    var obj = {};
+    obj.name = "홍길동";
+    obj.age = 15;
+    obj.tel = "1111-1111";
+	var str = JSON.stringify(obj);
+    
+    ta.value = str;
+    console.log(str);
+}
+
+</script>
+
+JSON은 객체를 생성하는 쪽으로 특화시킨 API다.<br>
+JSON객체는 JSON 형식으로 된 문자열을 읽어 자바스크립트 객체를 생성한다.<br>
+제약사항은 다음과 같다.<br>
+<ul>
+   <li> 문자열은 반드시 큰 따옴표를 사용해야한다. 작은 따옴표는 사용할 수 없다. </li>
+   <li> 객체 프로퍼티명은 반드시 문자열로 표기해야한다. </li>
+</ul>
+
+</body>
+</html>

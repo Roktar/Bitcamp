@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>게시물 목록</title>
+</head>
+<body>    
+<div id='header'> </div> <!-- 삽입하는 순간 스크립트가 실행됨 -->
+    
+<h1>게시물 보기</h1>
+<p><a href='form.html'>새 게시글</a></p>
+<table border='1'>
+<thead>
+<tr> <th>번호</th><th>제목</th><th>등록일</th> </tr>
+</thead>
+<tbody id="tableBody">
+</tbody>
+</table>
+
+<script src="../js/bitcamp.js"></script>
+<script src="../header.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ -->
+<script>
+
+/* $.ajax("../../json/board/list", {
+	   success(data) {
+	          for(let item of data) {
+	                let tr = document.createElement("tr");
+	                tr.innerHTML = "<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+	                               "<td>" + item.title + "</td>" + 
+	                               "<td>" + item.createdDate + "</td>";
+                    tableBody.appendChild(tr);
+	          }
+	   }, 
+	   dataType:"json",
+	   error() {
+		   alert("오-류");
+	   }
+}); */
+
+$.getJSON("../../json/board/list", (data) => {
+    for(let item of data) {
+        //let tr = document.createElement("tr");
+        //let tr = $("<tr>");
+        /* tr.innerHTML = "<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+                       "<td>" + item.title + "</td>" + 
+                       "<td>" + item.createdDate + "</td>";
+         */
+         //tr.html("<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+         //        "<td>" + item.title + "</td>" + 
+         //        "<td>" + item.createdDate + "</td>");
+         /* tableBody.appendChild(tr); */
+         //tr.appendTo(tableBody);
+         
+         // 위의 소스들을 아래처럼 붙여쓸 수 있다.
+         $("<tr>").html("<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+		                 "<td>" + item.title + "</td>" + 
+		                 "<td>" + item.createdDate + "</td>").appendTo(tableBody);
+         
+  }
+});
+// 넘겨줄 데이터가 없어서 2번째 인자는 저렇게.
+
+
+
+/* let dataxhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+	
+	if(xhr.readyState == 4) {
+		if(xhr.status == 200) {
+			// <tr> 태그를 만들어서 붙여넣어야한다.
+			let list = JSON.parse(xhr.responseText);
+			
+			for(let item of list) {
+			    let tr = document.createElement("tr");
+			    tr.innerHTML = "<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+							   "<td>" + item.title + "</td>" + 
+							   "<td>" + item.createdDate + "</td>";
+				body.appendChild(tr);
+			}
+		}
+	}
+};
+xhr.open("GET", "../../json/board/list", true);
+xhr.send(); */
+
+</script>
+
+</body>
+</html>

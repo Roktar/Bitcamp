@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex07</title>
+</head>
+<body>
+
+<h1> AJAX -XMLHttpRequest </h1>
+
+<button id="btn1">버튼1</button> <br>
+<textarea id="ta" cols="80" rows="10"></textarea>
+
+<script>
+'use strict';
+
+var ta = document.querySelector("#ta");
+document.querySelector("#btn1").onclick = () => {
+    var xhr = new XMLHttpRequest();
+    
+    
+    xhr.onreadystatechange = () => {
+    	console.log(xhr.readyState);
+    	
+    	if(xhr.readyState == 4)
+    	    ta.value = xhr.responseText;
+    }
+    
+    xhr.open("get", "../../jsp/test4.jsp?a=100&b=asd", true);
+    xhr.send();
+    console.log("send()다음라인");
+ };
+</script>
+    서버에서 실행 중 오류가 발생해도 응답은 진행된다. <br>
+    즉, 서버단에서 문제가 발생한 경우, 응답 자체에 문제가 있을 수 있다는 것이다. <br>
+</body>
+</html>

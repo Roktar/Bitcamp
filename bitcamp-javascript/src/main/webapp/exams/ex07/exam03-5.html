@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex07</title>
+</head>
+<body>
+
+<h1> AJAX -status </h1>
+
+<textarea id="ta" cols="80" rows="10"></textarea> <br>
+<form>
+a: <input id="ia"  type="number" name="a"/> <br>
+b: <input id="ib"   name="b"/> <br>
+<input type="button" id="btn1" value="계산" />
+<button type="reset" id="btn2"> 리셋 </button> <br>
+</form>
+
+<script>
+'use strict';
+
+var ta = document.querySelector("#ta"), ia = document.querySelector("#ia");
+var ib = document.querySelector("#ib");
+var btn2 = document.querySelector("#btn2");
+
+document.querySelector("#btn1").onclick = () => {
+    var xhr = new XMLHttpRequest();
+    
+    xhr.onreadystatechange = () => {
+    	console.log(xhr.readyState);
+    	
+    	if(xhr.readyState == 4) {
+    		if(xhr.status == 200)
+    			   ta.value = xhr.responseText;
+    		else  {
+                alert("작업 실패");
+                
+                var e = new MouseEvent("click");
+                btn2.dispatchEvent(e);
+                
+    		}
+    	} 
+    }
+    
+    xhr.open("get", "../../jsp/test4.jsp?a="+  ia.value + "&b=" + ib.value, true);
+    xhr.send();
+    console.log("send()다음라인");
+ };
+</script>
+    응답헤더가 정상(200) 일 때 작업하기
+</body>
+</html>

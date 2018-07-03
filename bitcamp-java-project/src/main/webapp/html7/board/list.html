@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/common.css" />
+<title>게시물 목록</title>
+</head>
+<body>    
+<div id='header'> </div> <!-- 삽입하는 순간 스크립트가 실행됨 -->
+    
+<div class="container">
+<h1>게시물 보기</h1>
+<p><a href='form.html' class="btn btn-primary btn-sm">새 게시글</a></p>
+<table class="table table-hover">
+<thead>
+<tr> <th>번호</th><th>제목</th><th>등록일</th> </tr>
+</thead>
+<tbody id="tableBody">
+</tbody>
+</table>
+</div>
+
+<!-- Template Data -->
+<script id="trtemplate" type="text/x-handlebars-template">
+{{each list}}
+<tr>
+<td>{{no}}</td>
+<td><a href="form.html?no={{no}}"> {{title}} </a> </td>
+<td>{{createdDate}}</td>
+</tr>
+{{/each}}
+</script>
+
+<script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../header.js"></script>
+<script>
+
+// 템플릿 소스 준비
+let trtemplate = $("#trtemplate").html();
+// 템플릿 엔진 준비
+let template = Handlebars.compile(trtemplate);
+
+$.getJSON("../../json/board/list", (data) => {
+	
+	$(tableBody).html(template({list:data}));
+	
+    //for(let item of data) {
+    	/*let trHTML = template(item); // 엔진에 데이터를 넣어서 템플릿 적용한 소스 생성
+    	$(trHTML).appendTo(tableBody);*/
+    	
+    	
+        /*$("<tr>").html("<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+		                 "<td>" + item.title + "</td>" + 
+		                 "<td>" + item.createdDate + "</td>").appendTo(tableBody); */
+		                 
+  //}
+});
+</script>
+
+</body>
+</html>
