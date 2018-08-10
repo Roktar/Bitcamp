@@ -113,6 +113,48 @@ function handleMessage(sender_psid, received_message) {
   let response;
   
   // Checks if the message contains text
+  
+  
+  switch(received_message.text) {
+  	case "hello" :
+  		response = {
+  			text : "World"
+  		};
+  		break;
+  	case "menu" :
+  	    response = {
+  	      "attachment": {
+  	        "type": "template",
+  	        "payload": {
+  	          "template_type": "generic",
+  	          "elements": [{
+  	            "title": "Menu", // 제목 변경
+  	            "subtitle": "Select Menu",
+  	            "image_url": attachment_url,
+  	            "buttons": [
+  	              {
+  	                "type": "postback",
+  	                "title": "Chicken",
+  	                "payload": "menu01" // 서버에 전달되는 값.
+  	              },
+  	              {
+    	            "type": "postback",
+    	            "title": "Bulgogi",
+    	            "payload": "menu02"
+	              },
+      	          {
+	            	"type": "postback",
+      	            "title": "KIMCHI",
+      	            "payload": "kimchi"
+  	              }
+  	              
+  	            ],
+  	          }]
+  	        }
+  	      }
+  	    }
+  }
+  
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
