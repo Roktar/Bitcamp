@@ -116,6 +116,8 @@ function handleMessage(sender_psid, received_message) {
   
   // 버튼을 눌러서 전달되는 것이 postback이다.
   // 일반 메시지는 message.
+  console.log(received_message.text);
+  
   switch(received_message.text) {
   	case "hello" :
   		response = {
@@ -157,7 +159,7 @@ function handleMessage(sender_psid, received_message) {
   	    break;
   }
   
-  if (received_message.text) {    
+ /* if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     response = {
@@ -191,7 +193,7 @@ function handleMessage(sender_psid, received_message) {
         }
       }
     }
-  } 
+  } */
   
   // Send the response message
   callSendAPI(sender_psid, response);    
