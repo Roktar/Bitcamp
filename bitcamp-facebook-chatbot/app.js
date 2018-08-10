@@ -24,13 +24,22 @@
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 // Imports dependencies and set up http server
 const 
+  https = require("https"),
+  fs = require("fs"),
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+// app.listen(process.env.PORT || 1337, () => console.log('webhook is listening')); // No https
+var options = {
+		key : fs.readFileSync('/home/ec2-user/custom.key'),
+		cert : fs.readFileSync('/home/ec2-user/bot_16bit_me.crt')
+};
+https.createServer(options, app).listen(1337, () => {
+	console.log("hooked!");
+}); // hooking
 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {  
