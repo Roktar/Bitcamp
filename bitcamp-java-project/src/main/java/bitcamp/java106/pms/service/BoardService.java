@@ -3,6 +3,7 @@ package bitcamp.java106.pms.service;
 import java.util.List;
 
 import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.domain.TestBoard;
 
 // 서비스 컴포넌트 - 게시물 관련 업무를 처리할 객체
 public interface BoardService {
@@ -12,4 +13,6 @@ public interface BoardService {
     public abstract int add(Board board);
     public abstract int update(Board board);
     public abstract int delete(int no);
+    // 테스트용 소스
+    List<TestBoard> test_list(int pageNo, int pageSize);
 }

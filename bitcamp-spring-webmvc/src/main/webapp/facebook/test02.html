@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>페이스북 로그인</h1>
+<script id="s1" type="text/javascript"></script>
+<!-- Tag가 "script"인 것 중 0번째인 태그는 위에있는 것. -->
+<script id="s2" type="text/javascript"></script>
+<script id="s3" type="text/javascript"></script>
+<script id="s4" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+// 페이스북 SDK 라이브러리파일 로드
+// - 동적으로 script 태그를 만든다.
+// - 웹브라우저는 당연히 동적으로 생성된 script 태그를 실행할 것이다.
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); // 스크립트 태그를 새로 생성
+  js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js";
+  // 위의 3줄에 대한 소스의 결과로는 다음고ㅓㅏ 같은 것이 나온다.
+  // <script id="facebook-jssdk" src="https://connect.facebook.net/en_US/dsk.js">
+  fjs.parentNode.insertBefore(js, fjs);
+  // 위에서 지정한 부모노드보다 앞에 삽입하라는 명령. 
+  // 순서는 js s1 s2 s3 s4 순이 된다.
+}(document, 'script', 'facebook-jssdk'));
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -2,6 +2,8 @@ package bitcamp.java106.pms.web.json;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.MatrixVariable;
@@ -11,8 +13,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.domain.TestBoard;
 import bitcamp.java106.pms.service.BoardService;
 
+// 일반 Controller를 사용한다면 
+// 메소드에 @ResponseBody 메소드를 붙여야한다.
 @RestController
 @RequestMapping("/board")
 public class BoardController {
@@ -39,16 +44,20 @@ public class BoardController {
         return boardService.list(pageNo, pageSize);
     }
     
+    @RequestMapping(value="testlist{page}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public List<TestBoard> test_list(@PathVariable String page, HttpServletRequest request, @MatrixVariable(defaultValue="1") int pageNo, @MatrixVariable(defaultValue="3") int pageSize) {        
+        int pageNo1 = Integer.parseInt(request.getParameter("pageNo"));
+        return boardService.test_list(pageNo1, pageSize);
+    }
+    
     @RequestMapping("update")
     @ResponseStatus(HttpStatus.OK) // 기본값은 OK(200)이다.
     public void update(Board board) throws Exception {
-        
         boardService.update(board);
     }
     
     @RequestMapping("{no}")
     public Object view(@PathVariable int no) throws Exception {
-        
         Board board = boardService.get(no);
         if (board == null)
             throw new Exception("유효하지 않은 게시물 번호입니다.");

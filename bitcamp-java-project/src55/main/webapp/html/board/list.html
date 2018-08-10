@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>게시물 목록</title>
+</head>
+<body>    
+<div id='header'> </div> <!-- 삽입하는 순간 스크립트가 실행됨 -->
+    
+<h1>게시물 보기</h1>
+<p><a href='form.html'>새 게시글</a></p>
+<table border='1'>
+<thead>
+<tr> <th>번호</th><th>제목</th><th>등록일</th> </tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<script src="../header.js"></script>
+<script>
+let body = document.querySelector("tbody");
+
+let dataxhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+	
+	if(xhr.readyState == 4) {
+		if(xhr.status == 200) {
+			// <tr> 태그를 만들어서 붙여넣어야한다.
+			let list = JSON.parse(xhr.responseText);
+			
+			for(let item of list) {
+			    let tr = document.createElement("tr");
+			    tr.innerHTML = "<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+							   "<td>" + item.title + "</td>" + 
+							   "<td>" + item.createdDate + "</td>";
+				body.appendChild(tr);
+			}
+		}
+	}
+};
+xhr.open("GET", "../../json/board/list", true);
+xhr.send();
+
+</script>
+
+</body>
+</html>

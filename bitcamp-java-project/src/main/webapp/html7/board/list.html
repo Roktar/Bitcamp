@@ -32,32 +32,13 @@
 {{/each}}
 </script>
 
+<!-- common.js 사용(패킹할 때, 상대주소로 하면 외부가 아닌 내부로 잡히기때문에 외부로 돌릴 수 있도록 지정한 파일 활용) -->
+<script src="../js/common.js"></script>
+<!-- 앱으로 패킹할 때 활용하기위한 도구. -->
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../header.js"></script>
-<script>
-
-// 템플릿 소스 준비
-let trtemplate = $("#trtemplate").html();
-// 템플릿 엔진 준비
-let template = Handlebars.compile(trtemplate);
-
-$.getJSON("../../json/board/list", (data) => {
-	
-	$(tableBody).html(template({list:data}));
-	
-    //for(let item of data) {
-    	/*let trHTML = template(item); // 엔진에 데이터를 넣어서 템플릿 적용한 소스 생성
-    	$(trHTML).appendTo(tableBody);*/
-    	
-    	
-        /*$("<tr>").html("<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
-		                 "<td>" + item.title + "</td>" + 
-		                 "<td>" + item.createdDate + "</td>").appendTo(tableBody); */
-		                 
-  //}
-});
-</script>
+<script src="list.js"></script>
 
 </body>
 </html>

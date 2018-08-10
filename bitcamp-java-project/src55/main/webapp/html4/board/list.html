@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>게시물 목록</title>
+</head>
+<body>    
+<div id='header'> </div> <!-- 삽입하는 순간 스크립트가 실행됨 -->
+    
+<h1>게시물 보기</h1>
+<p><a href='form.html'>새 게시글</a></p>
+<table border='1'>
+<thead>
+<tr> <th>번호</th><th>제목</th><th>등록일</th> </tr>
+</thead>
+<tbody id="tableBody">
+</tbody>
+</table>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../header.js"></script>
+<script>
+
+
+$.getJSON("../../json/board/list", (data) => {
+    for(let item of data) {
+         $("<tr>").html("<td><a href='form.html?no=" + item.no + "'>" + item.no  + "</a></td>" + 
+		                 "<td>" + item.title + "</td>" + 
+		                 "<td>" + item.createdDate + "</td>").appendTo(tableBody);
+         
+  }
+});
+</script>
+
+</body>
+</html>

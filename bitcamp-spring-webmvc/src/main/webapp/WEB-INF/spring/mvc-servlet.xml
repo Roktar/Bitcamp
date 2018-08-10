@@ -20,18 +20,18 @@
 	    <property name="suffix" value=".jsp"/>
 	</bean>
 	
-	<mvc:interceptors>
-	   <!-- 모든 요청에 대해 인터셉터 적용 -->
-	   <!-- <bean class="bitcamp.mvc.web.Exam09_1_interceptor" /> -->
+<!-- 	<mvc:interceptors>
+	   모든 요청에 대해 인터셉터 적용
+	   <bean class="bitcamp.mvc.web.Exam09_1_interceptor" />
 	   
-	   <!-- 특정 요청에 대해서만 인터셉터 적용 -->
+	   특정 요청에 대해서만 인터셉터 적용
 	   <mvc:interceptor>
 	       <mvc:mapping path="/exam09_1/**"/>
-	       <!-- exclude-mapping은 인터셉터 적용 제외 대상을 의미한다. -->
+	       exclude-mapping은 인터셉터 적용 제외 대상을 의미한다.
 	       <mvc:exclude-mapping path="/exam09_1/bbb/**"/>
            <bean class="bitcamp.mvc.web.Exam09_1_interceptor" />
 	   </mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 </beans>
 
 

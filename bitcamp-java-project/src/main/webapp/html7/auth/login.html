@@ -31,30 +31,8 @@
 </div>
 
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script>
-$("#loginBtn").click( function() {
-	
-	let data = {
-			id:$(fId).val(),
-			password:$(fPassword).val()
-	}
-	
-	if($(document.body).is("#fSaveId:checked")) {
-		//data.saveId = "true";
-		document.cookie += "userId=" + $(fId).val() + ";";
-	}
-	
- 	$.post("../../json/auth/login",
-	data, 
-	res => {
-		if(res.state == "success")
-			location.href="../board/list.html";
-		else
-			window.alert("로그인 실패");
-	}, "json");
-});
-
-</script>
+<script src="login.js"></script>
+<script src="../js/common.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+
+<script>
+ window.fbAsyncInit = function() {
+	 FB.init( {
+		    appId : ,
+		    cookie : true,
+		    xfbml : true,
+		    version :
+	 });	 
+ };
+ 
+ (function(d, s, id) {
+	 var js, fjs = d.getElementByTagName(s)[0];
+	 if (d.getElementById(id)) 
+		 return;
+	 js = d.createElement(s); 
+	 js.id = id;
+	 js.src = "https://connect.facebook.net/en_US/sdk.js";
+	 fjs.parentNode.insertBefore(js, fjs);
+ })(document, 'script', 'facebook-jssdk'); 
+ // 1회만 실행하는 함수기때문에 선언과 동시에 바로 실행되는 익명함수로 만듬.
+ 
+ FB.getLoginStatus(function(response) {
+	    statusChangeCallback(response); 
+ });
+ 
+ {
+	 status:"connected",
+	 authResponse: {
+		 accessToken: ,
+		 expiresIn: ,
+		 signedRequest: ,
+		 userID:
+	 }
+ }
+ 
+ function checkLoginState() {
+	 FB.getLoginStatus(function(response) {
+		 statusChangeCallback(response);
+	 })
+ }
+ 
+</script>
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"> </fb:login-button>
+</html>

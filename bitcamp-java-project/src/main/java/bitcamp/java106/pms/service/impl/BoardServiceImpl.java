@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import bitcamp.java106.pms.dao.BoardDao;
+import bitcamp.java106.pms.dao.TestBoardDao;
 import bitcamp.java106.pms.domain.Board;
+import bitcamp.java106.pms.domain.TestBoard;
 import bitcamp.java106.pms.service.BoardService;
 
 // 업무로직 구현체
@@ -16,19 +18,30 @@ import bitcamp.java106.pms.service.BoardService;
 public class BoardServiceImpl implements BoardService {
     
     BoardDao boardDao;
+    TestBoardDao testBoardDao;
     
-    public BoardServiceImpl(BoardDao boardDao) {
+    public BoardServiceImpl(BoardDao boardDao, TestBoardDao testBoardDao) {
         this.boardDao = boardDao;
+        this.testBoardDao = testBoardDao;
     }
     
     @Override
     public List<Board> list(int pageNo, int pageSize) {
-        
         Map<String, Object> params = new HashMap<>();
         params.put("startRowNo", (pageNo -1) * pageSize);
         params.put("pageSize", pageSize);
                         
         return boardDao.selectList(params);
+    }
+    
+    // 테스트용 소스
+    @Override
+    public List<TestBoard> test_list(int pageNo, int pageSize) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("startRowNo", (pageNo -1) * pageSize);
+        params.put("pageSize", pageSize);
+                        
+        return testBoardDao.selectList(params);
     }
 
     @Override
