@@ -114,11 +114,12 @@ function handleMessage(sender_psid, received_message) {
   
   // Checks if the message contains text
   
-  
+  // 버튼을 눌러서 전달되는 것이 postback이다.
+  // 일반 메시지는 message.
   switch(received_message.text) {
   	case "hello" :
   		response = {
-  			text : "World"
+  			"text" : "World"
   		};
   		break;
   	case "menu" :
@@ -135,24 +136,25 @@ function handleMessage(sender_psid, received_message) {
   	              {
   	                "type": "postback",
   	                "title": "Chicken",
-  	                "payload": "menu01" // 서버에 전달되는 값.
+  	                "payload": "menu01", // 서버에 전달되는 값. title이 넘어가는 게 아님
   	              },
   	              {
     	            "type": "postback",
     	            "title": "Bulgogi",
-    	            "payload": "menu02"
+    	            "payload": "menu02",
 	              },
       	          {
 	            	"type": "postback",
       	            "title": "KIMCHI",
-      	            "payload": "kimchi"
+      	            "payload": "kimchi",
   	              }
   	              
   	            ],
   	          }]
   	        }
   	      }
-  	    }
+  	    };
+  	    break;
   }
   
   if (received_message.text) {    
